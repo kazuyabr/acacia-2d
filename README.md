@@ -15,17 +15,11 @@
 [![Twitter](https://img.shields.io/twitter/follow/kaetramofficial?style=social)](https://twitter.com/kaetramofficial 'Twitter')
 [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/kaetram?style=social)](https://reddit.com/r/kaetram 'Reddit')
 
-Kaetram is an open-source 2D MMORPG that expands on the original idea created by Little Workshop's BrowserQuest (BQ).
-We aim to provide a collaborative gaming experience as well as a game-engine for those interested in creating their
-own version. The game is still in early development stages and all help, suggestions, and bug reports are welcome.
-All of the assets are licensed under CC-BY-SA3.0 and we aim to hold onto the original BQ assets as well as expand
-upon them. The entire code-base has been re-written from scratch, optimized, and documented. Please see the GitHub
-wiki for information regarding development. Kaetram first started development in 2015 under the name of
-Tap Tap Adventure (TTA). In 2017, Kaetram was started as a complete re-write of the code which was formerly BQ-based.
+Kaetram é um MMORPG 2D de código aberto que expande a ideia original criada pelo BrowserQuest (BQ) da Little Workshop. Nosso objetivo é fornecer uma experiência colaborativa de jogo, bem como um motor de jogo para aqueles interessados em criar sua própria versão. O jogo ainda está em estágios iniciais de desenvolvimento e toda ajuda, sugestões e relatórios de bugs são bem-vindos. Todos os recursos são licenciados sob CC-BY-SA3.0 e pretendemos manter os recursos originais do BQ, bem como expandi-los. Toda a base de código foi reescrita do zero, otimizada e documentada. Consulte o wiki do GitHub para obter informações sobre desenvolvimento. Kaetram começou seu desenvolvimento em 2015 sob o nome de Tap Tap Adventure (TTA). Em 2017, Kaetram foi iniciado como uma reescrita completa do código que era anteriormente baseado em BQ.
 
-Live Version &ndash; <https://kaetram.com>
+Versão Live &ndash; <https://kaetram.com>
 
-Join us on Discord &ndash; <https://discord.gg/MmbGAaw>
+Junte-se a nós no Discord &ndash; <https://discord.gg/MmbGAaw>
 
 ![Demo 1](https://i.imgur.com/PJdVts7.png)
 
@@ -41,89 +35,76 @@ Join us on Discord &ndash; <https://discord.gg/MmbGAaw>
 
 ![Demo 7](https://i.imgur.com/C7cZsuf.png)
 
-## Technologies
+## Tecnologias
 
-BQ was initially written as an HTML5 experiment showcasing the capabilities of web technologies
-back in 2012. Kaetram builds on top of the idea and uses modern standards to help facilitate
-readability, performance, and compatibility. Some of the many features are as follows:
+O BQ foi inicialmente escrito como um experimento HTML5 demonstrando as capacidades das tecnologias web em 2012. Kaetram se baseia nessa ideia e usa padrões modernos para ajudar a facilitar legibilidade, desempenho e compatibilidade. Alguns dos muitos recursos são:
 
-- Multiplayer using µWebSockets.
-- Enhanced rendering engine (includes dynamic lighting, overlays, animated tiles).
-- Region/chunking system (client caches and saves data from the server as needed).
-  - Dynamic tiles (tiles that change depending on player's progress in achievements/quests/etc).
-  - Global objects (tiles such as trees (and more in the future) that the player can interact with).
-- Trading between players.
-- Guild system with chatting and multi-world support.
-- Enchantment system for weapons.
-- Quest and achievement system.
-- Skilling system
-- Attack style system
-- Minigame system for special in-game events.
-- Plugin-based mob behaviour (used for special mobs such as bosses).
-- Plugin-based item interaction.
-- Hub system for cross-server communication/synchronization (private messages, global messages).
-- Discord server integration (in-game and discord server can communicate with eachother).
-- Enhanced map parsing w/ support for compressed tilemaps.
-- Yarn v3 with workspaces for monorepo packaging.
-- Player synchronization amongst servers (friend lists, guilds, login status).
-- In-game leaderboards using REST API.
+- Multiplayer usando µWebSockets
+- Motor de renderização aprimorado (inclui iluminação dinâmica, overlays, tiles animados)
+- Sistema de região/chunks (cliente armazena em cache e salva dados do servidor conforme necessário)
+  - Tiles dinâmicos (tiles que mudam dependendo do progresso do jogador em conquistas/missões/etc)
+  - Objetos globais (tiles como árvores (e mais no futuro) com os quais o jogador pode interagir)
+- Comércio entre jogadores
+- Sistema de guilda com chat e suporte multi-mundo
+- Sistema de encantamento para armas
+- Sistema de missões e conquistas
+- Sistema de habilidades
+- Sistema de estilos de ataque
+- Sistema de minigames para eventos especiais no jogo
+- Comportamento de mobs baseado em plugins (usado para mobs especiais como chefes)
+- Interação de itens baseada em plugins
+- Sistema de hub para comunicação/sincronização entre servidores (mensagens privadas, mensagens globais)
+- Integração com servidor Discord (jogo e servidor discord podem se comunicar entre si)
+- Análise de mapa aprimorada c/ suporte para tilemaps compactados
+- Yarn v3 com workspaces para empacotamento monorepo
+- Sincronização de jogadores entre servidores (listas de amigos, guildas, status de login)
+- Placar de líderes no jogo usando API REST
 
-## Get Started
+## Primeiros Passos
 
-### Prerequisites
+### Pré-requisitos
 
-You must first [install Node.js](https://nodejs.org/en/download) to run the project, and
-_optionally_ [install MongoDB](https://www.mongodb.com/try/download/community) to store user data on
-the server.
+Você deve primeiro [instalar Node.js](https://nodejs.org/en/download) para executar o projeto, e _opcionalmente_ [instalar MongoDB](https://www.mongodb.com/try/download/community) para armazenar dados dos usuários no servidor.
 
-#### NOTE: Node.js
+#### NOTA: Node.js
 
-> You need to use a Node.js version greater than or equal to `v16.17.1`, following the
-> [Long Term Support (LTS) schedule](https://nodejs.org/en/about/releases), to have the most stable
-> experience when developing/experimenting with Kaetram. Older versions would not work with our
-> current dependencies and package manager.
+> Você precisa usar uma versão do Node.js maior ou igual a `v16.17.1`, seguindo o [cronograma de Suporte de Longo Prazo (LTS)](https://nodejs.org/en/about/releases), para ter a experiência mais estável ao desenvolver/experimentar com Kaetram. Versões mais antigas não funcionarão com nossas dependências e gerenciador de pacotes atuais.
 
-#### NOTE: MongoDB
+#### NOTA: MongoDB
 
-> MongoDB is not a requirement for Kaetram to run, but you can store and save user data if you
-> install it and run an online environment with all the features enabled. To do this, see
-> [Configuration](#configuration), and set `SKIP_DATABASE=false`. _If you do choose to install
-> MongoDB, a user is not necessary, but you can enable authentication with the `MONGODB_AUTH`
-> setting._
+> MongoDB não é um requisito para o Kaetram funcionar, mas você pode armazenar e salvar dados do usuário se você instalá-lo e executar um ambiente online com todos os recursos habilitados. Para fazer isso, veja [Configuração](#configuration), e defina `SKIP_DATABASE=false`. _Se você escolher instalar MongoDB, um usuário não é necessário, mas você pode habilitar autenticação com a configuração `MONGODB_AUTH`._
 
 #### Yarn
 
-You will also need to enable [Yarn](https://yarnpkg.com) through [Corepack](https://nodejs.org/dist/latest/docs/api/corepack.html), to manage the dependencies.
+Você também precisará habilitar o [Yarn](https://yarnpkg.com) através do [Corepack](https://nodejs.org/dist/latest/docs/api/corepack.html), para gerenciar as dependências.
 
-> The preferred way to manage Yarn is through [Corepack](https://nodejs.org/dist/latest/docs/api/corepack.html), a new binary shipped with all Node.js releases [...]
+> A maneira preferida de gerenciar o Yarn é através do [Corepack](https://nodejs.org/dist/latest/docs/api/corepack.html), um novo binário enviado com todas as versões do Node.js [...]
 >
-> To enable it, run the following command:
+> Para habilitá-lo, execute o seguinte comando:
 >
-> ```console
+>
 > corepack enable
-> ```
+>
 >
 > <https://yarnpkg.com/getting-started/install>
 
-### Installing
+### Instalando
 
-Install the dependencies by simply running
+Instale as dependências simplesmente executando
 
-```console
 yarn
-```
 
-### Running
+### Executando
 
-**You must accept the MPL2.0 and OPL licensing agreement by toggling `ACCEPT_LICENSE` in the enviroment variable file. The server and client are disabled until you have done so.**
+_Você DEVE aceitar o acordo de licenciamento MPL2.0 e OPL alternando `ACCEPT_LICENSE` no arquivo de variável de ambiente. O servidor e cliente estão desativados até que você faça isso._
 
-To run live development builds, use
+Para executar builds de desenvolvimento ao vivo, use
 
 ```console
 yarn dev
 ```
 
-To create production builds, run
+Para criar builds de produção, execute
 
 ```console
 yarn build
@@ -135,120 +116,112 @@ Then, to run each production build, use
 yarn start
 ```
 
-### Configuration
+### Configuração
 
-Optionally, if you want some additional configuration, There is a file named
-[`.env.defaults`](.env.defaults), and it's values will be used unless overridden by a new `.env`
-file.
+Opcionalmente, se você deseja alguma configuração adicional, existe um arquivo chamado [`.env.defaults`](.env.defaults), e seus valores serão usados a menos que sejam substituídos por um novo arquivo `.env`.
 
-Copy and rename [`.env.defaults`](.env.defaults) to `.env`, and modify the contents to fit your
-needs.
+Copie e renomeie [`.env.defaults`](.env.defaults) para `.env`, e modifique o conteúdo para atender às suas necessidades.
 
-_Keep in mind_, you have to rebuild the client and restart the server every time you change your
-configuration.
+_Tenha em mente_, você precisa reconstruir o cliente e reiniciar o servidor toda vez que alterar sua configuração.
 
-## Testing
+## Testes
 
 ### End to End
 
-As a [prerequisite](#prerequisites) to run the E2E tests, you need a MongoDB server running as well.
+Como um [pré-requisito](#pré-requisitos) para executar os testes E2E, você também precisa de um servidor MongoDB em execução.
 
-[Configuration](#configuration) for test-only environments can be configured on
-[`.env.e2e`](`.env.e2e`). All it's values will fallback to `.env`, then to
-[`.env.defaults`](.env.defaults), if present.
+[Configuração](#configuração) para ambientes apenas de teste pode ser configurada em [`.env.e2e`](`.env.e2e`). Todos os seus valores voltarão para `.env`, depois para [`.env.defaults`](.env.defaults), se presentes.
 
-To run test on your console, use
+Para executar testes em seu console, use
 
 ```console
 yarn test:run
 ```
 
-Alternatively, if you want to have the test environment open interactively, so you can select the
-test you want to run in a UI, use
+Alternativamente, se você quiser ter o ambiente de teste aberto interativamente, para que você possa selecionar o teste que deseja executar em uma interface de usuário, use
 
 ```console
 yarn test:open
 ```
 
-## Features
+## Funcionalidades
 
-### Regions
+### Regiões
 
-The region system works by segmenting the map into smaller chunks that are then sent to the client. The client caches
-the map data and stores it for quicker loading in the local storage. When a new map version is present, the client
-purges the cache and starts the process again. The region system is split into static tiles and dynamic tiles. Static
-tiles do not undergo a change and are part of the map permanently. Dynamic tiles change depending on conditions such
-as a player's achievement/quest progress, or, in the case of trees, depending on whether the tree has been cut or not.
-In the future we plan to use this region system to create instanced versions of areas, for example running multiple minigame
-instances at the same time.
+O sistema de regiões funciona segmentando o mapa em pedaços menores que são então enviados ao cliente. O cliente armazena
+os dados do mapa em cache e os guarda para um carregamento mais rápido no armazenamento local. Quando uma nova versão do mapa está presente, o cliente
+limpa o cache e inicia o processo novamente. O sistema de regiões é dividido em blocos estáticos e blocos dinâmicos. Blocos estáticos
+não sofrem alterações e são parte permanente do mapa. Blocos dinâmicos mudam dependendo de condições como
+o progresso de conquistas/missões do jogador ou, no caso de árvores, dependendo se a árvore foi cortada ou não.
+No futuro, planejamos usar este sistema de regiões para criar versões instanciadas de áreas, por exemplo, executando várias instâncias
+de minigames ao mesmo tempo.
 
-Video example showcasing region system using an exaggerated example:
-[![Kaetram Region System](https://img.youtube.com/vi/pt_CEgjfORE/0.jpg)](https://www.youtube.com/watch?v=pt_CEgjfORE)
+Exemplo em vídeo mostrando o sistema de regiões usando um exemplo exagerado:
+[![Sistema de Regiões do Kaetram](https://img.youtube.com/vi/pt_CEgjfORE/0.jpg)](https://www.youtube.com/watch?v=pt_CEgjfORE)
 
 ### Tilemap
 
-Kaetram uses [Tiled Map Editor](https://www.mapeditor.org/) to create and modify the map. Our [map parsing](#map-parsing) tool
-is used to export a condesed version of the map data. The server receives the bulk of the information and uses it to calculate
-collisions, tile data information, and areas (pvp, music, etc). The client stores minimal data such as tile 'z-index' and animations.
+Kaetram usa o [Tiled Map Editor](https://www.mapeditor.org/) para criar e modificar o mapa. Nossa ferramenta de [análise de mapa](#map-parsing)
+é usada para exportar uma versão condensada dos dados do mapa. O servidor recebe a maior parte das informações e as usa para calcular
+colisões, informações de dados de tiles e áreas (pvp, música, etc). O cliente armazena dados mínimos como 'z-index' dos tiles e animações.
 
-### Map Parsing
+### Análise do Mapa
 
-Once finished modifying your map in [`packages/tools/map/data/`](packages/tools/map/data/), you can
-parse the map data by executing `yarn exportmap` inside the [`packages/tools/`](packages/tools/)
-directory.
+Depois de terminar de modificar seu mapa em [`packages/tools/map/data/`](packages/tools/map/data/), você pode
+analisar os dados do mapa executando `yarn exportmap` dentro do diretório [`packages/tools/`](packages/tools/).
 
-Example command:
+Exemplo de comando:
 
 ```console
 yarn exportmap ./data/map.json
 ```
 
-To build the current game map, you can run
+Para construir o mapa atual do jogo, você pode executar
 
 ```console
 yarn map
 ```
 
-### Kaetram Hub
+### Hub Kaetram
 
-The hub functions as a gateway between servers. Due to performance limitations of NodeJS it is more feasible
-to host multiple servers instead of one big one containing thousands of players. The hub does exactly that, once
-the hub is running and a server instance is given the host address for the hub, it will automatically connect. The
-hub becomes the primary connection point for the client. When a request for connection is received, the hub
-will pick the first server that has room for the player. Alternatively, it allows players to select any server
-amongst the list of servers.
+O hub funciona como um gateway entre servidores. Devido às limitações de desempenho do NodeJS, é mais viável
+hospedar vários servidores em vez de um único grande servidor contendo milhares de jogadores. O hub faz exatamente isso, uma vez que
+o hub está em execução e uma instância do servidor recebe o endereço do host para o hub, ele se conectará automaticamente. O
+hub se torna o ponto de conexão principal para o cliente. Quando uma solicitação de conexão é recebida, o hub
+escolherá o primeiro servidor que tiver espaço para o jogador. Alternativamente, permite que os jogadores selecionem qualquer servidor
+entre a lista de servidores.
 
-To enable the hub server, see [Configuration](#configuration), and set these values to `true`.
+Para habilitar o servidor hub, veja [Configuração](#configuration), e defina estes valores como `true`.
 
 ```sh
 API_ENABLED=true
 HUB_ENABLED=true
 ```
 
-## Roadmap
+## Roteiro
 
-Here we have [The Roadmap Project Board](https://github.com/Kaetram/Kaetram-Open/projects/1). This
-is the main board of the Kaetram-Open project. A kind of Kanban tasks board for tracking and
-presenting the progress to the community. Here we plan, prioritize and track our work.
+Aqui temos [O Quadro do Roteiro do Projeto](https://github.com/Kaetram/Kaetram-Open/projects/1). Este
+é o quadro principal do projeto Kaetram-Open. Um tipo de quadro Kanban de tarefas para acompanhar e
+apresentar o progresso para a comunidade. Aqui nós planejamos, priorizamos e acompanhamos nosso trabalho.
 
-See also the [open issues][issues] for a list of proposed features (and known issues).
+Veja também as [issues abertas][issues] para uma lista de funcionalidades propostas (e problemas conhecidos).
 
-### TODO
+### A FAZER
 
-- Add special attacks to weapons
-- Add functionality to the special abilities
-- Weapons/armours/rings/pendants enchantments
-- Diversify game content (add more skills, minigames, activities, items, etc)
-- Improve usability of the user interface on mobile devices
-- Move pathfinding to the server-side once alpha is over
+- Adicionar ataques especiais às armas
+- Adicionar funcionalidade às habilidades especiais
+- Encantamentos de armas/armaduras/anéis/pingentes
+- Diversificar conteúdo do jogo (adicionar mais habilidades, minigames, atividades, itens, etc)
+- Melhorar a usabilidade da interface do usuário em dispositivos móveis
+- Mover o sistema de pathfinding para o lado do servidor após o término da fase alfa
 
-## Donations
+## Doações
 
-### Sponsor
+### Patrocínio
 
-Patreon &ndash; <https://www.patreon.com/kaetram>
+Patreon – <https://www.patreon.com/kaetram>
 
-Open Collective &ndash; <https://opencollective.com/kaetram>
+Open Collective – <https://opencollective.com/kaetram>
 
 ### Crypto
 
@@ -260,27 +233,27 @@ Open Collective &ndash; <https://opencollective.com/kaetram>
 
 `BCH` &ndash; `bitcoincash:qzx6uqunqj4mtv74jng97pea0mfcl4nmyqsew92enu`
 
-## License & Commission
+## Licença & Comissão
 
-Following the release of the beta, Kaetram-Open will only be updated once every 2-4 weeks. There will be no more updates to the sprite art, music, item/mob/npc/etc properties. This repository will provide you with the tools necessary to create your own version of Kaetram, there are plenty of assets included for that. Further modifications will primarily consist of game-engine improvements.
+Após o lançamento da versão beta, o Kaetram-Open será atualizado apenas uma vez a cada 2-4 semanas. Não haverá mais atualizações na arte dos sprites, música, propriedades de itens/mobs/npcs/etc. Este repositório fornecerá as ferramentas necessárias para criar sua própria versão do Kaetram, existem muitos recursos incluídos para isso. Modificações futuras consistirão principalmente em melhorias no motor do jogo.
 
-For all inquiries about purchasing a different license, commission work, or purchasing access to our up-to-date version please contact **@kaetram** on [Discord][discord] or email <admin@kaetram.com>.
+Para todas as consultas sobre a compra de uma licença diferente, trabalho comissionado ou compra de acesso à nossa versão atualizada, entre em contato com **@kaetram** no [Discord][discord] ou envie um e-mail para <admin@kaetram.com>.
 
-This project is distributed under the **[Mozilla Public License Version 2.0](https://choosealicense.com/licenses/mpl-2.0/)**. See [`LICENSE`][license] for more information.
+Este projeto é distribuído sob a **[Licença Pública Mozilla Versão 2.0](https://choosealicense.com/licenses/mpl-2.0/)**. Veja [`LICENSE`][license] para mais informações.
 
-Additionally, Kaetram is shipped with a secondary license, Omnia Public License (OPL):
+Além disso, o Kaetram é distribuído com uma licença secundária, a Licença Pública Omnia (OPL):
 
-- You MUST provide a direct link to Kaetram in the credits section.
-- You MUST keep the code open-source and continue to do so.
-- You may NOT use this project or any parts therein for anything related to artifical intelligence, cryptocurrencies, or NFTs without direct permission from the creators.
-- You may NOT remove the credits section. It MUST remain visible on the front page of the website. It MUST be easily accessible to any user who accesses the project as per [W3C Accessibility Standards](https://www.w3.org/WAI/standards-guidelines/).
-- You may NOT remove any credits to the artists, musicians, or any other original creators of this project.
-- You may NOT use this project or any parts therein to sell online courses, you may however use this for general streaming platforms, including view-based revenue.
-- You may NOT use this project or any parts therein for any illicit activity.
-- You may NOT use this project or any parts therein to spread hate, racism, or any form of discriminatory behaviour.
+- Você DEVE fornecer um link direto para o Kaetram na seção de créditos.
+- Você DEVE manter o código open-source e continuar fazendo isso.
+- Você NÃO PODE usar este projeto ou qualquer parte dele para qualquer coisa relacionada a inteligência artificial, criptomoedas ou NFTs sem permissão direta dos criadores.
+- Você NÃO PODE remover a seção de créditos. Ela DEVE permanecer visível na página inicial do site. Ela DEVE ser facilmente acessível a qualquer usuário que acesse o projeto conforme os [Padrões de Acessibilidade W3C](https://www.w3.org/WAI/standards-guidelines/).
+- Você NÃO PODE remover quaisquer créditos aos artistas, músicos ou quaisquer outros criadores originais deste projeto.
+- Você NÃO PODE usar este projeto ou qualquer parte dele para vender cursos online, no entanto, você pode usar isso para plataformas gerais de streaming, incluindo receita baseada em visualizações.
+- Você NÃO PODE usar este projeto ou qualquer parte dele para qualquer atividade ilícita.
+- Você NÃO PODE usar este projeto ou qualquer parte dele para espalhar ódio, racismo ou qualquer forma de comportamento discriminatório.
 
-If you have any questions, contact @kaetram on [Discord][discord].
+Se você tiver alguma dúvida, entre em contato com @kaetram no [Discord][discord].
 
-[license]: LICENSE 'Project License'
-[issues]: https://github.com/Kaetram/Kaetram-Open/issues 'Open Issues'
-[discord]: https://discord.gg/MmbGAaw 'Join Discord'
+[license]: LICENSE 'Licença do Projeto'
+[issues]: https://github.com/Kaetram/Kaetram-Open/issues 'Issues Abertas'
+[discord]: https://discord.gg/MmbGAaw 'Entre no Discord'

@@ -1,0 +1,51 @@
+services:
+    nginx:
+        image: nginx:alpine
+        ports:
+            - '80:80'
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+            - shinobi-server
+        networks:
+            - shinobi-network
+
+    shinobi-server:
+        build:
+            context: ../
+            dockerfile: docker/Dockerfile
+        env_file:
+            - ../.env
+        ports:
+            - '9001:9001' # Game Server
+            - '9002:9002' # API
+            - '9526:9526' # Hub
+            - '9527:9527' # Hub WS
+        depends_on:
+            - mongodb
+        networks:
+            - shinobi-network
+        volumes:
+            - ../:/app
+            - /app/node_modules
+
+    mongodb:
+        image: mongo:latest
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: sorameshi
+            MONGO_INITDB_ROOT_PASSWORD: lotus10
+            MONGO_INITDB_DATABASE: shinobi-farm-game
+        ports:
+            - '27017:27017'
+        volumes:
+            - mongodb_data:/data/db
+            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+        networks:
+            - shinobi-network
+
+networks:
+    shinobi-network:
+        driver: bridge
+
+volumes:
+    mongodb_data:

@@ -12,6 +12,7 @@
         "postinstall": "husky install",
         "packages": "FORCE_COLOR=true yarn workspaces foreach --no-private -j 4 -piv run",
         "dev": "yarn packages dev",
+        "dev:docker": "yarn docker:up && yarn dev",
         "hub": "yarn packages hub",
         "start": "yarn packages start",
         "build": "yarn packages build",
@@ -22,7 +23,12 @@
         "test:run": "yarn packages test:run",
         "test:open": "yarn packages test:open",
         "map": "yarn packages map",
-        "replacer": "yarn packages replacer"
+        "replacer": "yarn packages replacer",
+        "docker:build": "cd docker && docker-compose build",
+        "docker:up": "cd docker && docker-compose up -d",
+        "docker:down": "cd docker && docker-compose down",
+        "docker:logs": "cd docker && docker-compose logs -f",
+        "docker:restart": "cd docker && docker-compose restart"
     },
     "lint-staged": {
         "*.{ts,astro}": "eslint --cache --fix",
