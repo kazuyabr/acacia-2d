@@ -53,7 +53,7 @@ export default class Socket {
         host ||= this.config.host;
         port ||= this.config.port;
 
-        let url = this.config.ssl ? `wss://${host}` : `ws://${host}:${port}`;
+        let url = this.config.ssl ? `wss://${host}/ws` : `ws://${host}:${port}/ws`;
 
         // Create a websocket connection with the url generated.
         this.connection = new WebSocket(url);

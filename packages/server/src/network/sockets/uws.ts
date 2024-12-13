@@ -22,7 +22,6 @@ export default class UWS extends WebSocket {
                 compression: DISABLED,
                 idleTimeout: 15,
                 maxPayloadLength: 32 * 1024 * 1024,
-
                 upgrade: this.handleUpgrade.bind(this),
                 open: this.handleConnection.bind(this),
                 message: this.handleMessage.bind(this),
