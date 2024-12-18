@@ -112,7 +112,7 @@ if (import.meta.env.PROD)
 // https://astro.build/config
 export default defineConfig({
     srcDir: './',
-    site: 'https://kaetram.com/',
+    site: 'https://shinobifarm.jogatinando.com.br/',
     trailingSlash: 'always',
     integrations,
     server: { host: true, port: 9000 },
@@ -121,7 +121,7 @@ export default defineConfig({
         build: { sourcemap: true },
         server: {
             strictPort: true,
-            hmr: { protocol: 'ws', host: config.host, port: 5183 }
+            hmr: { protocol: 'ws', host: 'localhost', port: 5183 }
         },
         define: { globalConfig: env },
         css: {
