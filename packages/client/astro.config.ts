@@ -115,7 +115,7 @@ export default defineConfig({
     site: 'https://shinobifarm.jogatinando.com.br/',
     trailingSlash: 'always',
     integrations,
-    server: { host: true, port: 9000 },
+    server: { host: true, port: config.clientRemotePort | 9000 },
     vite: {
         plugins,
         build: { sourcemap: true },
