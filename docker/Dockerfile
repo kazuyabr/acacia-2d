@@ -23,10 +23,10 @@ RUN rm -rf node_modules \
 
 # Instalar dependências e construir
 RUN yarn
+RUN npx update-browserslist-db@latest
 RUN yarn postinstall
 RUN yarn build
 
-EXPOSE 5183 9001 9002 9003 9526 9527 9528
+#EXPOSE 5183 9001 9002 9003 9526 9527 9528
 
-
-CMD ["yarn", "dev"]
+#CMD ["yarn", "dev"]

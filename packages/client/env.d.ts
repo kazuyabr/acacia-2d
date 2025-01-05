@@ -8,6 +8,7 @@ declare global {
         version: string;
         minor: string;
         port: number;
+        nginx: boolean;
         hub: string | false;
         sentryDsn: string;
         acceptLicense: boolean;

@@ -1,31 +1,31 @@
 {
-    "name": "Welcome to Kaetram",
-    "description": "Teaching you the very basics of Kaetram.|This tutorial will teach you how to move around, attack, interact with objects and use ranged weapons. Follow the arrows and talk to the NPCs if you are stuck.",
+    "name": "Bem-vindo ao Kaetram",
+    "description": "Ensinando a você o básico do Kaetram.|Este tutorial irá ensinar você como se movimentar, atacar, interagir com objetos e usar armas de longo alcance. Siga as setas e fale com os NPCs se você estiver perdido.",
     "rewards": ["Knowledge of the game :)"],
     "stages": {
         "0": {
             "task": "talk",
             "npc": "coder",
             "text": [
-                "Oh, hello! Welcome! Click on me again!",
-                "You're getting the hang of it, keep clicking.",
-                "Perfect, seems like you get the gist of it.",
-                "I am the coder, I created this world, and, well, you.",
-                "Listen, to me you are just a more sophisticated AI.",
-                "So I'm gonna need you to get used to this world and help me out.",
-                "You see, I created these previous AIs, but they went rogue.",
-                "They are now trying to destroy this world.",
-                "So, I created you in order to stop them and save us all.",
-                "Before we get to any of that, we need to teach you some of the basics.",
-                "You can move around by clicking, or using WASD keys, or arrow keys.",
-                "Make sure you talk to everyone you meet fully, you never know what you might learn.",
-                "Whenever you feel like you're ready, head on outside and talk to the guard."
+                "Ah, olá! Bem-vindo! Clique em mim novamente!",
+                "Você está pegando o jeito, continue clicando.",
+                "Perfeito, parece que você entendeu a ideia.",
+                "Eu sou o programador, eu criei este mundo e, bem, você.",
+                "Escute, para mim você é apenas uma IA mais sofisticada.",
+                "Então eu preciso que você se acostume com este mundo e me ajude.",
+                "Veja, eu criei essas IAs anteriores, mas elas se rebelaram.",
+                "Agora elas estão tentando destruir este mundo.",
+                "Então, eu criei você para detê-las e nos salvar.",
+                "Antes de chegarmos a isso, precisamos ensinar a você algumas noções básicas.",
+                "Você pode se mover clicando, ou usando as teclas WASD, ou as teclas de seta.",
+                "Certifique-se de conversar completamente com todos que encontrar, nunca se sabe o que você pode aprender.",
+                "Quando você se sentir pronto, vá lá fora e fale com o guarda."
             ],
-            "completedText": ["Whenever you are ready, head outside and talk to the guard."],
+            "completedText": ["Quando estiver pronto, vá lá fora e fale com o guarda."],
             "pointer": {
                 "type": 0,
-                "x": 134,
-                "y": 559
+                "x": 133,
+                "y": 560
             }
         },
 
@@ -33,8 +33,8 @@
             "task": "door",
             "pointer": {
                 "type": 0,
-                "x": 135,
-                "y": 569
+                "x": 134,
+                "y": 570
             }
         },
 
@@ -42,24 +42,21 @@
             "task": "talk",
             "npc": "guard",
             "text": [
-                "Oh great anot- nevermind.",
-                "Welcome to the world of Kaetram.",
-                "I'm here to teach you about skills and combat.",
-                "Skills are activities that allow you to collect items and gain experience.",
-                "You can use the experience to discover new areas and engage in more complex tasks.",
-                "Before we get to any combat-related skills, I want you to cut two trees for me.",
-                "Here, take this axe, open your inventory, and equip it."
+                "Ah ótimo, outro- deixa pra lá.",
+                "Bem-vindo ao mundo de Kaetram.",
+                "Estou aqui para ensinar você sobre habilidades e combate.",
+                "Habilidades são atividades que permitem coletar itens e ganhar experiência.",
+                "Você pode usar a experiência para descobrir novas áreas e se envolver em tarefas mais complexas.",
+                "Antes de chegarmos a qualquer habilidade relacionada ao combate, quero que você corte duas árvores para mim.",
+                "Aqui, pegue este machado, abra seu inventário e equipe-o."
             ],
-
-            "completedText": ["Go on, cut two trees for me."],
-
+            "completedText": ["Vá em frente, corte duas árvores para mim."],
             "itemRewards": [
                 {
                     "key": "bronzeaxe",
                     "count": 1
                 }
             ],
-
             "pointer": {
                 "type": 0,
                 "x": 60,
@@ -76,14 +73,12 @@
         "4": {
             "task": "npc",
             "npc": "guard",
-
             "text": [
-                "Okay perfect, you can use logs to make sticks.",
-                "Take this knife and use it to fletch some sticks.",
-                "Simply click on the item in your inventory and select the interact option."
+                "Ok perfeito, você pode usar toras para fazer varas.",
+                "Pegue esta faca e use-a para fazer algumas varas.",
+                "Simplesmente clique no item em seu inventário e selecione a opção interagir."
             ],
-            "completedText": ["Go on, fletch the logs into sticks for me."],
-
+            "completedText": ["Vá em frente, transforme as toras em varas para mim."],
             "itemRewards": [
                 {
                     "key": "knife",
@@ -100,22 +95,18 @@
         "5": {
             "task": "talk",
             "npc": "guard",
-
             "hasItemText": [
-                "Awesome, just bear with me a little longer.",
-                "I know it's boring but I am obligated to teach you this.",
-                "Now take this fishing pole and go catch two shrimps for me."
+                "Incrível, aguente só mais um pouco.",
+                "Eu sei que é chato, mas sou obrigado a ensinar isso a você.",
+                "Agora pegue esta vara de pescar e vá pescar dois camarões para mim."
             ],
-
-            "completedText": ["Go on, catch two shrimps for me."],
-
+            "completedText": ["Vá em frente, pesque dois camarões para mim."],
             "itemRequirements": [
                 {
                     "key": "stick",
                     "count": 1
                 }
             ],
-
             "itemRewards": [
                 {
                     "key": "stick",
@@ -137,13 +128,12 @@
         "7": {
             "task": "talk",
             "npc": "guard",
-
             "text": [
-                "Great, one more thing and we're done with the boring stuff.",
-                "It's as much of a chore for me as it is for you so don't worry.",
-                "Go click on that cooking pot and cook these shrimps for me."
+                "Ótimo, mais uma coisa e terminamos com as coisas chatas.",
+                "É tão cansativo para mim quanto é para você, então não se preocupe.",
+                "Vá clicar naquele caldeirão e cozinhe estes camarões para mim."
             ],
-            "completedText": ["Go on, cook the shrimps for me."],
+            "completedText": ["Vá em frente, cozinhe os camarões para mim."],
             "pointer": {
                 "type": 0,
                 "x": 60,
@@ -154,13 +144,12 @@
         "8": {
             "task": "talk",
             "npc": "guard",
-
             "hasItemText": [
-                "Awesome, you're done with the boring stuff.",
-                "Head down that suspicious ladder to the left and meet me in the cave.",
-                "Don't question it, just trust me."
+                "Incrível, você terminou com as coisas chatas.",
+                "Desça por aquela escada suspeita à esquerda e me encontre na caverna.",
+                "Não questione, apenas confie em mim."
             ],
-            "completedText": ["Head down the ladder and meet me in the cave."],
+            "completedText": ["Desça pela escada e me encontre na caverna."],
             "itemRequirements": [
                 {
                     "key": "cookedshrimp",
@@ -181,14 +170,13 @@
         "10": {
             "task": "talk",
             "npc": "guard",
-
             "text": [
-                "Okay, now listen closely. Our budget is running low.",
-                "So we need to hurry this up. I have to teach you about combat.",
-                "Because of said budget, I can only give the very basics.",
-                "Here is a copper sword, I want you to slay 5 rats for me."
+                "Ok, agora preste atenção. Nosso orçamento está baixo.",
+                "Então precisamos apressar isso. Tenho que ensinar você sobre combate.",
+                "Por causa do orçamento, só posso ensinar o básico do básico.",
+                "Aqui está uma espada de cobre, quero que você mate 5 ratos para mim."
             ],
-            "completedText": ["Go on, slay 3 rats for me."],
+            "completedText": ["Vá em frente, mate 3 ratos para mim."],
             "itemRewards": [
                 {
                     "key": "coppersword",
@@ -211,17 +199,16 @@
         "12": {
             "task": "talk",
             "npc": "guard",
-
             "text": [
-                "Wow I actually didn't expect you to be competent.",
-                "You see how slow that was? That's because you don't have any fancy equipments.",
-                "Once you're out of here you'll be able to get better equipments.",
-                "Anyway, last thing I can teach you within my curriculum is archery.",
-                "For the sake of this tutorial, you will not need to equip any arrows.",
-                "Plus it saves us a ton of money for the arrows we don't have to give you.",
-                "So anyway, I want you to kill 2 crabs with this bow."
+                "Uau, eu realmente não esperava que você fosse competente.",
+                "Viu como foi lento? Isso é porque você não tem equipamentos sofisticados.",
+                "Quando você sair daqui, poderá conseguir equipamentos melhores.",
+                "De qualquer forma, a última coisa que posso ensinar dentro do meu currículo é arquearia.",
+                "Para este tutorial, você não precisará equipar nenhuma flecha.",
+                "Além disso, economiza muito dinheiro com as flechas que não precisamos te dar.",
+                "Então, quero que você mate 2 caranguejos com este arco."
             ],
-            "completedText": ["Go on, kill 2 crabs for me."],
+            "completedText": ["Vá em frente, mate 2 caranguejos para mim."],
             "itemRewards": [
                 {
                     "key": "woodenbow",
@@ -244,16 +231,11 @@
         "14": {
             "task": "talk",
             "npc": "guard",
-
-            "text": [
-                "That will be all. The rest is up to you to discover.",
-                "You may leave the tutorial by going through the portal."
-            ],
+            "text": ["Isso é tudo. O resto cabe a você descobrir.", "Você pode sair do tutorial passando pelo portal."],
             "completedText": [
-                "That will be all. The rest is up to you to discover.",
-                "You may leave the tutorial by going through the portal."
+                "Isso é tudo. O resto cabe a você descobrir.",
+                "Você pode sair do tutorial passando pelo portal."
             ],
-
             "pointer": {
                 "type": 0,
                 "x": 29,

@@ -92,7 +92,9 @@ Você também precisará habilitar o [Yarn](https://yarnpkg.com) através do [Co
 
 Instale as dependências simplesmente executando
 
+```console
 yarn
+```
 
 ### Executando
 

@@ -9,6 +9,7 @@ export interface SerializedServer {
     name: string;
     host: string;
     port: number;
+    nginx: boolean;
     players: number;
     maxPlayers: number;
 }

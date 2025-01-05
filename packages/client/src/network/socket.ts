@@ -48,12 +48,13 @@ export default class Socket {
      */
 
     public async connect(server?: SerializedServer): Promise<void> {
-        let { host, port } = server || (await this.getServer()) || this.config;
+        let { host, port, nginx } = server || (await this.getServer()) || this.config;
 
         host ||= this.config.host;
         port ||= this.config.port;
+        nginx ||= this.config.nginx;
 
-        let url = this.config.ssl ? `wss://${host}/ws` : `ws://${host}:${port}/ws`;
+        let url = `${this.config.ssl ? 'wss' : 'ws'}://${host}:${port}${nginx ? '/ws' : ''}`;
 
         // Create a websocket connection with the url generated.
         this.connection = new WebSocket(url);

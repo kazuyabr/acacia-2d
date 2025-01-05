@@ -24,8 +24,8 @@
         "test:open": "yarn packages test:open",
         "map": "yarn packages map",
         "replacer": "yarn packages replacer",
-        "docker:build": "cd docker && docker-compose build",
-        "docker:up": "cd docker && docker-compose up -d",
+        "docker:build": "cd docker && docker-compose build --no-cache",
+        "docker:up": "cd docker && docker-compose -p shinobi-farm up -d --no-deps",
         "docker:down": "cd docker && docker-compose down",
         "docker:logs": "cd docker && docker-compose logs -f",
         "docker:restart": "cd docker && docker-compose restart"

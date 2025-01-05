@@ -11,19 +11,10 @@ services:
             - ../:/app
             - /app/node_modules
         ports:
-            - '9001:9001'
-            - '9002:9002'
-            - '9003:9003'
-            - '9526:9526'
-            - '9527:9527'
-            - '9528:9528'
+            - '9000-9003:9000-9003'
+            - '9526-9528:9526-9528'
             - '5183:5183'
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        environment:
-            - VIRTUAL_HOST=shinobifarm.localhost,shinobifarm.jogatinando.shop,localhost
-            - VIRTUAL_PORT=9001,9002,9003,9526,9527,9528,5183
-            - VIRTUAL_PROTO=ws,http
+        command: yarn start --host
 
     nginx:
         image: nginx:alpine

@@ -10,6 +10,7 @@ export interface Config {
     host: string;
     port: number;
     ssl: boolean;
+    nginx: boolean;
 
     serverId: number;
     accessToken: string;
