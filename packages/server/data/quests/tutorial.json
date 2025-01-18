@@ -1,7 +1,7 @@
 {
-    "name": "Bem-vindo ao Kaetram",
+    "name": "Bem vindo ao mundo de Acacia",
     "description": "Ensinando a você o básico do Kaetram.|Este tutorial irá ensinar você como se movimentar, atacar, interagir com objetos e usar armas de longo alcance. Siga as setas e fale com os NPCs se você estiver perdido.",
-    "rewards": ["Knowledge of the game :)"],
+    "rewards": ["Conhecendo o game :)"],
     "stages": {
         "0": {
             "task": "talk",
@@ -35,6 +35,11 @@
                 "type": 0,
                 "x": 134,
                 "y": 570
+            },
+            "popup": {
+                "title": "Quest completed!",
+                "text": "@green@Você completou a missão @crimson@Bem vindo ao mundo de Acacia@green@.",
+                "colour": "#33cc33"
             }
         },
 
@@ -240,6 +245,11 @@
                 "type": 0,
                 "x": 29,
                 "y": 541
+            },
+            "popup": {
+                "title": "Quest completed!",
+                "text": "@green@Você completou a missão @crimson@Bem vindo ao mundo de Acacia@green@.",
+                "colour": "#33cc33"
             }
         },
 
