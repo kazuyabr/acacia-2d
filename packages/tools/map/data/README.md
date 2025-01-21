@@ -1,7 +1,7 @@
-The `map_template.json` provided gives the bare minimum required to start creating a map. Note that you will have to create a `tilesets` folder, copy the tilesets from the client, and re-define the spawn position in the game Modules. We no longer provide the entire map file due to people blatantly copying Kaetram without any form of creative input. This project was created to help those who want to get into game development, not to be copied for monetary gains.
+O `map_template.json` fornecido oferece o mínimo necessário para começar a criar um mapa. Observe que você precisará criar uma pasta `tilesets`, copiar os tilesets do cliente e redefinir a posição inicial nos Módulos do jogo. Não fornecemos mais o arquivo de mapa completo devido a pessoas copiando descaradamente o Kaetram sem nenhuma forma de contribuição criativa. Este projeto foi criado para ajudar aqueles que querem entrar no desenvolvimento de jogos, não para ser copiado visando ganhos monetários.
 
-There will be little to no support in map creation from the developers due to time constraints. However, we encourage you to create tutorials and help others if you wish.
+Haverá pouco ou nenhum suporte na criação de mapas por parte dos desenvolvedores devido a restrições de tempo. No entanto, incentivamos você a criar tutoriais e ajudar outros se desejar.
 
-Please refer to the following wiki article that outlines how all the objects on the map work. This includes tile properties:
+Por favor, consulte o seguinte artigo da wiki que descreve como todos os objetos no mapa funcionam. Isso inclui propriedades dos tiles:
 
-https://github.com/Kaetram/Kaetram-Open/wiki/Game-Map
+<https://github.com/Kaetram/Kaetram-Open/wiki/Game-Map>

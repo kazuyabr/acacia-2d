@@ -15,6 +15,11 @@
 [![Twitter](https://img.shields.io/twitter/follow/kaetramofficial?style=social)](https://twitter.com/kaetramofficial 'Twitter')
 [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/kaetram?style=social)](https://reddit.com/r/kaetram 'Reddit')
 
+Projeto Acacia é um sistema derivado do projeto de código aberto Kaetram e tem toda uma estrutra que sera aos poucos migrada para um projeto proprietario descontinuando o uso de Kaetram como base.
+Esta versão sera para sempre código aberto.
+
+# Kaetram
+
 Kaetram é um MMORPG 2D de código aberto que expande a ideia original criada pelo BrowserQuest (BQ) da Little Workshop. Nosso objetivo é fornecer uma experiência colaborativa de jogo, bem como um motor de jogo para aqueles interessados em criar sua própria versão. O jogo ainda está em estágios iniciais de desenvolvimento e toda ajuda, sugestões e relatórios de bugs são bem-vindos. Todos os recursos são licenciados sob CC-BY-SA3.0 e pretendemos manter os recursos originais do BQ, bem como expandi-los. Toda a base de código foi reescrita do zero, otimizada e documentada. Consulte o wiki do GitHub para obter informações sobre desenvolvimento. Kaetram começou seu desenvolvimento em 2015 sob o nome de Tap Tap Adventure (TTA). Em 2017, Kaetram foi iniciado como uma reescrita completa do código que era anteriormente baseado em BQ.
 
 Versão Live &ndash; <https://kaetram.com>
