@@ -4585,13 +4585,13 @@
  "nextobjectid":1113,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.2",
+ "tiledversion":"1.11.0",
  "tileheight":16,
  "tilesets":[
         {
          "columns":64,
          "firstgid":1,
-         "image":"tilesets\/tilesheet-1.png",
+         "image":"tilesheet-1.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -30532,7 +30532,7 @@
         {
          "columns":96,
          "firstgid":4097,
-         "image":"tilesets\/tilesheet-2.png",
+         "image":"tilesheet-2.png",
          "imageheight":1024,
          "imagewidth":1536,
          "margin":0,
@@ -59305,7 +59305,7 @@
         {
          "columns":64,
          "firstgid":10241,
-         "image":"tilesets\/tilesheet-3.png",
+         "image":"tilesheet-3.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -85264,7 +85264,7 @@
         {
          "columns":24,
          "firstgid":14337,
-         "image":"tilesets\/mobset.png",
+         "image":"mobset.png",
          "imageheight":256,
          "imagewidth":384,
          "margin":0,
@@ -87105,7 +87105,7 @@
         {
          "columns":64,
          "firstgid":14721,
-         "image":"tilesets\/tilesheet-4.png",
+         "image":"tilesheet-4.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -93652,6 +93652,19 @@
                          "value":""
                         }]
                 }],
+         "tilewidth":16
+        }, 
+        {
+         "columns":64,
+         "firstgid":18817,
+         "image":"tilesheet-5.png",
+         "imageheight":1024,
+         "imagewidth":1024,
+         "margin":0,
+         "name":"tilesheet-5",
+         "spacing":0,
+         "tilecount":4096,
+         "tileheight":16,
          "tilewidth":16
         }],
  "tilewidth":16,
