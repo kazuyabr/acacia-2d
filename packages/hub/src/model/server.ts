@@ -263,6 +263,7 @@ export default class Server extends Model {
             name: this.name,
             host: this.host,
             port: this.port,
+            nginx: process.env.NGINX === 'true' || process.env.NGINX === '1' || false,
             players: this.players.length,
             maxPlayers: this.maxPlayers
         };
