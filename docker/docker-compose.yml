@@ -14,6 +14,8 @@ services:
             - '9000-9003:9000-9003'
             - '9526-9528:9526-9528'
             - '5183:5183'
+        depends_on:
+            - mongo
         command: yarn start --host
 
     nginx:
@@ -26,6 +28,22 @@ services:
             - client-server
         networks:
             - internos
+
+    mongo:
+        image: mongo:6.0
+        restart: unless-stopped
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+        volumes:
+            - mongo_data:/data/db
+        ports:
+            - '27017:27017'
+        networks:
+            - internos
+
+volumes:
+    mongo_data:
 
 networks:
     internos:

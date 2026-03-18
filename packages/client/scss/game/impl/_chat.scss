@@ -1,5 +1,6 @@
 @use '../../abstracts/media';
 @use '../../abstracts/sprite';
+@use '../../_generated_image_vars' as image_vars;
 
 #chat {
     pointer-events: auto;
@@ -68,4 +69,4 @@
     color: white;
 }
 
-@include sprite.sheet($image: 'chatbox', $scale: 1.5, $selectors: #chat-frame);
+@include sprite.sheet($image: 'chatbox', $width: image_vars.$img-width-chatbox-num, $height: image_vars.$img-width-chatbox-num, $scale: 1.5, $selectors: #chat-frame);

@@ -1,0 +1,103 @@
+// Generated image size variables — do not edit manually
+$img-widths: (
+    skillslots: 128,
+    abilityicons: 512,
+    chatbox: 256,
+    main: 512,
+    bank: 256,
+    mapframe: 512,
+    crafting: 208,
+    achievements: 20,
+    'controls/wasd': 64,
+    'controls/arrows': 64,
+    'controls/click': 64,
+    'skills/accuracy': 16,
+    'skills/archery': 16,
+    'skills/health': 16,
+    'skills/lumberjacking': 16,
+    'skills/magic': 16,
+    'skills/mining': 16,
+    'skills/strength': 16,
+    'skills/defense': 16,
+    'skills/fishing': 16,
+    'skills/smithing': 16,
+    'skills/smelting': 16,
+    'skills/cooking': 16,
+    'skills/fletching': 16,
+    'skills/crafting': 16,
+    'skills/foraging': 16,
+    'skills/eating': 16,
+    'skills/loitering': 16,
+    'skills/alchemy': 16
+);
+$img-heights: (
+    skillslots: 128,
+    abilityicons: 512,
+    chatbox: 256,
+    main: 512,
+    bank: 256,
+    mapframe: 512,
+    crafting: 126,
+    achievements: 20,
+    'controls/wasd': 64,
+    'controls/arrows': 64,
+    'controls/click': 64,
+    'skills/accuracy': 16,
+    'skills/archery': 16,
+    'skills/health': 16,
+    'skills/lumberjacking': 16,
+    'skills/magic': 16,
+    'skills/mining': 16,
+    'skills/strength': 16,
+    'skills/defense': 16,
+    'skills/fishing': 16,
+    'skills/smithing': 16,
+    'skills/smelting': 16,
+    'skills/cooking': 16,
+    'skills/fletching': 16,
+    'skills/crafting': 16,
+    'skills/foraging': 16,
+    'skills/eating': 16,
+    'skills/loitering': 16,
+    'skills/alchemy': 16
+);
+
+// Convenience variables for legacy references
+$img-width-skillslots-px: map-get($img-widths, skillslots) * 1px;
+$img-width-abilityicons-num: map-get($img-widths, abilityicons);
+$img-width-abilityicons-px: map-get($img-widths, abilityicons) * 1px;
+$img-width-chatbox-num: map-get($img-widths, chatbox);
+$img-width-chatbox-px: map-get($img-widths, chatbox) * 1px;
+
+// Sass helper functions to avoid JS custom-function usage during compilation
+// width/height return unitless numbers (pixels). If a key is unknown, they
+// return 0 and emit a warning to help debugging.
+@function width($image) {
+    @if type-of($image) == 'string' {
+        $key: unquote($image);
+    } @else {
+        $key: $image;
+    }
+
+    @if map-has-key($img-widths, $key) {
+        @return map-get($img-widths, $key);
+    } @else {
+        @warn "width(): unknown image `#{$key}`; returning 0";
+        @return 0;
+    }
+}
+
+@function height($image) {
+    @if type-of($image) == 'string' {
+        $key: unquote($image);
+    } @else {
+        $key: $image;
+    }
+
+    @if map-has-key($img-heights, $key) {
+        @return map-get($img-heights, $key);
+    } @else {
+        @warn "height(): unknown image `#{$key}`; returning 0";
+        @return 0;
+    }
+}
