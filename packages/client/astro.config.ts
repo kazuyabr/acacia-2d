@@ -2,7 +2,6 @@ import { fileURLToPath } from 'node:url';
 
 import { name, description } from '../../package.json';
 
-import * as sass from 'sass';
 import webmanifest from 'astro-webmanifest';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
