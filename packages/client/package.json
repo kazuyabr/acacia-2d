@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "astro dev",
         "build": "astro check && tsc && astro build",
-        "start": "sirv dist -p 9000 --no-logs"
+        "start": "sirv dist -p 9000 --host 0.0.0.0 --no-logs"
     },
     "dependencies": {
         "@astrojs/check": "^0.2.0",

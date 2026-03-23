@@ -1,8 +1,7 @@
-FROM node:18-bullseye
+FROM node:20-bullseye
 
 WORKDIR /app
 
-# Adicionar dependências necessárias
 RUN apt-get update -y && apt-get install -y \
     python3 \
     git \
@@ -11,22 +10,17 @@ RUN apt-get update -y && apt-get install -y \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Copiar todo o código fonte
-COPY ../ .
+COPY . .
 
-# Habilitar corepack
 RUN corepack enable
+RUN rm -rf node_modules packages/*/node_modules
 
-RUN rm -rf node_modules \
-    rm -rf packages/*/node_modules
-
-
-# Instalar dependências e construir
 RUN yarn
 RUN npx update-browserslist-db@latest
+RUN yarn up -R caniuse-lite baseline-browser-mapping
 RUN yarn postinstall
 RUN yarn build
 
-#EXPOSE 5183 9001 9002 9003 9526 9527 9528
+EXPOSE 9000 9001 9526 9527 9528
 
-#CMD ["yarn", "dev"]
+CMD ["yarn", "start"]

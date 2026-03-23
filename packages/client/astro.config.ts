@@ -18,7 +18,15 @@ import config, { exposedConfig } from '@kaetram/common/config';
 import { i18n } from 'astro-i18n-aut/integration';
 import { locales, defaultLocale, dir, t, type Locale } from '@kaetram/common/i18n';
 
-export let env = exposedConfig('name', 'host', 'ssl', 'serverId', 'sentryDsn', 'acceptLicense');
+export let env = exposedConfig(
+    'name',
+    'host',
+    'ssl',
+    'nginx',
+    'serverId',
+    'sentryDsn',
+    'acceptLicense'
+);
 
 let clientHost = config.clientRemoteHost || (config.hubEnabled ? config.hubHost : config.host),
     clientPort = config.clientRemotePort || (config.hubEnabled ? config.hubPort : config.port),

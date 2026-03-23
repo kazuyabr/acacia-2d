@@ -54,7 +54,9 @@ export default class Socket {
         port ||= this.config.port;
         nginx ||= this.config.nginx;
 
-        let url = `${this.config.ssl ? 'wss' : 'ws'}://${host}:${port}${nginx ? '/ws' : ''}`;
+        let url = nginx
+            ? `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/ws`
+            : `${this.config.ssl ? 'wss' : 'ws'}://${host}:${port}`;
 
         // Create a websocket connection with the url generated.
         this.connection = new WebSocket(url);
