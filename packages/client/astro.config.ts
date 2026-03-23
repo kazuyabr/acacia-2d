@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url';
 
 import { name, description } from '../../package.json';
 
+import * as sass from 'sass';
 import webmanifest from 'astro-webmanifest';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
@@ -120,21 +121,24 @@ export default defineConfig({
         build: { sourcemap: true },
         server: {
             strictPort: true,
-            hmr: { protocol: 'ws', host: 'localhost', port: 5183 }
+            hmr: { protocol: 'ws', host: config.host, port: 5183 }
         },
         define: { globalConfig: env },
         css: {
             preprocessorOptions: {
                 scss: {
-                    // Adiciona variáveis SCSS pré-definidas para evitar chamadas às funções durante o parse
-                    // Isso cobre imagens usadas em vários lugares (adicionar novos nomes aqui se necessário)
-                    additionalData: `
-@use './_generated_image_vars' as *;
-$img-width-skillslots-px: ${getImageSize('skillslots').width}px;
-$img-width-abilityicons-num: ${getImageSize('abilityicons').width};
-$img-width-abilityicons-px: ${getImageSize('abilityicons').width}px;
-`
-                    // Removed JS-based Sass functions to prefer native Sass implementations from _generated_image_vars.scss
+                    functions: {
+                        'width($image)'(image: sass.types.String) {
+                            let { width } = getImageSize(image.getValue());
+
+                            return new sass.types.Number(width!);
+                        },
+                        'height($image)'(image: sass.types.String) {
+                            let { height } = getImageSize(image.getValue());
+
+                            return new sass.types.Number(height!);
+                        }
+                    }
                 }
             }
         }

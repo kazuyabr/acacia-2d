@@ -456,6 +456,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # https://www.toptal.com/developers/gitignore?templates=git,node,astro,cypressio,linux,macos,windows,visualstudiocode,webstorm,vim,emacs
-
-#ignorar extensão rest-fetch e suas pastas
-.fetch-client

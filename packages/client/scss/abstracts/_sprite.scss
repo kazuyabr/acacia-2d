@@ -1,7 +1,6 @@
 @use 'sass:math';
 
 @use 'media';
-@use '../_generated_image_vars' as *;
 
 $default-font-size: 16;
 
@@ -9,8 +8,8 @@ $default-font-size: 16;
     $image,
     $x: 0,
     $y: 0,
-    $width: null,
-    $height: null,
+    $width: width($image),
+    $height: height($image),
     $rows: true,
     $gap: 0,
     $scale: 2,
@@ -19,55 +18,7 @@ $default-font-size: 16;
     $disabled: 0,
     $selectors: '&'
 ) {
-    // Normalize scale to em relative to default font size
     $scale: $scale * math.div(1em, $default-font-size);
-
-    // If explicit width/height not provided, resolve from image maps (avoid calling module functions to prevent cross-module variable lookup issues)
-    $wkey: null;
-    $hkey: null;
-    @if $width == null {
-        @if type-of($image) == 'string' {
-            $wkey: unquote($image);
-        } @else {
-            $wkey: $image;
-        }
-        @if map-has-key($img-widths, $wkey) {
-            $width: map-get($img-widths, $wkey);
-        } @else {
-            $width: 0;
-        }
-    }
-    @if $height == null {
-        @if type-of($image) == 'string' {
-            $hkey: unquote($image);
-        } @else {
-            $hkey: $image;
-        }
-        @if map-has-key($img-heights, $hkey) {
-            $height: map-get($img-heights, $hkey);
-        } @else {
-            $height: 0;
-        }
-    }
-
-    // Coerce width/height to numeric unitless values if they were provided as strings
-    @if type-of($width) == 'string' {
-        $key: $width;
-        @if map-has-key($img-widths, $key) {
-            $width: map-get($img-widths, $key);
-        } @else {
-            $width: 0;
-        }
-    }
-    @if type-of($height) == 'string' {
-        $key: $height;
-        @if map-has-key($img-heights, $key) {
-            $height: map-get($img-heights, $key);
-        } @else {
-            $height: 0;
-        }
-    }
-
     $x: $x * $scale;
     $y: $y * $scale;
     $width: $width * $scale;
@@ -80,7 +31,7 @@ $default-font-size: 16;
 
         background-image: url('/img/interface/#{$image}.png');
         background-repeat: no-repeat;
-        background-size: $width $height;
+        background-size: width($image) * $scale height($image) * $scale;
 
         @if $rows {
             &:hover {
