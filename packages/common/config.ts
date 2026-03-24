@@ -103,6 +103,10 @@ if (NODE_ENV && nodeEnvConfigExists) {
     Object.assign(env, dotenv.load({ path: nodeEnvConfig }));
 }
 
+env = Object.fromEntries(
+    Object.keys(env).map((key) => [key, process.env[key] ?? env[key]])
+) as typeof env;
+
 let envConfig = dotenvParseVariables(env),
     config = {} as Config;
 
