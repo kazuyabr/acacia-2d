@@ -2,11 +2,11 @@ import Slot from './slot';
 
 import Item from '../../../objects/item';
 
-import log from '@kaetram/common/util/log';
+import log from '@acacia/common/util/log';
 
-import type { Modules } from '@kaetram/common/network';
-import type { SlotData } from '@kaetram/common/types/slot';
-import type { ContainerItem, Enchantments } from '@kaetram/common/types/item';
+import type { Modules } from '@acacia/common/network';
+import type { SlotData } from '@acacia/common/types/slot';
+import type { ContainerItem, Enchantments } from '@acacia/common/types/item';
 
 interface SerializedContainer {
     slots: SlotData[];

@@ -1,11 +1,11 @@
 import QuestIndex from './quest/impl';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { QuestPacket } from '@kaetram/common/network/impl';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { QuestPacket } from '@acacia/common/network/impl';
 
-import type { PointerData } from '@kaetram/common/network/impl/pointer';
-import type { PopupData } from '@kaetram/common/types/popup';
-import type { QuestData, SerializedQuest } from '@kaetram/common/network/impl/quest';
+import type { PointerData } from '@acacia/common/network/impl/pointer';
+import type { PopupData } from '@acacia/common/types/popup';
+import type { QuestData, SerializedQuest } from '@acacia/common/network/impl/quest';
 import type Player from './player';
 import type Quest from './quest/quest';
 import type NPC from '../../npc/npc';

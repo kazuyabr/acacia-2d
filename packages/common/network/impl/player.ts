@@ -1,10 +1,10 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { Opcodes, Modules } from '@kaetram/common/network';
-import type { EntityData } from '@kaetram/common/types/entity';
-import type { EquipmentData } from '@kaetram/common/network/impl/equipment';
+import type { Opcodes, Modules } from '@acacia/common/network';
+import type { EntityData } from '@acacia/common/types/entity';
+import type { EquipmentData } from '@acacia/common/network/impl/equipment';
 
 export interface PlayerPacketData {
     username: string;

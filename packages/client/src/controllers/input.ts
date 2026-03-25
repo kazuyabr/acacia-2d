@@ -6,7 +6,7 @@ import log from '../lib/log';
 import Character from '../entity/character/character';
 import { isMobile } from '../utils/detect';
 
-import { Modules, Packets, Opcodes } from '@kaetram/common/network';
+import { Modules, Packets, Opcodes } from '@acacia/common/network';
 
 import type Interact from '../menu/interact';
 import type Friends from '../menu/friends';

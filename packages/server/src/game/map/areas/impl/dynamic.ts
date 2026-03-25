@@ -1,10 +1,10 @@
 import Areas from '../areas';
 
-import log from '@kaetram/common/util/log';
+import log from '@acacia/common/util/log';
 
 import type World from '../../../world';
 import type Area from '../area';
-import type { ProcessedArea } from '@kaetram/common/types/map';
+import type { ProcessedArea } from '@acacia/common/types/map';
 
 export default class Dynamic extends Areas {
     public constructor(data: ProcessedArea[], world: World) {

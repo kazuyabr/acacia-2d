@@ -1,16 +1,16 @@
 import WebSocket from '../websocket';
 import Connection from '../connection';
 
-import log from '@kaetram/common/util/log';
-import config from '@kaetram/common/config';
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
+import log from '@acacia/common/util/log';
+import config from '@acacia/common/config';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
 import { App, DISABLED } from 'uws';
 
 import type SocketHandler from '../sockethandler';
 import type { HeaderWebSocket } from '../connection';
 import type { WebSocket as WS, HttpRequest, HttpResponse, us_socket_context_t } from 'uws';
-import type { ConnectionInfo } from '@kaetram/common/types/network';
+import type { ConnectionInfo } from '@acacia/common/types/network';
 
 export default class UWS extends WebSocket {
     public constructor(socketHandler: SocketHandler) {

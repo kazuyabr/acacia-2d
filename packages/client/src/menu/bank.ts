@@ -4,9 +4,9 @@ import log from '../lib/log';
 import Util from '../utils/util';
 import { onDragDrop } from '../utils/press';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { SlotData } from '@kaetram/common/types/slot';
+import type { SlotData } from '@acacia/common/types/slot';
 import type Inventory from './inventory';
 
 type SelectCallback = (

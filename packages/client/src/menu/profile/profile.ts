@@ -4,7 +4,7 @@ import Skills from './impl/skills';
 import Menu from '../menu';
 
 import type Player from '../../entity/character/player/player';
-import type { Modules } from '@kaetram/common/network';
+import type { Modules } from '@acacia/common/network';
 
 type UnequipCallback = (type: Modules.Equipment) => void;
 type AttackStyleCallback = (style: Modules.AttackStyle) => void;

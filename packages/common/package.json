@@ -1,7 +1,22 @@
 {
-    "name": "@kaetram/common",
+    "name": "@acacia/common",
     "type": "module",
     "types": "./types/index.d.ts",
+    "exports": {
+        "./package.json": "./package.json",
+        "./config": "./config.ts",
+        "./api/*": "./api/*.ts",
+        "./database/*": "./database/*.ts",
+        "./i18n": "./i18n/index.ts",
+        "./i18n/*": "./i18n/*.ts",
+        "./network": "./network/index.ts",
+        "./network/impl": "./network/impl/index.ts",
+        "./network/*": "./network/*.ts",
+        "./text/*.json": "./text/*.json",
+        "./text/*": "./text/*.ts",
+        "./types/*": "./types/*.d.ts",
+        "./util/*": "./util/*.ts"
+    },
     "devDependencies": {
         "@types/dotenv-parse-variables": "^2.0.1",
         "bcryptjs": "^2.4.3",

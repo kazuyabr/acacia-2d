@@ -1,4 +1,4 @@
-import type { ProcessedAnimation, ClientTile } from '@kaetram/common/types/map';
+import type { ProcessedAnimation, ClientTile } from '@acacia/common/types/map';
 
 export default class Tile {
     public animationIndex = 0;

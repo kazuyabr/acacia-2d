@@ -1,4 +1,4 @@
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 export default class Skill {
     public name: string;

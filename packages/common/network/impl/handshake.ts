@@ -1,6 +1,6 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
 export interface ClientHandshakePacketData {
     type: 'client';

@@ -1,7 +1,7 @@
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { Opcodes } from '@kaetram/common/network';
-import { TradePacketPacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { Opcodes } from '@acacia/common/network';
+import { TradePacketPacket } from '@acacia/common/network/impl';
 
 import type Player from './player';
 import type Item from '../../objects/item';

@@ -1,8 +1,8 @@
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
 
 import type Character from '../game/entity/character/character';
-import type { Stats } from '@kaetram/common/types/item';
+import type { Stats } from '@acacia/common/types/item';
 
 export default {
     LevelExp: [] as number[],

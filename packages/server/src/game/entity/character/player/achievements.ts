@@ -3,15 +3,15 @@ import Achievement from './achievement/achievement';
 import achievements from '../../../../../data/achievements.json';
 import Item from '../../objects/item';
 
-import { Opcodes } from '@kaetram/common/network';
-import { AchievementPacket } from '@kaetram/common/network/impl';
+import { Opcodes } from '@acacia/common/network';
+import { AchievementPacket } from '@acacia/common/network/impl';
 
-import type { Modules } from '@kaetram/common/network';
+import type { Modules } from '@acacia/common/network';
 import type {
     AchievementData,
     SerializedAchievement
-} from '@kaetram/common/network/impl/achievement';
-import type { PopupData } from '@kaetram/common/types/popup';
+} from '@acacia/common/network/impl/achievement';
+import type { PopupData } from '@acacia/common/types/popup';
 import type NPC from '../../npc/npc';
 import type Mob from '../mob/mob';
 import type Player from './player';

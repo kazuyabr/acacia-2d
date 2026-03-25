@@ -8,7 +8,7 @@ import knife from './knife';
 import chisel from './chisel';
 import effectpotion from './effectpotion';
 
-import type Player from '@kaetram/server/src/game/entity/character/player/player';
+import type Player from '@acacia/server/src/game/entity/character/player/player';
 
 export interface Plugin {
     onUse(player: Player): boolean;

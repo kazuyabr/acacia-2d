@@ -4,7 +4,7 @@ import Transition from '../../utils/transition';
 import Animation from '../animation';
 import Entity from '../entity';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Game from '../../game';
 

@@ -3,7 +3,7 @@
  * We separate them from the rest of packets for brevity.
  */
 
-import type { Packets } from '@kaetram/common/network';
+import type { Packets } from '@acacia/common/network';
 import type { Friend } from '../friends';
 
 export interface ChatPacketData {

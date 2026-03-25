@@ -1,8 +1,8 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { Opcodes } from '@kaetram/common/network';
+import type { Opcodes } from '@acacia/common/network';
 import type { DefinePacket } from './utils';
 
 type Trade = DefinePacket<{

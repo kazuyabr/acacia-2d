@@ -4,12 +4,12 @@ import Regions from './regions';
 
 import mapData from '../../../data/map/world.json';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type World from '../world';
 import type Areas from './areas/areas';
 import type Player from '../entity/character/player/player';
-import type { ProcessedArea, ProcessedDoor, ProcessedMap, Tile } from '@kaetram/common/types/map';
+import type { ProcessedArea, ProcessedDoor, ProcessedMap, Tile } from '@acacia/common/types/map';
 import type Entity from '../entity/entity';
 
 let map = mapData as ProcessedMap;

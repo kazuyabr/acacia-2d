@@ -2,9 +2,9 @@ import { isIos, isMobile } from './detect';
 
 import log from '../lib/log';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { RegionData, RegionTileData } from '@kaetram/common/types/map';
+import type { RegionData, RegionTileData } from '@acacia/common/types/map';
 import type { CursorTiles } from '../map/map';
 
 interface PlayerData {

@@ -1,10 +1,10 @@
 import ResourceSkill from '../resourceskill';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Player from '../../player';
 import type Resource from '../../../../../entity/objects/resource/resource';
-import type { ResourceInfo } from '@kaetram/common/types/resource';
+import type { ResourceInfo } from '@acacia/common/types/resource';
 
 export default class Foraging extends ResourceSkill {
     public constructor() {

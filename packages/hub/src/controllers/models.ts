@@ -1,17 +1,17 @@
 import Server from '../model/server';
 import Admin from '../model/admin';
 
-import log from '@kaetram/common/util/log';
-import { ChatPacket } from '@kaetram/common/network/impl';
-import Utils from '@kaetram/common/util/utils';
-import { Packets } from '@kaetram/common/network';
-import config from '@kaetram/common/config';
-import Packet from '@kaetram/common/network/packet';
+import log from '@acacia/common/util/log';
+import { ChatPacket } from '@acacia/common/network/impl';
+import Utils from '@acacia/common/util/utils';
+import { Packets } from '@acacia/common/network';
+import config from '@acacia/common/config';
+import Packet from '@acacia/common/network/packet';
 
 import type Model from '../model';
 import type Connection from '../network/connection';
-import type { SerializedServer } from '@kaetram/common/types/network';
-import type { HandshakePacketData } from '@kaetram/common/network/impl/handshake';
+import type { SerializedServer } from '@acacia/common/types/network';
+import type { HandshakePacketData } from '@acacia/common/network/impl/handshake';
 
 type PlayerCallback = (
     username: string,

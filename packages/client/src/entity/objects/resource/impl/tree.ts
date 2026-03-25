@@ -1,6 +1,6 @@
 import Resource from '../resource';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type { Frame } from '../../../animation';
 import type Sprite from '../../../sprite';

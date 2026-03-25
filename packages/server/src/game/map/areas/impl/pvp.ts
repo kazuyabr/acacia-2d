@@ -1,7 +1,7 @@
 import Areas from '../areas';
 
 import type World from '../../../world';
-import type { ProcessedArea } from '@kaetram/common/types/map';
+import type { ProcessedArea } from '@acacia/common/types/map';
 
 export default class PVP extends Areas {
     public constructor(data: ProcessedArea[], world: World) {

@@ -13,14 +13,14 @@ import Boots from './equipment/impl/boots';
 
 import Item from '../../objects/item';
 
-import Utils from '@kaetram/common/util/utils';
-import log from '@kaetram/common/util/log';
-import { Modules } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import log from '@acacia/common/util/log';
+import { Modules } from '@acacia/common/network';
 
 import type Player from './player';
 import type Equipment from './equipment/equipment';
-import type { Bonuses, Stats } from '@kaetram/common/types/item';
-import type { EquipmentData, SerializedEquipment } from '@kaetram/common/network/impl/equipment';
+import type { Bonuses, Stats } from '@acacia/common/types/item';
+import type { EquipmentData, SerializedEquipment } from '@acacia/common/network/impl/equipment';
 
 export default class Equipments {
     private helmet: Helmet = new Helmet();

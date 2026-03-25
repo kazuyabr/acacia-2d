@@ -1,8 +1,8 @@
 import Entity from '../entity';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { Enchantments } from '@kaetram/common/types/item';
+import type { Enchantments } from '@acacia/common/types/item';
 
 export default class Item extends Entity {
     public dropped = false;

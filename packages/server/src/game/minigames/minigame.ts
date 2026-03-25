@@ -2,13 +2,13 @@
 
 import Area from '../map/areas/area';
 
-import Utils from '@kaetram/common/util/utils';
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { MinigamePacket as Packet } from '@kaetram/common/network/impl';
+import Utils from '@acacia/common/util/utils';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { MinigamePacket as Packet } from '@acacia/common/network/impl';
 
 import type World from '../world';
 import type Player from '../entity/character/player/player';
-import type { MinigamePacketData } from '@kaetram/common/types/messages/outgoing';
+import type { MinigamePacketData } from '@acacia/common/types/messages/outgoing';
 
 export default class Minigame {
     // The name for the minigame (used for scoreboard, entering, etc.)

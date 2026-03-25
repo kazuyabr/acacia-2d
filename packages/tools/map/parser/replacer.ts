@@ -4,7 +4,7 @@ import fs from 'node:fs';
 
 import replace from './replace.json';
 
-import log from '@kaetram/common/util/log';
+import log from '@acacia/common/util/log';
 
 import type { Layer } from './mapdata';
 

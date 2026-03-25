@@ -1,7 +1,7 @@
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
-import { BubblePacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
+import { BubblePacket } from '@acacia/common/network/impl';
 
 import type Mob from './mob';
 import type Map from '../../../map/map';

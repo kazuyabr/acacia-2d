@@ -19,9 +19,9 @@ import Rock from '../game/entity/objects/resource/impl/rock';
 import FishSpot from '../game/entity/objects/resource/impl/fishspot';
 import Foraging from '../game/entity/objects/resource/impl/foraging';
 
-import log from '@kaetram/common/util/log';
-import { Modules } from '@kaetram/common/network';
-import { BlinkPacket, DespawnPacket, ResourcePacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import { Modules } from '@acacia/common/network';
+import { BlinkPacket, DespawnPacket, ResourcePacket } from '@acacia/common/network/impl';
 
 import type Map from '../game/map/map';
 import type World from '../game/world';
@@ -30,7 +30,7 @@ import type Regions from '../game/map/regions';
 import type Entity from '../game/entity/entity';
 import type Hit from '../game/entity/character/combat/hit';
 import type Player from '../game/entity/character/player/player';
-import type { Enchantments } from '@kaetram/common/types/item';
+import type { Enchantments } from '@acacia/common/types/item';
 
 export default class Entities {
     private map: Map;

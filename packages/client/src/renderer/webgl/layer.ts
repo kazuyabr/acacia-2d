@@ -2,7 +2,7 @@ import Tile from '../../map/tile';
 
 import type WebGL from './webgl';
 import type Map from '../../map/map';
-import type { TransformedTile } from '@kaetram/common/types/map';
+import type { TransformedTile } from '@acacia/common/types/map';
 
 /**
  * A layer is a class object that corresponds with a layer in the map data. This is used to

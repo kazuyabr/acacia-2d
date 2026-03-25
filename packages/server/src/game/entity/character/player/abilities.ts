@@ -1,10 +1,10 @@
 import AbilitiesIndex from './ability/impl/index';
 
-import log from '@kaetram/common/util/log';
-import { Opcodes } from '@kaetram/common/network';
-import { AbilityPacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import { Opcodes } from '@acacia/common/network';
+import { AbilityPacket } from '@acacia/common/network/impl';
 
-import type { AbilityData, SerializedAbility } from '@kaetram/common/network/impl/ability';
+import type { AbilityData, SerializedAbility } from '@acacia/common/network/impl/ability';
 import type Ability from './ability/ability';
 import type Player from './player';
 

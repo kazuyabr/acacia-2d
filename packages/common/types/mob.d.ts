@@ -1,4 +1,4 @@
-import type { Bonuses, Stats } from '@kaetram/common/types/item';
+import type { Bonuses, Stats } from '@acacia/common/types/item';
 
 // The mobs.json drops structure.
 export interface MobDrop {

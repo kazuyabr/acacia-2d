@@ -1,6 +1,6 @@
 import CharacterHandler from '../handler';
 
-import { Packets, Opcodes, Modules } from '@kaetram/common/network';
+import { Packets, Opcodes, Modules } from '@acacia/common/network';
 
 import type Map from '../../../map/map';
 import type Player from './player';

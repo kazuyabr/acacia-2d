@@ -1,8 +1,8 @@
 import Equipment from '../equipment';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { Enchantments } from '@kaetram/common/types/item';
+import type { Enchantments } from '@acacia/common/types/item';
 
 export default class Chestplate extends Equipment {
     public constructor(key = '', count = -1, enchantments: Enchantments = {}) {

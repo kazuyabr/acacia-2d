@@ -1,9 +1,9 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { Opcodes } from '@kaetram/common/network';
-import type { FriendsPacketData as HubFriendsPacketData } from '@kaetram/common/types/messages/hub';
+import type { Opcodes } from '@acacia/common/network';
+import type { FriendsPacketData as HubFriendsPacketData } from '@acacia/common/types/messages/hub';
 
 export interface FriendInfo {
     online: boolean;

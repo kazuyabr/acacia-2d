@@ -1,8 +1,8 @@
 import Resource from '../resource';
 import rocks from '../../../../../../data/rocks.json';
 
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
 
 export default class Rock extends Resource {
     public constructor(key: string, x: number, y: number) {

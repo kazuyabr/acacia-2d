@@ -1,4 +1,4 @@
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
 import type App from '../app';
 import type {
@@ -51,8 +51,8 @@ import type {
     TradePacketCallback,
     UpdatePacketCallback,
     WelcomePacketCallback
-} from '@kaetram/common/types/messages/outgoing';
-import type { ConnectedPacketCallback } from '@kaetram/common/network/impl/connected';
+} from '@acacia/common/types/messages/outgoing';
+import type { ConnectedPacketCallback } from '@acacia/common/network/impl/connected';
 
 export default class Messages {
     private messages: (() => ((...data: never[]) => void) | undefined)[] = [];

@@ -4,11 +4,11 @@ import log from '../lib/log';
 import Util from '../utils/util';
 import { isMobile } from '../utils/detect';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
+import { Modules, Opcodes } from '@acacia/common/network';
 
 import type Inventory from './inventory';
-import type { StorePacketData } from '@kaetram/common/types/messages/outgoing';
-import type { SerializedStoreItem } from '@kaetram/common/network/impl/store';
+import type { StorePacketData } from '@acacia/common/types/messages/outgoing';
+import type { SerializedStoreItem } from '@acacia/common/network/impl/store';
 
 type SelectCallback = (opcode: Opcodes.Store, key: string, index: number, count?: number) => void;
 

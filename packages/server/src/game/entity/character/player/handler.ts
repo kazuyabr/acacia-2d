@@ -1,8 +1,8 @@
 import Item from '../../objects/item';
 
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { Modules, Opcodes } from '@kaetram/common/network';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { Modules, Opcodes } from '@acacia/common/network';
 import {
     AbilityPacket,
     AchievementPacket,
@@ -18,7 +18,7 @@ import {
     QuestPacket,
     SkillPacket,
     TradePacketPacket
-} from '@kaetram/common/network/impl';
+} from '@acacia/common/network/impl';
 
 import type Player from './player';
 import type NPC from '../../npc/npc';
@@ -31,8 +31,8 @@ import type Ability from './ability/ability';
 import type Equipment from './equipment/equipment';
 import type Areas from '../../../map/areas/areas';
 import type Light from '../../../globals/impl/light';
-import type { Enchantments } from '@kaetram/common/types/item';
-import type { ProcessedDoor } from '@kaetram/common/types/map';
+import type { Enchantments } from '@acacia/common/types/item';
+import type { ProcessedDoor } from '@acacia/common/types/map';
 
 export default class Handler {
     private world: World;

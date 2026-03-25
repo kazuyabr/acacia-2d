@@ -1,5 +1,5 @@
-import { Modules } from '@kaetram/common/network';
-import { Hits } from '@kaetram/common/network/modules';
+import { Modules } from '@acacia/common/network';
+import { Hits } from '@acacia/common/network/modules';
 
 interface Colour {
     fill: string;

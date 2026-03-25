@@ -1,13 +1,13 @@
-import log from '@kaetram/common/util/log';
-import config from '@kaetram/common/config';
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { GuildPacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import config from '@acacia/common/config';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { GuildPacket } from '@acacia/common/network/impl';
 
 import type World from '../game/world';
 import type Player from '../game/entity/character/player/player';
-import type MongoDB from '@kaetram/common/database/mongodb/mongodb';
-import type { GuildData, ListInfo, Member } from '@kaetram/common/network/impl/guild';
-import type { GuildPacketData } from '@kaetram/common/types/messages/outgoing';
+import type MongoDB from '@acacia/common/database/mongodb/mongodb';
+import type { GuildData, ListInfo, Member } from '@acacia/common/network/impl/guild';
+import type { GuildPacketData } from '@acacia/common/types/messages/outgoing';
 
 export default class Guilds {
     private database: MongoDB;

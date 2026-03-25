@@ -1,8 +1,8 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { ChatPacketData as HubChatPacketData } from '@kaetram/common/types/messages/hub';
+import type { ChatPacketData as HubChatPacketData } from '@acacia/common/types/messages/hub';
 
 export interface ChatPacketData {
     instance?: string; // Entity that the chat packet belongs to.

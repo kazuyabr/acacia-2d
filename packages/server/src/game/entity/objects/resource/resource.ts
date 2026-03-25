@@ -1,8 +1,8 @@
 import Entity from '../../entity';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { ResourceEntityData, ResourceInfo } from '@kaetram/common/types/resource';
+import type { ResourceEntityData, ResourceInfo } from '@acacia/common/types/resource';
 
 export default abstract class Resource extends Entity {
     // Amount of time it takes for the resource to respawn.

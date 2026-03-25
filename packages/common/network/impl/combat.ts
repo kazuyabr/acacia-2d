@@ -1,9 +1,9 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { HitData } from '@kaetram/common/types/info';
-import type { Opcodes } from '@kaetram/common/network';
+import type { HitData } from '@acacia/common/types/info';
+import type { Opcodes } from '@acacia/common/network';
 
 export interface CombatPacketData {
     instance: string; // The entity the combat packet revolves around.

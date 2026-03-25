@@ -12,17 +12,17 @@ import Rock from '../entity/objects/resource/impl/rock';
 import FishSpot from '../entity/objects/resource/impl/fishspot';
 import Foraging from '../entity/objects/resource/impl/foraging';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Grids from '../map/grids';
 import type Game from '../game';
 import type Entity from '../entity/entity';
 import type SpritesController from './sprites';
 import type Character from '../entity/character/character';
-import type { PetData } from '@kaetram/common/types/pet';
-import type { PlayerData } from '@kaetram/common/network/impl/player';
-import type { EntityData, EntityDisplayInfo } from '@kaetram/common/types/entity';
-import type { ResourceEntityData } from '@kaetram/common/types/resource';
+import type { PetData } from '@acacia/common/types/pet';
+import type { PlayerData } from '@acacia/common/network/impl/player';
+import type { EntityData, EntityDisplayInfo } from '@acacia/common/types/entity';
+import type { ResourceEntityData } from '@acacia/common/types/resource';
 
 interface EntitiesCollection {
     [instance: string]: Entity;

@@ -2,19 +2,19 @@ import Item from '../game/entity/objects/item';
 import CraftingData from '../../data/crafting';
 import Items from '../../data/items.json';
 
-import Utils from '@kaetram/common/util/utils';
-import CraftingEn from '@kaetram/common/text/en/crafting';
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { CraftingPacket } from '@kaetram/common/network/impl';
+import Utils from '@acacia/common/util/utils';
+import CraftingEn from '@acacia/common/text/en/crafting';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { CraftingPacket } from '@acacia/common/network/impl';
 
 import type Player from '../game/entity/character/player/player';
-import type { ItemData } from '@kaetram/common/types/item';
+import type { ItemData } from '@acacia/common/types/item';
 import type {
     CraftingInfo,
     CraftingItem,
     CraftingItemPreview,
     CraftingRequirement
-} from '@kaetram/common/network/impl/crafting';
+} from '@acacia/common/network/impl/crafting';
 
 /**
  * The crafting mechanism is shared by multiple skills and works largely the same way. We use

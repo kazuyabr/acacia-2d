@@ -1,9 +1,9 @@
 import Model from '.';
 
-import log from '@kaetram/common/util/log';
+import log from '@acacia/common/util/log';
 
-import type { Packets } from '@kaetram/common/network';
-import type Packet from '@kaetram/common/network/packet';
+import type { Packets } from '@acacia/common/network';
+import type Packet from '@acacia/common/network/packet';
 
 export default class Admin extends Model {
     /**

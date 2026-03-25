@@ -1,4 +1,4 @@
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Character from '../entity/character/character';
 

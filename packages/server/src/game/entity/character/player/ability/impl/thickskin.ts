@@ -1,6 +1,6 @@
 import Ability from '../ability';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Player from '../../player';
 

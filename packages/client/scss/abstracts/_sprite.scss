@@ -1,6 +1,7 @@
 @use 'sass:math';
 
 @use 'media';
+@use 'sprite-dimensions';
 
 $default-font-size: 16;
 
@@ -8,8 +9,8 @@ $default-font-size: 16;
     $image,
     $x: 0,
     $y: 0,
-    $width: width($image),
-    $height: height($image),
+    $width: sprite-dimensions.sprite-width($image),
+    $height: sprite-dimensions.sprite-height($image),
     $rows: true,
     $gap: 0,
     $scale: 2,
@@ -31,7 +32,8 @@ $default-font-size: 16;
 
         background-image: url('/img/interface/#{$image}.png');
         background-repeat: no-repeat;
-        background-size: width($image) * $scale height($image) * $scale;
+        background-size: sprite-dimensions.sprite-width($image) * $scale
+            sprite-dimensions.sprite-height($image) * $scale;
 
         @if $rows {
             &:hover {

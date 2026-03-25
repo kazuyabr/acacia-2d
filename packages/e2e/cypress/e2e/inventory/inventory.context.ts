@@ -1,6 +1,6 @@
 import LoggedInContext from '../loggedin.context';
 
-import { buildPlayerInventory } from '@kaetram/e2e/cypress/fixtures/builders/playerinventory.builder';
+import { buildPlayerInventory } from '@acacia/e2e/cypress/fixtures/builders/playerinventory.builder';
 
 export default class InventoryContext extends LoggedInContext {
     public constructor() {

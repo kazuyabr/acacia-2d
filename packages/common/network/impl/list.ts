@@ -1,8 +1,8 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { Opcodes } from '@kaetram/common/network';
+import type { Opcodes } from '@acacia/common/network';
 
 export interface EntityListPacketData {
     entities?: string[]; // List of entity instances to be checked in the client.

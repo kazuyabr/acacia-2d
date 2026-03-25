@@ -23,7 +23,7 @@ import Pathfinder from './utils/pathfinder';
 import Utils from './utils/util';
 import { agent, supportsWebGl } from './utils/detect';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
 import type App from './app';
 import type Entity from './entity/entity';

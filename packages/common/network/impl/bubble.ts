@@ -1,6 +1,6 @@
 import Packet from '../packet';
 
-import { Opcodes, Packets } from '@kaetram/common/network';
+import { Opcodes, Packets } from '@acacia/common/network';
 
 export interface BubblePacketData {
     instance: string;

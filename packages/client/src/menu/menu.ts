@@ -2,7 +2,7 @@
 import log from '../lib/log';
 import Util from '../utils/util';
 
-import type { Modules } from '@kaetram/common/network';
+import type { Modules } from '@acacia/common/network';
 
 export default abstract class Menu {
     public hideOnShow = true;

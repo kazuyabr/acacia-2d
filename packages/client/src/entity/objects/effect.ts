@@ -1,6 +1,6 @@
 import Entity from '../entity';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 export default class Effect extends Entity {
     public constructor(instance: string) {

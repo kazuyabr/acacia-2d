@@ -1,6 +1,6 @@
 import Entity from '../entity';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Character from '../character/character';
 

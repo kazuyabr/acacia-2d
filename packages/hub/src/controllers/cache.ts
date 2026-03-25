@@ -1,19 +1,19 @@
 import { exit } from 'node:process';
 
-import log from '@kaetram/common/util/log';
-import config from '@kaetram/common/config';
-import mobs from '@kaetram/server/data/mobs.json';
-import Database from '@kaetram/common/database/database';
+import log from '@acacia/common/util/log';
+import config from '@acacia/common/config';
+import mobs from '@acacia/server/data/mobs.json';
+import Database from '@acacia/common/database/database';
 
-import type MongoDB from '@kaetram/common/database/mongodb/mongodb';
-import type { RawMobData } from '@kaetram/common/types/mob';
-import type { Modules } from '@kaetram/common/network';
+import type MongoDB from '@acacia/common/database/mongodb/mongodb';
+import type { RawMobData } from '@acacia/common/types/mob';
+import type { Modules } from '@acacia/common/network';
 import type {
     MobAggregate,
     PvpAggregate,
     SkillExperience,
     TotalExperience
-} from '@kaetram/common/types/leaderboards';
+} from '@acacia/common/types/leaderboards';
 
 export default class Cache {
     /**

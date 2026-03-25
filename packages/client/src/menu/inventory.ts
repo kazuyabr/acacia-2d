@@ -4,11 +4,11 @@ import log from '../lib/log';
 import Util from '../utils/util';
 import { onDragDrop } from '../utils/press';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
+import { Modules, Opcodes } from '@acacia/common/network';
 
 import type Actions from './actions';
-import type { SlotData } from '@kaetram/common/types/slot';
-import type { Bonuses, Enchantments, Stats } from '@kaetram/common/types/item';
+import type { SlotData } from '@acacia/common/types/slot';
+import type { Bonuses, Enchantments, Stats } from '@acacia/common/types/item';
 
 type SelectCallback = (opcode: Opcodes.Container, fromIndex: number, value?: number) => void;
 type BatchCallback = () => void;

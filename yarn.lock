@@ -12,6 +12,152 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@acacia/admin@workspace:packages/admin":
+  version: 0.0.0-use.local
+  resolution: "@acacia/admin@workspace:packages/admin"
+  dependencies:
+    "@acacia/common": "workspace:*"
+    "@astrojs/node": "npm:^6.0.1"
+    astro: "npm:^3.2.0"
+    typescript: "npm:^5.2.2"
+  languageName: unknown
+  linkType: soft
+
+"@acacia/client@workspace:packages/client":
+  version: 0.0.0-use.local
+  resolution: "@acacia/client@workspace:packages/client"
+  dependencies:
+    "@acacia/common": "workspace:*"
+    "@astrojs/check": "npm:^0.2.0"
+    "@astrojs/partytown": "npm:^2.0.0"
+    "@astrojs/sitemap": "npm:^3.0.0"
+    "@astrolib/analytics": "npm:^0.4.2"
+    "@sentry/browser": "npm:^7.68.0"
+    "@sentry/tracing": "npm:^7.68.0"
+    "@sentry/vite-plugin": "npm:^2.7.1"
+    "@types/dotenv-parse-variables": "npm:^2.0.1"
+    "@types/html-minifier-terser": "npm:^7.0.0"
+    "@types/pako": "npm:^2.0.0"
+    "@types/workbox-build": "npm:^5.1.0"
+    acacia: "workspace:*"
+    astro: "npm:^3.2.0"
+    astro-compress: "npm:^2.0.15"
+    astro-compressor: "npm:^0.4.0"
+    astro-i18n-aut: "npm:^0.4.23"
+    astro-robots-txt: "npm:^1.0.0"
+    astro-seo-schema: "npm:^3.2.1"
+    astro-webmanifest: "npm:^1.0.0"
+    dotenv-extended: "npm:^2.9.0"
+    dotenv-parse-variables: "npm:^2.0.0"
+    gl-tiled: "npm:^1.0.0"
+    illuminated: "npm:^1.3.7"
+    image-size: "npm:^1.0.2"
+    pako: "npm:^2.1.0"
+    sass: "npm:^1.66.1"
+    sirv-cli: "npm:^2.0.2"
+    socket.io-client: "npm:^4.7.2"
+    typescript: "npm:^5.2.2"
+    vite-plugin-glsl: "npm:^1.1.2"
+    vite-plugin-pwa: "npm:^0.16.4"
+  languageName: unknown
+  linkType: soft
+
+"@acacia/common@workspace:*, @acacia/common@workspace:packages/common":
+  version: 0.0.0-use.local
+  resolution: "@acacia/common@workspace:packages/common"
+  dependencies:
+    "@types/dotenv-parse-variables": "npm:^2.0.1"
+    bcryptjs: "npm:^2.4.3"
+    discord.js: "npm:^14.13.0"
+    dotenv-extended: "npm:^2.9.0"
+    dotenv-parse-variables: "npm:^2.0.0"
+    i18next: "npm:^23.5.1"
+    ipaddr.js: "npm:^2.1.0"
+  languageName: unknown
+  linkType: soft
+
+"@acacia/e2e@workspace:packages/e2e":
+  version: 0.0.0-use.local
+  resolution: "@acacia/e2e@workspace:packages/e2e"
+  dependencies:
+    "@acacia/common": "workspace:*"
+    "@badeball/cypress-cucumber-preprocessor": "npm:^18.0.5"
+    "@bahmutov/cypress-esbuild-preprocessor": "npm:^2.2.0"
+    cypress: "npm:^13.1.0"
+    esbuild: "npm:^0.19.2"
+    start-server-and-test: "npm:^2.0.0"
+    tsx: "npm:^3.12.10"
+    typescript: "npm:^5.2.2"
+  languageName: unknown
+  linkType: soft
+
+"@acacia/hub@workspace:packages/hub":
+  version: 0.0.0-use.local
+  resolution: "@acacia/hub@workspace:packages/hub"
+  dependencies:
+    "@acacia/common": "workspace:*"
+    "@sentry/node": "npm:^7.68.0"
+    "@sentry/tracing": "npm:^7.68.0"
+    "@types/cors": "npm:^2.8.14"
+    "@types/dotenv-parse-variables": "npm:^2.0.1"
+    "@types/express": "npm:^4.17.17"
+    "@types/nodemailer": "npm:^6.4.9"
+    axios: "npm:^1.5.0"
+    cors: "npm:^2.8.5"
+    discord.js: "npm:^14.13.0"
+    dotenv-extended: "npm:^2.9.0"
+    dotenv-parse-variables: "npm:^2.0.0"
+    esbuild: "npm:^0.19.2"
+    express: "npm:^4.18.2"
+    mongodb: "npm:^6.0.0"
+    nodemailer: "npm:^6.9.5"
+    stripe: "npm:^13.5.0"
+    tsx: "npm:^3.12.10"
+    typescript: "npm:^5.2.2"
+    uws: "https://github.com/uNetworking/uWebSockets.js.git#commit=e6ecc2102d68d99dc35969b0898fbd201e0f252b"
+  languageName: unknown
+  linkType: soft
+
+"@acacia/server@workspace:*, @acacia/server@workspace:packages/server":
+  version: 0.0.0-use.local
+  resolution: "@acacia/server@workspace:packages/server"
+  dependencies:
+    "@acacia/common": "workspace:*"
+    "@acacia/tools": "workspace:*"
+    "@sentry/node": "npm:^7.68.0"
+    "@sentry/tracing": "npm:^7.68.0"
+    "@types/bcryptjs": "npm:^2.4.3"
+    "@types/dotenv-parse-variables": "npm:^2.0.1"
+    "@types/express": "npm:^4.17.17"
+    "@types/sanitizer": "npm:^0.0.28"
+    "@types/websocket": "npm:^1.0.6"
+    axios: "npm:^1.5.0"
+    discord.js: "npm:^14.13.0"
+    dotenv-extended: "npm:^2.9.0"
+    dotenv-parse-variables: "npm:^2.0.0"
+    esbuild: "npm:^0.19.2"
+    express: "npm:^4.18.2"
+    mongodb: "npm:^6.0.0"
+    sanitizer: "npm:^0.1.3"
+    tsx: "npm:^3.12.10"
+    typescript: "npm:^5.2.2"
+    uws: "https://github.com/uNetworking/uWebSockets.js.git#commit=e6ecc2102d68d99dc35969b0898fbd201e0f252b"
+    websocket: "npm:^1.0.34"
+  languageName: unknown
+  linkType: soft
+
+"@acacia/tools@workspace:*, @acacia/tools@workspace:packages/tools":
+  version: 0.0.0-use.local
+  resolution: "@acacia/tools@workspace:packages/tools"
+  dependencies:
+    "@acacia/common": "workspace:*"
+    "@acacia/server": "workspace:*"
+    tsx: "npm:^3.12.10"
+    typescript: "npm:^5.2.2"
+    websocket: "npm:^1.0.34"
+  languageName: unknown
+  linkType: soft
+
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.2.1
   resolution: "@ampproject/remapping@npm:2.2.1"
@@ -3404,152 +3550,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kaetram/admin@workspace:packages/admin":
-  version: 0.0.0-use.local
-  resolution: "@kaetram/admin@workspace:packages/admin"
-  dependencies:
-    "@astrojs/node": "npm:^6.0.1"
-    "@kaetram/common": "workspace:*"
-    astro: "npm:^3.2.0"
-    typescript: "npm:^5.2.2"
-  languageName: unknown
-  linkType: soft
-
-"@kaetram/client@workspace:packages/client":
-  version: 0.0.0-use.local
-  resolution: "@kaetram/client@workspace:packages/client"
-  dependencies:
-    "@astrojs/check": "npm:^0.2.0"
-    "@astrojs/partytown": "npm:^2.0.0"
-    "@astrojs/sitemap": "npm:^3.0.0"
-    "@astrolib/analytics": "npm:^0.4.2"
-    "@kaetram/common": "workspace:*"
-    "@sentry/browser": "npm:^7.68.0"
-    "@sentry/tracing": "npm:^7.68.0"
-    "@sentry/vite-plugin": "npm:^2.7.1"
-    "@types/dotenv-parse-variables": "npm:^2.0.1"
-    "@types/html-minifier-terser": "npm:^7.0.0"
-    "@types/pako": "npm:^2.0.0"
-    "@types/workbox-build": "npm:^5.1.0"
-    astro: "npm:^3.2.0"
-    astro-compress: "npm:^2.0.15"
-    astro-compressor: "npm:^0.4.0"
-    astro-i18n-aut: "npm:^0.4.23"
-    astro-robots-txt: "npm:^1.0.0"
-    astro-seo-schema: "npm:^3.2.1"
-    astro-webmanifest: "npm:^1.0.0"
-    dotenv-extended: "npm:^2.9.0"
-    dotenv-parse-variables: "npm:^2.0.0"
-    gl-tiled: "npm:^1.0.0"
-    illuminated: "npm:^1.3.7"
-    image-size: "npm:^1.0.2"
-    kaetram: "workspace:*"
-    pako: "npm:^2.1.0"
-    sass: "npm:^1.66.1"
-    sirv-cli: "npm:^2.0.2"
-    socket.io-client: "npm:^4.7.2"
-    typescript: "npm:^5.2.2"
-    vite-plugin-glsl: "npm:^1.1.2"
-    vite-plugin-pwa: "npm:^0.16.4"
-  languageName: unknown
-  linkType: soft
-
-"@kaetram/common@workspace:*, @kaetram/common@workspace:packages/common":
-  version: 0.0.0-use.local
-  resolution: "@kaetram/common@workspace:packages/common"
-  dependencies:
-    "@types/dotenv-parse-variables": "npm:^2.0.1"
-    bcryptjs: "npm:^2.4.3"
-    discord.js: "npm:^14.13.0"
-    dotenv-extended: "npm:^2.9.0"
-    dotenv-parse-variables: "npm:^2.0.0"
-    i18next: "npm:^23.5.1"
-    ipaddr.js: "npm:^2.1.0"
-  languageName: unknown
-  linkType: soft
-
-"@kaetram/e2e@workspace:packages/e2e":
-  version: 0.0.0-use.local
-  resolution: "@kaetram/e2e@workspace:packages/e2e"
-  dependencies:
-    "@badeball/cypress-cucumber-preprocessor": "npm:^18.0.5"
-    "@bahmutov/cypress-esbuild-preprocessor": "npm:^2.2.0"
-    "@kaetram/common": "workspace:*"
-    cypress: "npm:^13.1.0"
-    esbuild: "npm:^0.19.2"
-    start-server-and-test: "npm:^2.0.0"
-    tsx: "npm:^3.12.10"
-    typescript: "npm:^5.2.2"
-  languageName: unknown
-  linkType: soft
-
-"@kaetram/hub@workspace:packages/hub":
-  version: 0.0.0-use.local
-  resolution: "@kaetram/hub@workspace:packages/hub"
-  dependencies:
-    "@kaetram/common": "workspace:*"
-    "@sentry/node": "npm:^7.68.0"
-    "@sentry/tracing": "npm:^7.68.0"
-    "@types/cors": "npm:^2.8.14"
-    "@types/dotenv-parse-variables": "npm:^2.0.1"
-    "@types/express": "npm:^4.17.17"
-    "@types/nodemailer": "npm:^6.4.9"
-    axios: "npm:^1.5.0"
-    cors: "npm:^2.8.5"
-    discord.js: "npm:^14.13.0"
-    dotenv-extended: "npm:^2.9.0"
-    dotenv-parse-variables: "npm:^2.0.0"
-    esbuild: "npm:^0.19.2"
-    express: "npm:^4.18.2"
-    mongodb: "npm:^6.0.0"
-    nodemailer: "npm:^6.9.5"
-    stripe: "npm:^13.5.0"
-    tsx: "npm:^3.12.10"
-    typescript: "npm:^5.2.2"
-    uws: "https://github.com/uNetworking/uWebSockets.js.git#commit=e6ecc2102d68d99dc35969b0898fbd201e0f252b"
-  languageName: unknown
-  linkType: soft
-
-"@kaetram/server@workspace:*, @kaetram/server@workspace:packages/server":
-  version: 0.0.0-use.local
-  resolution: "@kaetram/server@workspace:packages/server"
-  dependencies:
-    "@kaetram/common": "workspace:*"
-    "@kaetram/tools": "workspace:*"
-    "@sentry/node": "npm:^7.68.0"
-    "@sentry/tracing": "npm:^7.68.0"
-    "@types/bcryptjs": "npm:^2.4.3"
-    "@types/dotenv-parse-variables": "npm:^2.0.1"
-    "@types/express": "npm:^4.17.17"
-    "@types/sanitizer": "npm:^0.0.28"
-    "@types/websocket": "npm:^1.0.6"
-    axios: "npm:^1.5.0"
-    discord.js: "npm:^14.13.0"
-    dotenv-extended: "npm:^2.9.0"
-    dotenv-parse-variables: "npm:^2.0.0"
-    esbuild: "npm:^0.19.2"
-    express: "npm:^4.18.2"
-    mongodb: "npm:^6.0.0"
-    sanitizer: "npm:^0.1.3"
-    tsx: "npm:^3.12.10"
-    typescript: "npm:^5.2.2"
-    uws: "https://github.com/uNetworking/uWebSockets.js.git#commit=e6ecc2102d68d99dc35969b0898fbd201e0f252b"
-    websocket: "npm:^1.0.34"
-  languageName: unknown
-  linkType: soft
-
-"@kaetram/tools@workspace:*, @kaetram/tools@workspace:packages/tools":
-  version: 0.0.0-use.local
-  resolution: "@kaetram/tools@workspace:packages/tools"
-  dependencies:
-    "@kaetram/common": "workspace:*"
-    "@kaetram/server": "workspace:*"
-    tsx: "npm:^3.12.10"
-    typescript: "npm:^5.2.2"
-    websocket: "npm:^1.0.34"
-  languageName: unknown
-  linkType: soft
-
 "@mongodb-js/saslprep@npm:^1.1.0":
   version: 1.1.0
   resolution: "@mongodb-js/saslprep@npm:1.1.0"
@@ -4735,6 +4735,45 @@ __metadata:
   checksum: 76e7fb9283b13208d5cf55df46669f9cf5e72007cb66595849be2d5e96c0a43704132d030c5705f9447266183986e1e8a4fc3e9578cb60a1f19cf0157664f957
   languageName: node
   linkType: hard
+
+"acacia@workspace:*, acacia@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "acacia@workspace:."
+  dependencies:
+    "@astrojs/ts-plugin": "npm:^1.1.3"
+    "@commitlint/cli": "npm:^17.7.1"
+    "@commitlint/config-conventional": "npm:^17.7.0"
+    "@types/node": "npm:^20.5.9"
+    "@typescript-eslint/eslint-plugin": "npm:^6.6.0"
+    "@typescript-eslint/parser": "npm:^6.6.0"
+    autoprefixer: "npm:^10.4.15"
+    eslint: "npm:^8.48.0"
+    eslint-config-prettier: "npm:^9.0.0"
+    eslint-plugin-astro: "npm:^0.29.0"
+    eslint-plugin-import: "npm:^2.28.1"
+    eslint-plugin-import-order-aesthetic: "npm:^1.0.5"
+    eslint-plugin-jsx-a11y: "npm:^6.7.1"
+    eslint-plugin-prefer-let: "npm:^3.0.1"
+    eslint-plugin-prettier: "npm:^5.0.0"
+    eslint-plugin-unicorn: "npm:^48.0.1"
+    husky: "npm:^8.0.3"
+    lint-staged: "npm:^14.0.1"
+    postcss: "npm:^8.4.29"
+    postcss-custom-media: "npm:^10.0.0"
+    postcss-html: "npm:^1.5.0"
+    postcss-preset-env: "npm:^9.1.3"
+    postcss-value-parser: "npm:^4.2.0"
+    prettier: "npm:^3.0.3"
+    prettier-plugin-astro: "npm:^0.12.0"
+    stylelint: "npm:^15.10.3"
+    stylelint-config-astro: "npm:^1.0.4"
+    stylelint-config-clean-order: "npm:^5.2.0"
+    stylelint-config-html: "npm:^1.1.0"
+    stylelint-config-prettier: "npm:^9.0.5"
+    stylelint-config-standard-scss: "npm:^11.0.0"
+    typescript: "npm:^5.2.2"
+  languageName: unknown
+  linkType: soft
 
 "accepts@npm:~1.3.8":
   version: 1.3.8
@@ -10458,45 +10497,6 @@ __metadata:
   checksum: cb1820fa7f27b2d58a39a236ed5935b5456cc63cd55d134157977e852c50025a13aeaca8a35d1658200bdaf5b1424fc65eaaba5d1aae0f4aa11abf2be7b9dce5
   languageName: node
   linkType: hard
-
-"kaetram@workspace:*, kaetram@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "kaetram@workspace:."
-  dependencies:
-    "@astrojs/ts-plugin": "npm:^1.1.3"
-    "@commitlint/cli": "npm:^17.7.1"
-    "@commitlint/config-conventional": "npm:^17.7.0"
-    "@types/node": "npm:^20.5.9"
-    "@typescript-eslint/eslint-plugin": "npm:^6.6.0"
-    "@typescript-eslint/parser": "npm:^6.6.0"
-    autoprefixer: "npm:^10.4.15"
-    eslint: "npm:^8.48.0"
-    eslint-config-prettier: "npm:^9.0.0"
-    eslint-plugin-astro: "npm:^0.29.0"
-    eslint-plugin-import: "npm:^2.28.1"
-    eslint-plugin-import-order-aesthetic: "npm:^1.0.5"
-    eslint-plugin-jsx-a11y: "npm:^6.7.1"
-    eslint-plugin-prefer-let: "npm:^3.0.1"
-    eslint-plugin-prettier: "npm:^5.0.0"
-    eslint-plugin-unicorn: "npm:^48.0.1"
-    husky: "npm:^8.0.3"
-    lint-staged: "npm:^14.0.1"
-    postcss: "npm:^8.4.29"
-    postcss-custom-media: "npm:^10.0.0"
-    postcss-html: "npm:^1.5.0"
-    postcss-preset-env: "npm:^9.1.3"
-    postcss-value-parser: "npm:^4.2.0"
-    prettier: "npm:^3.0.3"
-    prettier-plugin-astro: "npm:^0.12.0"
-    stylelint: "npm:^15.10.3"
-    stylelint-config-astro: "npm:^1.0.4"
-    stylelint-config-clean-order: "npm:^5.2.0"
-    stylelint-config-html: "npm:^1.1.0"
-    stylelint-config-prettier: "npm:^9.0.5"
-    stylelint-config-standard-scss: "npm:^11.0.0"
-    typescript: "npm:^5.2.2"
-  languageName: unknown
-  linkType: soft
 
 "kind-of@npm:^6.0.0, kind-of@npm:^6.0.2, kind-of@npm:^6.0.3":
   version: 6.0.3

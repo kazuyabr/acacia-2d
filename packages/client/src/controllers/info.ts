@@ -1,7 +1,7 @@
 import Splat from '../renderer/infos/splat';
 import Utils from '../utils/util';
 
-import type { Modules } from '@kaetram/common/network';
+import type { Modules } from '@acacia/common/network';
 
 export default class InfoController {
     private infos: { [info: string]: Splat } = {};

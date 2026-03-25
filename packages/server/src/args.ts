@@ -1,4 +1,4 @@
-import config from '@kaetram/common/config';
+import config from '@acacia/common/config';
 
 /**
  * Class responsible for overriding the default arguments.

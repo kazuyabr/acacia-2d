@@ -1,13 +1,13 @@
 import cors from 'cors';
 import express from 'express';
-import mobs from '@kaetram/server/data/mobs.json';
-import config from '@kaetram/common/config';
-import log from '@kaetram/common/util/log';
+import mobs from '@acacia/server/data/mobs.json';
+import config from '@acacia/common/config';
+import log from '@acacia/common/util/log';
 import Stripe from 'stripe';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
 
 import type Cache from './cache';
 import type Server from '../model/server';
@@ -21,7 +21,7 @@ import type {
     PvpAggregate,
     SkillExperience,
     TotalExperience
-} from '@kaetram/common/types/leaderboards';
+} from '@acacia/common/types/leaderboards';
 
 // Initialize stripe
 const stripe = new Stripe(config.stripeSecretKey, {
@@ -29,7 +29,7 @@ const stripe = new Stripe(config.stripeSecretKey, {
 });
 
 /**
- * We use the API format from `@kaetram/server`.
+ * We use the API format from `@acacia/server`.
  */
 export default class API {
     public constructor(
@@ -271,8 +271,8 @@ export default class API {
             // Send the email to the user.
             this.mailer.send(
                 email,
-                'Kaetram Account Password Reset',
-                `Hello there, you have requested a password reset for your account. Please use the following link to reset your password: https://kaetram.com/reset/?token=${token}&id=${id}`
+                'Acacia Account Password Reset',
+                `Hello there, you have requested a password reset for your account. Please use the following link to reset your password: https://acacia.com/reset/?token=${token}&id=${id}`
             );
 
             // Send a response back to the client.

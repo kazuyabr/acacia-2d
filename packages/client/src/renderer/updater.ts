@@ -1,7 +1,7 @@
 import Character from '../entity/character/character';
 import Projectile from '../entity/objects/projectile';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Game from '../game';
 import type Renderer from './renderer';

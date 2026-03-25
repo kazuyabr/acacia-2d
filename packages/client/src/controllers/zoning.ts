@@ -1,4 +1,4 @@
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 /**
  * Zoning controller keeps track of the current orientation.

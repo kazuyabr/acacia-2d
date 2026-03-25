@@ -2,9 +2,9 @@ import Menu from './menu';
 
 import Util from '../utils/util';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { Bonuses, Enchantments, Stats } from '@kaetram/common/types/item';
+import type { Bonuses, Enchantments, Stats } from '@acacia/common/types/item';
 
 export default class Actions extends Menu {
     private page: HTMLElement = document.querySelector('#action-page')!;

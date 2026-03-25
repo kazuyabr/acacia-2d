@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
-import config from '@kaetram/common/config';
+import config from '@acacia/common/config';
 
 // https://astro.build/config
 export default defineConfig({

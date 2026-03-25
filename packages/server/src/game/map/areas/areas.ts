@@ -1,9 +1,9 @@
 import Area from './area';
 
-import log from '@kaetram/common/util/log';
+import log from '@acacia/common/util/log';
 
 import type World from '../../world';
-import type { ProcessedArea } from '@kaetram/common/types/map';
+import type { ProcessedArea } from '@acacia/common/types/map';
 
 export default abstract class Areas {
     public areas: Area[] = [];

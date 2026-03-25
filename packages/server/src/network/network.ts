@@ -1,14 +1,14 @@
 import Player from '../game/entity/character/player/player';
 
-import config from '@kaetram/common/config';
-import { HandshakePacket } from '@kaetram/common/network/impl';
+import config from '@acacia/common/config';
+import { HandshakePacket } from '@acacia/common/network/impl';
 
 import type World from '../game/world';
 import type Connection from './connection';
 import type Regions from '../game/map/regions';
 import type SocketHandler from './sockethandler';
-import type Packet from '@kaetram/common/network/packet';
-import type MongoDB from '@kaetram/common/database/mongodb/mongodb';
+import type Packet from '@acacia/common/network/packet';
+import type MongoDB from '@acacia/common/database/mongodb/mongodb';
 
 export default class Network {
     private database: MongoDB;

@@ -1,11 +1,11 @@
 import Connection from './connection';
 
-import log from '@kaetram/common/util/log';
-import config from '@kaetram/common/config';
-import Utils from '@kaetram/common/util/utils';
+import log from '@acacia/common/util/log';
+import config from '@acacia/common/config';
+import Utils from '@acacia/common/util/utils';
 import { App, DEDICATED_COMPRESSOR_3KB, type WebSocket } from 'uws';
 
-import type { ConnectionInfo } from '@kaetram/common/types/network';
+import type { ConnectionInfo } from '@acacia/common/types/network';
 
 /**
  * The hub websocket works as a publisher/subscriber system. It is responsible for

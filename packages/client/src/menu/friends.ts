@@ -3,7 +3,7 @@ import Menu from './menu';
 import Util from '../utils/util';
 import { isLargeScreen } from '../utils/detect';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
+import { Modules, Opcodes } from '@acacia/common/network';
 
 import type Game from '../game';
 import type Player from '../entity/character/player/player';

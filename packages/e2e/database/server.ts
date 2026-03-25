@@ -1,5 +1,5 @@
-import log from '@kaetram/common/util/log';
-import Handler from '@kaetram/e2e/database/handler';
+import log from '@acacia/common/util/log';
+import Handler from '@acacia/e2e/database/handler';
 import express from 'express';
 
 interface MongoRestParams {

@@ -4,7 +4,7 @@ import Util from './utils/util';
 import { isMobile } from './utils/detect';
 import { onSecondaryPress } from './utils/press';
 
-import type { SerializedServer } from '@kaetram/common/types/network';
+import type { SerializedServer } from '@acacia/common/types/network';
 
 type EmptyCallback = () => void;
 type KeyDownCallback = (e: KeyboardEvent) => void;

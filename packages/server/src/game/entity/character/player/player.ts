@@ -16,12 +16,12 @@ import Character from '../character';
 import Item from '../../objects/item';
 import Formulas from '../../../../info/formulas';
 
-import Utils from '@kaetram/common/util/utils';
-import log from '@kaetram/common/util/log';
-import config from '@kaetram/common/config';
-import { PacketType } from '@kaetram/common/network/modules';
-import { Opcodes, Modules } from '@kaetram/common/network';
-import { Team } from '@kaetram/common/api/minigame';
+import Utils from '@acacia/common/util/utils';
+import log from '@acacia/common/util/log';
+import config from '@acacia/common/config';
+import { PacketType } from '@acacia/common/network/modules';
+import { Opcodes, Modules } from '@acacia/common/network';
+import { Team } from '@acacia/common/api/minigame';
 import {
     CameraPacket,
     ChatPacket,
@@ -42,7 +42,7 @@ import {
     SyncPacket,
     TeleportPacket,
     WelcomePacket
-} from '@kaetram/common/network/impl';
+} from '@acacia/common/network/impl';
 
 import type Pet from '../pet/pet';
 import type NPC from '../../npc/npc';
@@ -54,14 +54,14 @@ import type Regions from '../../../map/regions';
 import type Connection from '../../../../network/connection';
 import type Minigame from '../../../minigames/minigame';
 import type Entities from '../../../../controllers/entities';
-import type Packet from '@kaetram/common/network/packet';
-import type MongoDB from '@kaetram/common/database/mongodb/mongodb';
-import type { EntityDisplayInfo } from '@kaetram/common/types/entity';
-import type { Bonuses, Stats } from '@kaetram/common/types/item';
-import type { ProcessedDoor } from '@kaetram/common/types/map';
-import type { PlayerData } from '@kaetram/common/network/impl/player';
-import type { PointerData } from '@kaetram/common/network/impl/pointer';
-import type { PlayerInfo } from '@kaetram/common/database/mongodb/creator';
+import type Packet from '@acacia/common/network/packet';
+import type MongoDB from '@acacia/common/database/mongodb/mongodb';
+import type { EntityDisplayInfo } from '@acacia/common/types/entity';
+import type { Bonuses, Stats } from '@acacia/common/types/item';
+import type { ProcessedDoor } from '@acacia/common/types/map';
+import type { PlayerData } from '@acacia/common/network/impl/player';
+import type { PointerData } from '@acacia/common/network/impl/pointer';
+import type { PlayerInfo } from '@acacia/common/database/mongodb/creator';
 
 type KillCallback = (character: Character) => void;
 type NPCTalkCallback = (npc: NPC) => void;

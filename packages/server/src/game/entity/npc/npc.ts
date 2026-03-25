@@ -1,15 +1,15 @@
 import rawData from '../../../../data/npcs.json';
 import Entity from '../entity';
 
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { NPCPacket } from '@kaetram/common/network/impl';
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { SpecialEntityTypes } from '@kaetram/common/network/modules';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { NPCPacket } from '@acacia/common/network/impl';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { SpecialEntityTypes } from '@acacia/common/network/modules';
 
 import type Player from '../character/player/player';
-import type { NPCData } from '@kaetram/common/network/impl/npc';
-import type { EntityDisplayInfo } from '@kaetram/common/types/entity';
+import type { NPCData } from '@acacia/common/network/impl/npc';
+import type { EntityDisplayInfo } from '@acacia/common/types/entity';
 
 interface RawNPCData {
     [key: string]: NPCData;

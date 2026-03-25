@@ -1,12 +1,12 @@
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import config from '@kaetram/common/config';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import config from '@acacia/common/config';
 
-import type Player from '@kaetram/server/src/game/entity/character/player/player';
+import type Player from '@acacia/server/src/game/entity/character/player/player';
 import type { Collection, Db } from 'mongodb';
-import type { Modules } from '@kaetram/common/network';
-import type { GuildData } from '@kaetram/common/network/impl/guild';
-import type { SerializedEffects } from '@kaetram/common/types/status';
+import type { Modules } from '@acacia/common/network';
+import type { GuildData } from '@acacia/common/network/impl/guild';
+import type { SerializedEffects } from '@acacia/common/types/status';
 
 // Used for password reset
 export interface ResetToken {

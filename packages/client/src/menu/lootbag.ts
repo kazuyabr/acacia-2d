@@ -2,11 +2,11 @@ import Menu from './menu';
 
 import Utils from '../utils/util';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
+import { Modules, Opcodes } from '@acacia/common/network';
 
 import type Inventory from './inventory';
-import type { SlotData } from '@kaetram/common/types/slot';
-import type { LootBagPacketData } from '@kaetram/common/types/messages/outgoing';
+import type { SlotData } from '@acacia/common/types/slot';
+import type { LootBagPacketData } from '@acacia/common/types/messages/outgoing';
 
 type SelectCallback = (index: number) => void;
 

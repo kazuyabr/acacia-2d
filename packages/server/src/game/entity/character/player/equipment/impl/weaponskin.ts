@@ -1,6 +1,6 @@
 import Equipment from '../equipment';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 export default class WeaponSkin extends Equipment {
     public constructor(key = '', count = -1) {

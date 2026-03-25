@@ -7,10 +7,10 @@ import Status from './effect/status';
 import Entity from '../entity';
 import Formulas from '../../../info/formulas';
 
-import Utils from '@kaetram/common/util/utils';
-import { Team } from '@kaetram/common/api/minigame';
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { PacketType } from '@kaetram/common/network/modules';
+import Utils from '@acacia/common/util/utils';
+import { Team } from '@acacia/common/api/minigame';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { PacketType } from '@acacia/common/network/modules';
 import {
     CombatPacket,
     CountdownPacket,
@@ -18,12 +18,12 @@ import {
     MovementPacket,
     PointsPacket,
     TeleportPacket
-} from '@kaetram/common/network/impl';
+} from '@acacia/common/network/impl';
 
 import type World from '../../world';
-import type Packet from '@kaetram/common/network/packet';
-import type { EntityData } from '@kaetram/common/types/entity';
-import type { Bonuses, Stats } from '@kaetram/common/types/item';
+import type Packet from '@acacia/common/network/packet';
+import type { EntityData } from '@acacia/common/types/entity';
+import type { Bonuses, Stats } from '@acacia/common/types/item';
 
 type PoisonCallback = (type: number, exists: boolean) => void;
 type HitCallback = (damage: number, attacker?: Character, isThorns?: boolean) => void;

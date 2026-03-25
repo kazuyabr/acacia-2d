@@ -2,14 +2,14 @@ import Animation from './animation';
 
 import Utils from '../utils/util';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Player from './character/player/player';
 import type Item from './objects/item';
 import type Sprite from './sprite';
 import type Pet from './character/pet/pet';
 import type Projectile from './objects/projectile';
-import type { EntityDisplayInfo } from '@kaetram/common/types/entity';
+import type { EntityDisplayInfo } from '@acacia/common/types/entity';
 
 export default abstract class Entity {
     public x = 0;

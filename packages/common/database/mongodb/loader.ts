@@ -1,19 +1,19 @@
-import config from '@kaetram/common/config';
-import log from '@kaetram/common/util/log';
+import config from '@acacia/common/config';
+import log from '@acacia/common/util/log';
 
-import type Player from '@kaetram/server/src/game/entity/character/player/player';
+import type Player from '@acacia/server/src/game/entity/character/player/player';
 import type { Db } from 'mongodb';
-import type { SerializedAbility } from '@kaetram/common/network/impl/ability';
-import type { GuildData } from '@kaetram/common/network/impl/guild';
-import type { StatisticsData } from '@kaetram/common/types/statistics';
+import type { SerializedAbility } from '@acacia/common/network/impl/ability';
+import type { GuildData } from '@acacia/common/network/impl/guild';
+import type { StatisticsData } from '@acacia/common/types/statistics';
 import type {
     AchievementData,
     SerializedAchievement
-} from '@kaetram/common/network/impl/achievement';
-import type { QuestData, SerializedQuest } from '@kaetram/common/network/impl/quest';
-import type { SerializedSkills, SkillData } from '@kaetram/common/network/impl/skill';
-import type { SerializedContainer, SlotData } from '@kaetram/common/types/slot';
-import type { EquipmentData, SerializedEquipment } from '@kaetram/common/network/impl/equipment';
+} from '@acacia/common/network/impl/achievement';
+import type { QuestData, SerializedQuest } from '@acacia/common/network/impl/quest';
+import type { SerializedSkills, SkillData } from '@acacia/common/network/impl/skill';
+import type { SerializedContainer, SlotData } from '@acacia/common/types/slot';
+import type { EquipmentData, SerializedEquipment } from '@acacia/common/network/impl/equipment';
 
 export default class Loader {
     public constructor(private database?: Db) {}

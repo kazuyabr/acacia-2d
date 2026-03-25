@@ -21,7 +21,7 @@ import LootBag from '../menu/lootbag';
 import Welcome from '../menu/welcome';
 import Quest from '../menu/quest';
 
-import { Modules, Opcodes, Packets } from '@kaetram/common/network';
+import { Modules, Opcodes, Packets } from '@acacia/common/network';
 
 import type Game from '../game';
 import type Menu from '../menu/menu';

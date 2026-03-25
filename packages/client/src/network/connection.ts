@@ -1,7 +1,7 @@
 import Util from '../utils/util';
 
 import { inflate } from 'pako';
-import { Packets, Opcodes, Modules } from '@kaetram/common/network';
+import { Packets, Opcodes, Modules } from '@acacia/common/network';
 
 import type App from '../app';
 import type Game from '../game';
@@ -23,10 +23,10 @@ import type SpritesController from '../controllers/sprites';
 import type Player from '../entity/character/player/player';
 import type PointerController from '../controllers/pointer';
 import type EntitiesController from '../controllers/entities';
-import type { PlayerData } from '@kaetram/common/network/impl/player';
-import type { EntityDisplayInfo } from '@kaetram/common/types/entity';
-import type { SerializedSkills, SkillData } from '@kaetram/common/network/impl/skill';
-import type { SerializedAbility, AbilityData } from '@kaetram/common/network/impl/ability';
+import type { PlayerData } from '@acacia/common/network/impl/player';
+import type { EntityDisplayInfo } from '@acacia/common/types/entity';
+import type { SerializedSkills, SkillData } from '@acacia/common/network/impl/skill';
+import type { SerializedAbility, AbilityData } from '@acacia/common/network/impl/ability';
 import type {
     AbilityPacketData,
     AchievementPacketData,
@@ -64,12 +64,12 @@ import type {
     LootBagPacketData,
     CountdownPacketData,
     InterfacePacketData
-} from '@kaetram/common/types/messages/outgoing';
-import type { TradePacketValues } from '@kaetram/common/network/impl/trade';
-import type { EquipmentPacketValues } from '@kaetram/common/network/impl/equipment';
+} from '@acacia/common/types/messages/outgoing';
+import type { TradePacketValues } from '@acacia/common/network/impl/trade';
+import type { EquipmentPacketValues } from '@acacia/common/network/impl/equipment';
 import type Resource from '../entity/objects/resource/resource';
-import type { ResourcePacketData } from '@kaetram/common/network/impl/resource';
-import type { NetworkPacketData } from '@kaetram/common/network/impl/network';
+import type { ResourcePacketData } from '@acacia/common/network/impl/resource';
+import type { NetworkPacketData } from '@acacia/common/network/impl/network';
 
 export default class Connection {
     /**

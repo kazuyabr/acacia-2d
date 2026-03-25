@@ -1,5 +1,5 @@
-import { Opcodes } from '@kaetram/common/network';
-import { BubblePacket } from '@kaetram/common/network/impl';
+import { Opcodes } from '@acacia/common/network';
+import { BubblePacket } from '@acacia/common/network/impl';
 
 import type Player from '../../entity/character/player/player';
 

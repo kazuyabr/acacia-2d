@@ -7,7 +7,7 @@ import LayerVertex from '../shaders/layer.vert';
 import LayerFragment from '../shaders/layer.frag';
 
 import type Game from '../../game';
-import type { ClientTile, TransformedTile } from '@kaetram/common/types/map';
+import type { ClientTile, TransformedTile } from '@acacia/common/types/map';
 
 /**
  * Huge thanks to the developer of `gl-tiled` for the point of reference in

@@ -2,7 +2,7 @@ import Menu from './menu';
 
 import { isMobile, isMacintoshFirefox } from '../utils/detect';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Game from '../game';
 

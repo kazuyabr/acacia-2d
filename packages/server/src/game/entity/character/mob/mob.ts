@@ -8,11 +8,11 @@ import Spawns from '../../../../../data/spawns.json';
 import dropTables from '../../../../../data/tables.json';
 import PluginIndex from '../../../../../data/plugins/mobs';
 
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { HealPacket, MovementPacket, TeleportPacket } from '@kaetram/common/network/impl';
-import { SpecialEntityTypes } from '@kaetram/common/network/modules';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { HealPacket, MovementPacket, TeleportPacket } from '@acacia/common/network/impl';
+import { SpecialEntityTypes } from '@acacia/common/network/modules';
 
 import type Area from '../../../map/areas/area';
 import type Areas from '../../../map/areas/areas';
@@ -20,15 +20,15 @@ import type World from '../../../world';
 import type Chest from '../../objects/chest';
 import type Player from '../player/player';
 import type DefaultPlugin from '../../../../../data/plugins/mobs/default';
-import type { Bonuses, Stats } from '@kaetram/common/types/item';
+import type { Bonuses, Stats } from '@acacia/common/types/item';
 import type {
     RawMobData,
     MobData,
     MobSkills,
     MobDrop,
     MobDropTable
-} from '@kaetram/common/types/mob';
-import type { EntityData, EntityDisplayInfo } from '@kaetram/common/types/entity';
+} from '@acacia/common/types/mob';
+import type { EntityData, EntityDisplayInfo } from '@acacia/common/types/entity';
 
 interface ItemDrop {
     key: string;

@@ -1,6 +1,6 @@
 import Entity from '../../entity';
 
-import type { Modules } from '@kaetram/common/network';
+import type { Modules } from '@acacia/common/network';
 
 export default abstract class Resource extends Entity {
     public exhausted = false;

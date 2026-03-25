@@ -1,8 +1,8 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { Opcodes, Modules } from '@kaetram/common/network';
+import type { Opcodes, Modules } from '@acacia/common/network';
 
 export interface SkillData {
     type: Modules.Skills;

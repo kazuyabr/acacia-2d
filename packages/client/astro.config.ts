@@ -1,8 +1,6 @@
-import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
-import { name, description } from '../../package.json';
-
-import * as sass from 'sass';
 import webmanifest from 'astro-webmanifest';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
@@ -10,13 +8,14 @@ import partytown from '@astrojs/partytown';
 import compress from 'astro-compress';
 import compressor from 'astro-compressor';
 import glsl from 'vite-plugin-glsl';
-import { imageSize } from 'image-size';
 import { defineConfig } from 'astro/config';
 import { VitePWA as pwa } from 'vite-plugin-pwa';
 import { sentryVitePlugin } from '@sentry/vite-plugin';
-import config, { exposedConfig } from '@kaetram/common/config';
+import config, { exposedConfig } from '@acacia/common/config';
 import { i18n } from 'astro-i18n-aut/integration';
-import { locales, defaultLocale, dir, t, type Locale } from '@kaetram/common/i18n';
+import { locales, defaultLocale, dir, t, type Locale } from '@acacia/common/i18n';
+
+const { name, description } = require('../../package.json');
 
 export let env = exposedConfig(
     'name',
@@ -62,18 +61,6 @@ if (config.sentryDsn && !config.debugging)
             sourcemaps: { assets: './dist/**' }
         })
     );
-
-let imageCache = new Map<string, { width?: number; height?: number }>();
-function getImageSize(image: string) {
-    if (!imageCache.has(image)) {
-        let path = fileURLToPath(new URL(`public/img/interface/${image}.png`, import.meta.url)),
-            size = imageSize(path);
-
-        imageCache.set(image, size);
-    }
-
-    return imageCache.get(image)!;
-}
 
 let integrations = [i18n({ locales, defaultLocale })];
 
@@ -131,24 +118,6 @@ export default defineConfig({
             strictPort: true,
             hmr: { protocol: 'ws', host: config.host, port: 5183 }
         },
-        define: { globalConfig: env },
-        css: {
-            preprocessorOptions: {
-                scss: {
-                    functions: {
-                        'width($image)'(image: sass.types.String) {
-                            let { width } = getImageSize(image.getValue());
-
-                            return new sass.types.Number(width!);
-                        },
-                        'height($image)'(image: sass.types.String) {
-                            let { height } = getImageSize(image.getValue());
-
-                            return new sass.types.Number(height!);
-                        }
-                    }
-                }
-            }
-        }
+        define: { globalConfig: env }
     }
 });

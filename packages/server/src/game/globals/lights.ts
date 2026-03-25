@@ -1,6 +1,6 @@
 import Light from './impl/light';
 
-import log from '@kaetram/common/util/log';
+import log from '@acacia/common/util/log';
 
 import type Map from '../map/map';
 

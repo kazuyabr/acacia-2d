@@ -2,7 +2,7 @@ import Menu from './menu';
 
 import Util from '../utils/util';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Inventory from './inventory';
 

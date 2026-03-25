@@ -1,4 +1,4 @@
-import { Opcodes, Packets } from '@kaetram/common/network';
+import { Opcodes, Packets } from '@acacia/common/network';
 
 import type Character from './character';
 import type Game from '../../game';

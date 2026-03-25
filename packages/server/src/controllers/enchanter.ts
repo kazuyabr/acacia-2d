@@ -1,8 +1,8 @@
 import Formulas from '../info/formulas';
 
-import Utils from '@kaetram/common/util/utils';
-import { EnchantPacket } from '@kaetram/common/network/impl';
-import { Opcodes } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import { EnchantPacket } from '@acacia/common/network/impl';
+import { Opcodes } from '@acacia/common/network';
 
 import type Item from '../game/entity/objects/item';
 import type Player from '../game/entity/character/player/player';

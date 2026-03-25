@@ -6,12 +6,12 @@ import Loader from './info/loader';
 import SocketHandler from './network/sockethandler';
 import Args from './args';
 
-import log from '@kaetram/common/util/log';
-import config from '@kaetram/common/config';
-import Database from '@kaetram/common/database/database';
+import log from '@acacia/common/util/log';
+import config from '@acacia/common/config';
+import Database from '@acacia/common/database/database';
 
 import type Connection from './network/connection';
-import type MongoDB from '@kaetram/common/database/mongodb/mongodb';
+import type MongoDB from '@acacia/common/database/mongodb/mongodb';
 
 class Main {
     private world?: World;

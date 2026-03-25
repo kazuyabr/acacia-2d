@@ -1,6 +1,6 @@
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { Duration, SerializedDuration, SerializedEffects } from '@kaetram/common/types/status';
+import type { Duration, SerializedDuration, SerializedEffects } from '@acacia/common/types/status';
 
 export default class {
     private effects: Modules.Effects[] = [];

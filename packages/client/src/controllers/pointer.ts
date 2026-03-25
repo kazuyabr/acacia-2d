@@ -1,7 +1,7 @@
 import Arrow from '../renderer/pointers/arrow';
 import { DEFAULT_ZOOM } from '../renderer/camera';
 
-import { Opcodes } from '@kaetram/common/network';
+import { Opcodes } from '@acacia/common/network';
 
 import type Renderer from '../renderer/renderer';
 import type Camera from '../renderer/camera';

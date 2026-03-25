@@ -1,5 +1,5 @@
 {
-    "name": "@kaetram/server",
+    "name": "@acacia/server",
     "type": "module",
     "scripts": {
         "dev": "tsx watch --preserve-symlinks --clear-screen=false ./src/main.ts",
@@ -7,7 +7,7 @@
         "start": "node --enable-source-maps ./dist/main.js"
     },
     "dependencies": {
-        "@kaetram/common": "workspace:*",
+        "@acacia/common": "workspace:*",
         "@sentry/node": "^7.68.0",
         "@sentry/tracing": "^7.68.0",
         "axios": "^1.5.0",
@@ -22,7 +22,7 @@
         "websocket": "^1.0.34"
     },
     "devDependencies": {
-        "@kaetram/tools": "workspace:*",
+        "@acacia/tools": "workspace:*",
         "@types/bcryptjs": "^2.4.3",
         "@types/dotenv-parse-variables": "^2.0.1",
         "@types/express": "^4.17.17",

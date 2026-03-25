@@ -4,7 +4,7 @@ import log from '../lib/log';
 import mapData from '../../data/maps/map.json';
 import Utils, { isInt } from '../utils/util';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Game from '../game';
 import type {
@@ -15,7 +15,7 @@ import type {
     RegionTileData,
     Tile,
     TransformedTile
-} from '@kaetram/common/types/map';
+} from '@acacia/common/types/map';
 
 export interface CursorTiles {
     [tileId: number]: string;

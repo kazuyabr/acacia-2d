@@ -2,7 +2,7 @@ import Menu from './menu';
 
 import log from '../lib/log';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 export default class Warp extends Menu {
     public override identifier: number = Modules.Interfaces.Warp;

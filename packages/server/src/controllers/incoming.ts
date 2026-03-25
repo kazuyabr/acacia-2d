@@ -1,16 +1,16 @@
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { Packets, Opcodes } from '@kaetram/common/network';
-import { GuildPacket } from '@kaetram/common/network/impl';
-import Packet from '@kaetram/common/network/packet';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { Packets, Opcodes } from '@acacia/common/network';
+import { GuildPacket } from '@acacia/common/network/impl';
+import Packet from '@acacia/common/network/packet';
 
 import type World from '../game/world';
-import type { GuildPacketData, PlayerPacketData } from '@kaetram/common/types/messages/outgoing';
+import type { GuildPacketData, PlayerPacketData } from '@acacia/common/types/messages/outgoing';
 import type {
     ChatPacketData,
     FriendsPacketData,
     RelayPacketData
-} from '@kaetram/common/types/messages/hub';
+} from '@acacia/common/types/messages/hub';
 
 /**
  * This incoming is the global incoming controller. This is responsible for

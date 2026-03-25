@@ -1,15 +1,15 @@
 import Item from '../../../objects/item';
 
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
 
 import type Player from '../player';
 import type Mob from '../../mob/mob';
 import type NPC from '../../../npc/npc';
-import type { ProcessedDoor } from '@kaetram/common/types/map';
-import type { PointerData } from '@kaetram/common/network/impl/pointer';
-import type { PopupData } from '@kaetram/common/types/popup';
+import type { ProcessedDoor } from '@acacia/common/types/map';
+import type { PointerData } from '@acacia/common/network/impl/pointer';
+import type { PopupData } from '@acacia/common/types/popup';
 import type {
     QuestData,
     RawQuest,
@@ -17,7 +17,7 @@ import type {
     StageData,
     HideNPC,
     QuestItem
-} from '@kaetram/common/network/impl/quest';
+} from '@acacia/common/network/impl/quest';
 
 type InterfaceCallback = (key: string) => void;
 type ProgressCallback = (key: string, stage: number, subStage: number) => void;

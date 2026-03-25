@@ -1,8 +1,8 @@
-import Utils from '@kaetram/common/util/utils';
+import Utils from '@acacia/common/util/utils';
 
 import type Models from '../controllers/models';
 import type Connection from '../network/connection';
-import type { Packets } from '@kaetram/common/network';
+import type { Packets } from '@acacia/common/network';
 
 export default abstract class Model {
     public address;

@@ -1,12 +1,12 @@
 import Incoming from '../controllers/incoming';
 
 import WebSocket from 'websocket';
-import log from '@kaetram/common/util/log';
-import config from '@kaetram/common/config';
-import { HandshakePacket, RelayPacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import config from '@acacia/common/config';
+import { HandshakePacket, RelayPacket } from '@acacia/common/network/impl';
 
 import type World from '../game/world';
-import type Packet from '@kaetram/common/network/packet';
+import type Packet from '@acacia/common/network/packet';
 import type { connection as Connection, Message } from 'websocket';
 
 /**

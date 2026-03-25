@@ -1,5 +1,5 @@
 {
-    "name": "@kaetram/tools",
+    "name": "@acacia/tools",
     "type": "module",
     "scripts": {
         "exportmap": "tsx --preserve-symlinks map/parser/exporter",
@@ -7,8 +7,8 @@
         "replacer": "tsx --preserve-symlinks map/parser/replacer map/data/map.json"
     },
     "dependencies": {
-        "@kaetram/common": "workspace:*",
-        "@kaetram/server": "workspace:*",
+        "@acacia/common": "workspace:*",
+        "@acacia/server": "workspace:*",
         "tsx": "^3.12.10",
         "websocket": "^1.0.34"
     },

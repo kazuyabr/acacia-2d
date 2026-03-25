@@ -1,7 +1,7 @@
 import Character from './character/character';
 
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
 
 import type NPC from './npc/npc';
 import type Item from './objects/item';
@@ -15,7 +15,7 @@ import type Tree from './objects/resource/impl/tree';
 import type Rock from './objects/resource/impl/rock';
 import type FishSpot from './objects/resource/impl/fishspot';
 import type Foraging from './objects/resource/impl/foraging';
-import type { EntityData, EntityDisplayInfo } from '@kaetram/common/types/entity';
+import type { EntityData, EntityDisplayInfo } from '@acacia/common/types/entity';
 
 type MovementCallback = (x: number, y: number) => void;
 

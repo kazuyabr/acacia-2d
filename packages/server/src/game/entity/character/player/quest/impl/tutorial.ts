@@ -1,7 +1,7 @@
 import Quest from '../quest';
 import Data from '../../../../../../../data/quests/tutorial.json';
 
-import config from '@kaetram/common/config';
+import config from '@acacia/common/config';
 
 export default class Tutorial extends Quest {
     protected override noPrompts = true;

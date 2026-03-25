@@ -2,11 +2,11 @@ import Menu from './menu';
 
 import Util from '../utils/util';
 
-import { Modules, Packets, Opcodes } from '@kaetram/common/network';
+import { Modules, Packets, Opcodes } from '@acacia/common/network';
 
 import type Game from '../game';
-import type { ListInfo, Member } from '@kaetram/common/network/impl/guild';
-import type { GuildPacketData } from '@kaetram/common/types/messages/outgoing';
+import type { ListInfo, Member } from '@acacia/common/network/impl/guild';
+import type { GuildPacketData } from '@acacia/common/types/messages/outgoing';
 
 export default class Guilds extends Menu {
     public override identifier: number = Modules.Interfaces.Guilds;

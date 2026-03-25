@@ -1,6 +1,6 @@
-import defaultPlayerInfo from '@kaetram/e2e/cypress/fixtures/playerinfo.default.json';
+import defaultPlayerInfo from '@acacia/e2e/cypress/fixtures/playerinfo.default.json';
 
-import type { PlayerInfo } from '@kaetram/e2e/cypress/entities/playerinfo';
+import type { PlayerInfo } from '@acacia/e2e/cypress/entities/playerinfo';
 
 export function buildPlayerInfo(
     username: string,

@@ -4,7 +4,7 @@ import Utils from '../utils/util';
 import Character from '../entity/character/character';
 import { isMobile, isTablet } from '../utils/detect';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
+import { Modules, Opcodes } from '@acacia/common/network';
 import { DarkMask, Vec2, Lamp, Lighting } from 'illuminated';
 
 import type Minigame from './minigame';
@@ -21,9 +21,9 @@ import type Item from '../entity/objects/item';
 import type Player from '../entity/character/player/player';
 import type Tree from '../entity/objects/resource/impl/tree';
 import type Grids from '../map/grids';
-import type { LampData } from '@kaetram/common/types/item';
-import type { ClientTile } from '@kaetram/common/types/map';
-import type { SerializedLight } from '@kaetram/common/network/impl/overlay';
+import type { LampData } from '@acacia/common/types/item';
+import type { ClientTile } from '@acacia/common/types/map';
+import type { SerializedLight } from '@acacia/common/network/impl/overlay';
 
 interface Light extends Lamp {
     originalX: number;

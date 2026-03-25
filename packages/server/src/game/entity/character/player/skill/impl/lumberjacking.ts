@@ -1,9 +1,9 @@
 import ResourceSkill from '../resourceskill';
 import Item from '../../../../objects/item';
 
-import Utils from '@kaetram/common/util/utils';
-import ResourceText from '@kaetram/common/text/en/resource';
-import { Modules } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import ResourceText from '@acacia/common/text/en/resource';
+import { Modules } from '@acacia/common/network';
 
 import type Player from '../../player';
 import type Resource from '../../../../../entity/objects/resource/resource';

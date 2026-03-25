@@ -2,11 +2,11 @@ import { onSecondaryPress } from './press';
 
 import Sprite from '../entity/sprite';
 
-import { t } from '@kaetram/common/i18n';
-import { Modules, Opcodes } from '@kaetram/common/network';
+import { t } from '@acacia/common/i18n';
+import { Modules, Opcodes } from '@acacia/common/network';
 
 import type { AnimationData } from '../entity/sprite';
-import type { Bonuses, Stats } from '@kaetram/common/types/item';
+import type { Bonuses, Stats } from '@acacia/common/types/item';
 
 export let isInt = (n: number): boolean => n % 1 === 0;
 

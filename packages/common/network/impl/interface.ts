@@ -1,8 +1,8 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { Modules, Opcodes } from '@kaetram/common/network';
+import type { Modules, Opcodes } from '@acacia/common/network';
 
 export interface InterfacePacketData {
     identifier: Modules.Interfaces;

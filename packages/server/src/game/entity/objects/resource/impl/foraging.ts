@@ -1,8 +1,8 @@
 import Resource from '../resource';
 import foragingSpots from '../../../../../../data/foraging.json';
 
-import Utils from '@kaetram/common/util/utils';
-import { Modules } from '@kaetram/common/network';
+import Utils from '@acacia/common/util/utils';
+import { Modules } from '@acacia/common/network';
 
 export default class Foraging extends Resource {
     public constructor(key: string, x: number, y: number) {

@@ -1,7 +1,7 @@
-import Handshake from '@kaetram/common/network/impl/handshake';
+import Handshake from '@acacia/common/network/impl/handshake';
 
-import type { Packets } from '@kaetram/common/network';
-import type { SerializedServer } from '@kaetram/common/types/network';
+import type { Packets } from '@acacia/common/network';
+import type { SerializedServer } from '@acacia/common/types/network';
 
 class Main {
     private ws = new WebSocket(`ws://${globalConfig.hubWsHost}:${globalConfig.hubWsPort}`);

@@ -1,7 +1,7 @@
 import Quest from '../quest';
 import Data from '../../../../../../../data/quests/anvilsechoes.json';
 
-import type { ProcessedDoor } from '@kaetram/common/types/map';
+import type { ProcessedDoor } from '@acacia/common/types/map';
 import type Player from '../../player';
 
 export default class AnvilsEchoes extends Quest {

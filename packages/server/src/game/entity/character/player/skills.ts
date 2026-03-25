@@ -18,12 +18,12 @@ import Alchemy from './skill/impl/alchemy';
 
 import Formulas from '../../../../info/formulas';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { ExperiencePacket, PointsPacket, SkillPacket } from '@kaetram/common/network/impl';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { ExperiencePacket, PointsPacket, SkillPacket } from '@acacia/common/network/impl';
 
 import type Player from './player';
 import type Skill from './skill/skill';
-import type { SerializedSkills, SkillData } from '@kaetram/common/network/impl/skill';
+import type { SerializedSkills, SkillData } from '@acacia/common/network/impl/skill';
 
 export default class Skills {
     private loaded = false;

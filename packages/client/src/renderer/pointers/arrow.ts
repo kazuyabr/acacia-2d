@@ -1,6 +1,6 @@
 import Utils from '../../utils/util';
 
-import type { Opcodes } from '@kaetram/common/network';
+import type { Opcodes } from '@acacia/common/network';
 
 export default class Arrow {
     // Hardcoded value representing the width of the arrow element divided by 2.

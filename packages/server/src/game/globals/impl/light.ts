@@ -1,4 +1,4 @@
-import type { SerializedLight } from '@kaetram/common/network/impl/overlay';
+import type { SerializedLight } from '@acacia/common/network/impl/overlay';
 
 export default class Light {
     /**

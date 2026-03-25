@@ -1,13 +1,13 @@
 import Entity from '../entity';
 
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import { Modules, Opcodes } from '@kaetram/common/network';
-import { LootBagPacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import { Modules, Opcodes } from '@acacia/common/network';
+import { LootBagPacket } from '@acacia/common/network/impl';
 
 import type Item from './item';
 import type Player from '../character/player/player';
-import type { SlotData } from '@kaetram/common/types/slot';
+import type { SlotData } from '@acacia/common/types/slot';
 import type World from '../../world';
 
 /**

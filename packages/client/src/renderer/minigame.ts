@@ -4,10 +4,10 @@
  * to the minigame the player is in.
  */
 
-import { Opcodes } from '@kaetram/common/network';
+import { Opcodes } from '@acacia/common/network';
 
-import type { Status } from '@kaetram/common/api/minigame';
-import type { MinigamePacketData } from '@kaetram/common/types/messages/outgoing';
+import type { Status } from '@acacia/common/api/minigame';
+import type { MinigamePacketData } from '@acacia/common/types/messages/outgoing';
 
 export default class Minigame {
     // Coursing score variables.

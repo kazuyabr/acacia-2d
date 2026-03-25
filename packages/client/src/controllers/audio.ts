@@ -1,6 +1,6 @@
 import Util from '../utils/util';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Entity from '../entity/entity';
 import type Game from '../game';

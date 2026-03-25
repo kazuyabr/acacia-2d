@@ -1,7 +1,7 @@
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Player from './player';
-import type { StatisticsData } from '@kaetram/common/types/statistics';
+import type { StatisticsData } from '@acacia/common/types/statistics';
 
 export default class Statistics {
     private milestones = [10, 50, 100, 500, 1000, 5000, 10_000];

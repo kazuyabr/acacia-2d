@@ -2,14 +2,14 @@ import Menu from './menu';
 
 import Utils from '../utils/util';
 
-import { Modules, Opcodes } from '@kaetram/common/network';
+import { Modules, Opcodes } from '@acacia/common/network';
 
 import type Player from '../entity/character/player/player';
 import type {
     CraftingItemPreview,
     CraftingRequirement
-} from '@kaetram/common/network/impl/crafting';
-import type { CraftingPacketData } from '@kaetram/common/types/messages/outgoing';
+} from '@acacia/common/network/impl/crafting';
+import type { CraftingPacketData } from '@acacia/common/types/messages/outgoing';
 
 type SelectCallback = (key: string) => void;
 type CraftCallback = (key: string, amount: number) => void;

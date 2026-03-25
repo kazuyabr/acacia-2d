@@ -2,7 +2,7 @@ import type Area from './areas/area';
 import type Entity from '../entity/entity';
 import type Light from '../globals/impl/light';
 import type Player from '../entity/character/player/player';
-import type { RegionTileData } from '@kaetram/common/types/map';
+import type { RegionTileData } from '@acacia/common/types/map';
 
 export default class Region {
     public data: RegionTileData[] = [];

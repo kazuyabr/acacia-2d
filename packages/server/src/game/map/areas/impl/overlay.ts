@@ -2,7 +2,7 @@ import Areas from '../areas';
 
 import type Area from '../area';
 import type World from '../../../world';
-import type { OverlayType, ProcessedArea } from '@kaetram/common/types/map';
+import type { OverlayType, ProcessedArea } from '@acacia/common/types/map';
 
 export default class Overlay extends Areas {
     public constructor(data: ProcessedArea[], world: World) {

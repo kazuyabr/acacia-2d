@@ -1,10 +1,10 @@
 import Packet from '../packet';
 
-import { Packets } from '@kaetram/common/network';
+import { Packets } from '@acacia/common/network';
 
-import type { EntityData } from '@kaetram/common/types/entity';
-import type Entity from '@kaetram/server/src/game/entity/entity';
-import type Player from '@kaetram/server/src/game/entity/character/player/player';
+import type { EntityData } from '@acacia/common/types/entity';
+import type Entity from '@acacia/server/src/game/entity/entity';
+import type Player from '@acacia/server/src/game/entity/character/player/player';
 
 export type SpawnPacketCallback = (data: EntityData) => void;
 

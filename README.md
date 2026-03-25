@@ -1,28 +1,26 @@
 # Acacia
 
-[![Version](https://img.shields.io/github/package-json/v/Kaetram/Kaetram-Open)](https://github.com/Kaetram/Kaetram-Open/releases/latest 'Version')
-[![MPL-2.0 License](https://img.shields.io/github/license/Kaetram/Kaetram-Open)][license]
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fkaetram.com&style=flat)](https://kaetram.com 'Website')
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Kaetram/Kaetram-Open/build.yml?branch=develop&label=build)](https://github.com/Kaetram/Kaetram-Open/actions/workflows/build.yml 'Build Status')
-[![E2E Status](https://img.shields.io/github/actions/workflow/status/Kaetram/Kaetram-Open/e2e.yml?branch=develop&label=e2e)](https://github.com/Kaetram/Kaetram-Open/actions/workflows/e2e.yml 'E2E Status')
-[![Open Issues](https://img.shields.io/github/issues/Kaetram/Kaetram-Open)][issues]
+[![Version](https://img.shields.io/github/package-json/v/acacia/acacia-2d)](https://github.com/acacia/acacia-2d/releases/latest 'Version')
+[![MPL-2.0 License](https://img.shields.io/github/license/acacia/acacia-2d)][license]
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Facacia.com&style=flat)](https://acacia.com 'Website')
+[![Build Status](https://img.shields.io/github/actions/workflow/status/acacia/acacia-2d/build.yml?branch=develop&label=build)](https://github.com/acacia/acacia-2d/actions/workflows/build.yml 'Build Status')
+[![E2E Status](https://img.shields.io/github/actions/workflow/status/acacia/acacia-2d/e2e.yml?branch=develop&label=e2e)](https://github.com/acacia/acacia-2d/actions/workflows/e2e.yml 'E2E Status')
+[![Open Issues](https://img.shields.io/github/issues/acacia/acacia-2d)][issues]
 
-[![Watch](https://img.shields.io/github/watchers/Kaetram/Kaetram-Open?style=social&icon=github)](https://github.com/Kaetram/Kaetram-Open/subscription 'Watch')
-[![Stars](https://img.shields.io/github/stars/Kaetram/Kaetram-Open?style=social&icon=github)](https://github.com/Kaetram/Kaetram-Open/stargazers 'Stars')
-[![Fork](https://img.shields.io/github/forks/Kaetram/Kaetram-Open?style=social&icon=github)](https://github.com/Kaetram/Kaetram-Open/fork 'Fork')
+[![Watch](https://img.shields.io/github/watchers/acacia/acacia-2d?style=social&icon=github)](https://github.com/acacia/acacia-2d/subscription 'Watch')
+[![Stars](https://img.shields.io/github/stars/acacia/acacia-2d?style=social&icon=github)](https://github.com/acacia/acacia-2d/stargazers 'Stars')
+[![Fork](https://img.shields.io/github/forks/acacia/acacia-2d?style=social&icon=github)](https://github.com/acacia/acacia-2d/fork 'Fork')
 [![Discord](https://img.shields.io/discord/583033499741847574?logo=discord&color=5865f2&labelColor=fff&style=flat)][discord]
 [![YouTube](https://img.shields.io/badge/YouTube-white?logo=youtube&logoColor=f00)](https://www.youtube.com/channel/UC0atP4sQbb4LJd6y4jijOHg 'YouTube')
-[![Twitter](https://img.shields.io/twitter/follow/kaetramofficial?style=social)](https://twitter.com/kaetramofficial 'Twitter')
-[![Reddit](https://img.shields.io/reddit/subreddit-subscribers/kaetram?style=social)](https://reddit.com/r/kaetram 'Reddit')
 
-Projeto Acacia é um sistema derivado do projeto de código aberto Kaetram e tem toda uma estrutra que sera aos poucos migrada para um projeto proprietario descontinuando o uso de Kaetram como base.
-Esta versão sera para sempre código aberto.
+Projeto Acacia é uma base 2D de código aberto em evolução contínua.
+Esta versão permanece código aberto.
 
-# Kaetram
+# Acacia
 
-Kaetram é um MMORPG 2D de código aberto que expande a ideia original criada pelo BrowserQuest (BQ) da Little Workshop. Nosso objetivo é fornecer uma experiência colaborativa de jogo, bem como um motor de jogo para aqueles interessados em criar sua própria versão. O jogo ainda está em estágios iniciais de desenvolvimento e toda ajuda, sugestões e relatórios de bugs são bem-vindos. Todos os recursos são licenciados sob CC-BY-SA3.0 e pretendemos manter os recursos originais do BQ, bem como expandi-los. Toda a base de código foi reescrita do zero, otimizada e documentada. Consulte o wiki do GitHub para obter informações sobre desenvolvimento. Kaetram começou seu desenvolvimento em 2015 sob o nome de Tap Tap Adventure (TTA). Em 2017, Kaetram foi iniciado como uma reescrita completa do código que era anteriormente baseado em BQ.
+Acacia é um MMORPG 2D de código aberto que expande a ideia original criada pelo BrowserQuest (BQ) da Little Workshop. Nosso objetivo é fornecer uma experiência colaborativa de jogo, bem como um motor para quem deseja criar sua própria versão. O jogo ainda está em estágios iniciais de desenvolvimento e toda ajuda, sugestões e relatórios de bugs são bem-vindos. Todos os recursos são licenciados sob CC-BY-SA3.0 e pretendemos manter os recursos originais do BQ, bem como expandi-los. Toda a base de código foi reescrita do zero, otimizada e documentada. Consulte o wiki do GitHub para obter informações sobre desenvolvimento.
 
-Versão Live &ndash; <https://kaetram.com>
+Versão Live &ndash; <https://acacia.com>
 
 Junte-se a nós no Discord &ndash; <https://discord.gg/MmbGAaw>
 
@@ -226,9 +224,9 @@ Veja também as [issues abertas][issues] para uma lista de funcionalidades propo
 
 ### Patrocínio
 
-Patreon – <https://www.patreon.com/kaetram>
+Patreon – <https://www.patreon.com/acacia>
 
-Open Collective – <https://opencollective.com/kaetram>
+Open Collective – <https://opencollective.com/acacia>
 
 ### Crypto
 
@@ -242,15 +240,15 @@ Open Collective – <https://opencollective.com/kaetram>
 
 ## Licença & Comissão
 
-Após o lançamento da versão beta, o Kaetram-Open será atualizado apenas uma vez a cada 2-4 semanas. Não haverá mais atualizações na arte dos sprites, música, propriedades de itens/mobs/npcs/etc. Este repositório fornecerá as ferramentas necessárias para criar sua própria versão do Kaetram, existem muitos recursos incluídos para isso. Modificações futuras consistirão principalmente em melhorias no motor do jogo.
+Após o lançamento da versão beta, este repositório será atualizado em um ritmo mais controlado. Não haverá mais atualizações na arte dos sprites, música, propriedades de itens/mobs/npcs/etc. Este repositório fornece as ferramentas necessárias para criar sua própria versão, com modificações futuras concentradas principalmente em melhorias no motor do jogo.
 
-Para todas as consultas sobre a compra de uma licença diferente, trabalho comissionado ou compra de acesso à nossa versão atualizada, entre em contato com **@kaetram** no [Discord][discord] ou envie um e-mail para <admin@kaetram.com>.
+Para todas as consultas sobre a compra de uma licença diferente, trabalho comissionado ou compra de acesso à nossa versão atualizada, entre em contato com **@acacia** no [Discord][discord] ou envie um e-mail para <admin@acacia.com>.
 
 Este projeto é distribuído sob a **[Licença Pública Mozilla Versão 2.0](https://choosealicense.com/licenses/mpl-2.0/)**. Veja [`LICENSE`][license] para mais informações.
 
-Além disso, o Kaetram é distribuído com uma licença secundária, a Licença Pública Omnia (OPL):
+Além disso, o projeto é distribuído com uma licença secundária, a Licença Pública Omnia (OPL):
 
-- Você DEVE fornecer um link direto para o Kaetram na seção de créditos.
+- Você DEVE fornecer um link direto para o Acacia na seção de créditos.
 - Você DEVE manter o código open-source e continuar fazendo isso.
 - Você NÃO PODE usar este projeto ou qualquer parte dele para qualquer coisa relacionada a inteligência artificial, criptomoedas ou NFTs sem permissão direta dos criadores.
 - Você NÃO PODE remover a seção de créditos. Ela DEVE permanecer visível na página inicial do site. Ela DEVE ser facilmente acessível a qualquer usuário que acesse o projeto conforme os [Padrões de Acessibilidade W3C](https://www.w3.org/WAI/standards-guidelines/).
@@ -259,8 +257,8 @@ Além disso, o Kaetram é distribuído com uma licença secundária, a Licença 
 - Você NÃO PODE usar este projeto ou qualquer parte dele para qualquer atividade ilícita.
 - Você NÃO PODE usar este projeto ou qualquer parte dele para espalhar ódio, racismo ou qualquer forma de comportamento discriminatório.
 
-Se você tiver alguma dúvida, entre em contato com @kaetram no [Discord][discord].
+Se você tiver alguma dúvida, entre em contato com @acacia no [Discord][discord].
 
 [license]: LICENSE 'Licença do Projeto'
-[issues]: https://github.com/Kaetram/Kaetram-Open/issues 'Issues Abertas'
+[issues]: https://github.com/acacia/acacia-2d/issues 'Issues Abertas'
 [discord]: https://discord.gg/MmbGAaw 'Entre no Discord'

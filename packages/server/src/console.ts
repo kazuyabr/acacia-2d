@@ -1,9 +1,9 @@
-import log from '@kaetram/common/util/log';
-import { Modules } from '@kaetram/common/network';
+import log from '@acacia/common/util/log';
+import { Modules } from '@acacia/common/network';
 
 import type World from './game/world';
 import type Player from './game/entity/character/player/player';
-import type MongoDB from '@kaetram/common/database/mongodb/mongodb';
+import type MongoDB from '@acacia/common/database/mongodb/mongodb';
 
 /**
  * The console lives on top of the server. It allows an admin to directly

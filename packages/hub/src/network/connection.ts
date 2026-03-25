@@ -1,5 +1,5 @@
 import type { WebSocket } from 'uws';
-import type { ConnectionInfo, MessageCallback } from '@kaetram/common/types/network';
+import type { ConnectionInfo, MessageCallback } from '@acacia/common/types/network';
 
 export default class Connection {
     public messageCallback?: MessageCallback;

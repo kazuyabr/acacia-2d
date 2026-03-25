@@ -1,5 +1,5 @@
-import { Constants } from '@kaetram/common/network/modules';
-import { buildPlayerInfo } from '@kaetram/e2e/cypress/fixtures/builders/playerinfo.builder';
+import { Constants } from '@acacia/common/network/modules';
+import { buildPlayerInfo } from '@acacia/e2e/cypress/fixtures/builders/playerinfo.builder';
 
 export default abstract class WorldContext {
     public USERNAME = `fvantom_${Math.floor(Math.random() * 10_000_000) + 1}`;

@@ -1,12 +1,12 @@
 import Areas from '../areas';
 
-import Utils from '@kaetram/common/util/utils';
+import Utils from '@acacia/common/util/utils';
 
 import type Area from '../area';
 import type World from '../../../world';
 import type Character from '../../../entity/character/character';
 import type Player from '../../../entity/character/player/player';
-import type { ProcessedArea } from '@kaetram/common/types/map';
+import type { ProcessedArea } from '@acacia/common/types/map';
 
 export default class Chest extends Areas {
     public constructor(data: ProcessedArea[], world: World) {

@@ -1,10 +1,10 @@
 import Quest from '../quest';
 import Data from '../../../../../../../data/quests/evilsanta.json';
 
-import log from '@kaetram/common/util/log';
+import log from '@acacia/common/util/log';
 
 import type Player from '../../player';
-import type { ProcessedDoor } from '@kaetram/common/types/map';
+import type { ProcessedDoor } from '@acacia/common/types/map';
 
 export default class EvilSanta extends Quest {
     public constructor(key: string) {

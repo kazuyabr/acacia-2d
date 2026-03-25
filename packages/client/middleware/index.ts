@@ -1,6 +1,6 @@
 import { defineMiddleware, sequence } from 'astro/middleware';
 import { i18nMiddleware, getLocale } from 'astro-i18n-aut';
-import { defaultLocale, changeLanguage, type Locale } from '@kaetram/common/i18n';
+import { defaultLocale, changeLanguage, type Locale } from '@acacia/common/i18n';
 
 let language = defineMiddleware(async ({ url }, next) => {
     let lang = getLocale(url) as Locale;

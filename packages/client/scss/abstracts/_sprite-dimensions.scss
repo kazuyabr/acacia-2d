@@ -1,0 +1,118 @@
+@use 'sass:map';
+
+$sprite-dimensions: (
+    'abilityicons': (width: 128, height: 45),
+    'achievements': (width: 256, height: 48),
+    'bank': (width: 310, height: 175),
+    'bars': (width: 63, height: 90),
+    'buttons': (width: 576, height: 108),
+    'characterdialogsheet': (width: 620, height: 434),
+    'chatbox': (width: 264, height: 135),
+    'container-fancy-button': (width: 60, height: 26),
+    'containers': (width: 512, height: 190),
+    'controls/arrows': (width: 96, height: 29),
+    'controls/click': (width: 48, height: 22),
+    'controls/wasd': (width: 96, height: 29),
+    'crafting': (width: 208, height: 256),
+    'equipment/armourskin': (width: 16, height: 16),
+    'equipment/arrows': (width: 16, height: 16),
+    'equipment/boots': (width: 16, height: 16),
+    'equipment/cape': (width: 16, height: 16),
+    'equipment/chestplate': (width: 16, height: 16),
+    'equipment/helmet': (width: 16, height: 16),
+    'equipment/legplates': (width: 16, height: 16),
+    'equipment/pendant': (width: 16, height: 16),
+    'equipment/ring': (width: 16, height: 16),
+    'equipment/shield': (width: 16, height: 16),
+    'equipment/weapon': (width: 16, height: 16),
+    'equipment/weaponskin': (width: 16, height: 16),
+    'frame_buttons': (width: 57, height: 114),
+    'guilds/banners': (width: 450, height: 128),
+    'guilds/banners-outline': (width: 780, height: 300),
+    'guilds/decorations': (width: 270, height: 256),
+    'guilds/elements': (width: 320, height: 256),
+    'guilds/frames': (width: 768, height: 256),
+    'guilds/outline1': (width: 450, height: 128),
+    'guilds/outline2': (width: 450, height: 128),
+    'guilds/outline3': (width: 450, height: 128),
+    'guilds/outline4': (width: 450, height: 128),
+    'guilds/outline5': (width: 450, height: 128),
+    'guilds/splitbanners': (width: 464, height: 192),
+    'hud_buttons': (width: 66, height: 350),
+    'image': (width: 80, height: 160),
+    'leaderboards': (width: 422, height: 256),
+    'main': (width: 111, height: 197),
+    'mapframe': (width: 270, height: 180),
+    'mapicons': (width: 176, height: 48),
+    'pointer': (width: 32, height: 32),
+    'quests': (width: 422, height: 256),
+    'skills/accuracy': (width: 16, height: 16),
+    'skills/alchemy': (width: 16, height: 16),
+    'skills/archery': (width: 16, height: 16),
+    'skills/chiseling': (width: 16, height: 16),
+    'skills/chiseling2': (width: 16, height: 16),
+    'skills/cooking': (width: 16, height: 16),
+    'skills/crafting': (width: 16, height: 16),
+    'skills/defense': (width: 16, height: 16),
+    'skills/eating': (width: 16, height: 16),
+    'skills/fishing': (width: 16, height: 16),
+    'skills/fletching': (width: 16, height: 16),
+    'skills/foraging': (width: 16, height: 16),
+    'skills/health': (width: 16, height: 16),
+    'skills/loitering': (width: 16, height: 16),
+    'skills/lumberjacking': (width: 16, height: 16),
+    'skills/magic': (width: 16, height: 16),
+    'skills/mining': (width: 16, height: 16),
+    'skills/smelting': (width: 16, height: 16),
+    'skills/smithing': (width: 16, height: 16),
+    'skills/strength': (width: 16, height: 16),
+    'skillslots': (width: 200, height: 40),
+    'slices/button': (width: 16, height: 16),
+    'slices/button-active': (width: 16, height: 16),
+    'slices/button-green': (width: 16, height: 16),
+    'slices/button-green-active': (width: 16, height: 16),
+    'slices/button-green-hover': (width: 16, height: 16),
+    'slices/button-hover': (width: 16, height: 16),
+    'slices/container': (width: 16, height: 16),
+    'slices/container-fancy': (width: 96, height: 96),
+    'slices/dialog': (width: 16, height: 16),
+    'slices/inner-container': (width: 48, height: 48),
+    'slices/input': (width: 13, height: 13),
+    'slices/input-active': (width: 13, height: 13),
+    'slices/input-error': (width: 13, height: 13),
+    'slices/item-slot': (width: 13, height: 13),
+    'slices/list': (width: 19, height: 19),
+    'slices/list-hover': (width: 19, height: 19),
+    'slices/list-item': (width: 14, height: 14),
+    'slices/list-item-hover': (width: 14, height: 14),
+    'slices/menu': (width: 16, height: 16),
+    'slices/menu-fancy': (width: 96, height: 96),
+    'slices/tab': (width: 12, height: 12),
+    'slices/tab-active': (width: 12, height: 12),
+    'spritesheet': (width: 422, height: 777),
+    'trade': (width: 512, height: 175)
+);
+
+@function sprite-dimension($image, $dimension) {
+    $dimensions: map.get($sprite-dimensions, $image);
+
+    @if $dimensions == null {
+        @error "Unknown sprite image '#{$image}'.";
+    }
+
+    $value: map.get($dimensions, $dimension);
+
+    @if $value == null {
+        @error "Unknown sprite dimension '#{$dimension}' for '#{$image}'.";
+    }
+
+    @return $value;
+}
+
+@function sprite-width($image) {
+    @return sprite-dimension($image, width);
+}
+
+@function sprite-height($image) {
+    @return sprite-dimension($image, height);
+}

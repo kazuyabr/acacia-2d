@@ -1,12 +1,12 @@
 {
-    "name": "@kaetram/admin",
+    "name": "@acacia/admin",
     "type": "module",
     "scripts": {
         "hub": "astro dev"
     },
     "dependencies": {
+        "@acacia/common": "workspace:*",
         "@astrojs/node": "^6.0.1",
-        "@kaetram/common": "workspace:*",
         "astro": "^3.2.0"
     },
     "devDependencies": {

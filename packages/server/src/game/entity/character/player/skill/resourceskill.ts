@@ -2,15 +2,15 @@ import Skill from './skill';
 
 import Item from '../../../objects/item';
 
-import log from '@kaetram/common/util/log';
-import Utils from '@kaetram/common/util/utils';
-import ResourceText from '@kaetram/common/text/en/resource';
-import { Modules } from '@kaetram/common/network';
-import { AnimationPacket } from '@kaetram/common/network/impl';
+import log from '@acacia/common/util/log';
+import Utils from '@acacia/common/util/utils';
+import ResourceText from '@acacia/common/text/en/resource';
+import { Modules } from '@acacia/common/network';
+import { AnimationPacket } from '@acacia/common/network/impl';
 
 import type Player from '../player';
 import type Resource from '../../../objects/resource/resource';
-import type { ResourceInfo } from '@kaetram/common/types/resource';
+import type { ResourceInfo } from '@acacia/common/types/resource';
 
 type ExhaustCallback = (player: Player, resource?: Resource) => void;
 

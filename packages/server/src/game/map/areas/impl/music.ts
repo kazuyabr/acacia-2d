@@ -2,7 +2,7 @@ import Areas from '../areas';
 
 import type Area from '../area';
 import type World from '../../../world';
-import type { ProcessedArea } from '@kaetram/common/types/map';
+import type { ProcessedArea } from '@acacia/common/types/map';
 
 export default class Music extends Areas {
     public constructor(data: ProcessedArea[], world: World) {

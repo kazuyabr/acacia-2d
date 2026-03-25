@@ -4,7 +4,7 @@ import Tile from '../map/tile';
 
 import type Game from '../game';
 import type { ContextCallback } from './renderer';
-import type { ClientTile, TransformedTile } from '@kaetram/common/types/map';
+import type { ClientTile, TransformedTile } from '@acacia/common/types/map';
 
 enum TileFlip {
     Horizontal,

@@ -6,19 +6,19 @@ import Equipment from './equipment';
 
 import Character from '../character';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
 import type Game from '../../../game';
-import type { Light } from '@kaetram/common/types/item';
-import type { GuildPacketData } from '@kaetram/common/types/messages/outgoing';
-import type { AchievementData } from '@kaetram/common/network/impl/achievement';
-import type { PlayerData } from '@kaetram/common/network/impl/player';
-import type { SkillData } from '@kaetram/common/network/impl/skill';
-import type { QuestData } from '@kaetram/common/network/impl/quest';
-import type { AbilityData } from '@kaetram/common/network/impl/ability';
-import type { Friend as FriendType } from '@kaetram/common/network/impl/friends';
-import type { GuildData, Member } from '@kaetram/common/network/impl/guild';
-import type { EquipmentData } from '@kaetram/common/network/impl/equipment';
+import type { Light } from '@acacia/common/types/item';
+import type { GuildPacketData } from '@acacia/common/types/messages/outgoing';
+import type { AchievementData } from '@acacia/common/network/impl/achievement';
+import type { PlayerData } from '@acacia/common/network/impl/player';
+import type { SkillData } from '@acacia/common/network/impl/skill';
+import type { QuestData } from '@acacia/common/network/impl/quest';
+import type { AbilityData } from '@acacia/common/network/impl/ability';
+import type { Friend as FriendType } from '@acacia/common/network/impl/friends';
+import type { GuildData, Member } from '@acacia/common/network/impl/guild';
+import type { EquipmentData } from '@acacia/common/network/impl/equipment';
 
 type AbilityCallback = (key: string, level: number, quickSlot: number) => void;
 type PoisonCallback = (status: boolean) => void;

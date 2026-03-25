@@ -1,8 +1,8 @@
 import Util from '../../../utils/util';
 
-import { Modules } from '@kaetram/common/network';
+import { Modules } from '@acacia/common/network';
 
-import type { Bonuses, Enchantments, Light, Stats } from '@kaetram/common/types/item';
+import type { Bonuses, Enchantments, Light, Stats } from '@acacia/common/types/item';
 
 export default class Equipment {
     public key = '';
