@@ -1,0 +1,156 @@
+services:
+    hub:
+        build:
+            context: ../
+            dockerfile: docker-multiworld/Dockerfile
+        env_file:
+            - ../.env
+        environment:
+            MONGODB_HOST: mongo
+            API_ENABLED: 'true'
+            HUB_ENABLED: 'true'
+            HUB_ACCESS_TOKEN: 'local-hub-token'
+        networks:
+            - internos
+        expose:
+            - '9526'
+            - '9527'
+            - '9528'
+        ports:
+            - '9526:9526'
+            - '9527:9527'
+            - '9528:9528'
+        depends_on:
+            - mongo
+        command: yarn workspace @acacia/hub start
+
+    world-1:
+        build:
+            context: ../
+            dockerfile: docker-multiworld/Dockerfile
+        env_file:
+            - ../.env
+        environment:
+            HOST: 0.0.0.0
+            PORT: 9001
+            API_ENABLED: 'true'
+            API_PORT: 9002
+            SERVER_ID: 1
+            ACCESS_TOKEN: 'local-hub-token'
+            HUB_ENABLED: 'true'
+            HUB_HOST: hub
+            HUB_WS_HOST: hub
+            HUB_ACCESS_TOKEN: 'local-hub-token'
+            REMOTE_SERVER_HOST: localhost
+            NGINX: 'false'
+            MONGODB_HOST: mongo
+        networks:
+            - internos
+        expose:
+            - '9001'
+            - '9002'
+        ports:
+            - '9001:9001'
+            - '9002:9002'
+        depends_on:
+            - mongo
+            - hub
+        command: yarn workspace @acacia/server start --host 0.0.0.0 --port 9001
+
+    world-2:
+        build:
+            context: ../
+            dockerfile: docker-multiworld/Dockerfile
+        env_file:
+            - ../.env
+        environment:
+            HOST: 0.0.0.0
+            PORT: 9003
+            API_ENABLED: 'true'
+            API_PORT: 9004
+            SERVER_ID: 2
+            ACCESS_TOKEN: 'local-hub-token'
+            HUB_ENABLED: 'true'
+            HUB_HOST: hub
+            HUB_WS_HOST: hub
+            HUB_ACCESS_TOKEN: 'local-hub-token'
+            REMOTE_SERVER_HOST: localhost
+            NGINX: 'false'
+            MONGODB_HOST: mongo
+        networks:
+            - internos
+        expose:
+            - '9003'
+            - '9004'
+        ports:
+            - '9003:9003'
+            - '9004:9004'
+        depends_on:
+            - mongo
+            - hub
+        command: yarn workspace @acacia/server start --host 0.0.0.0 --port 9003
+
+    client:
+        build:
+            context: ../
+            dockerfile: docker-multiworld/Dockerfile
+        env_file:
+            - ../.env
+        environment:
+            HOST: 0.0.0.0
+            PORT: 9000
+            HUB_ENABLED: 'true'
+            API_ENABLED: 'true'
+            HUB_HOST: hub
+            HUB_WS_HOST: hub
+            CLIENT_REMOTE_HOST: localhost
+            CLIENT_REMOTE_PORT: 81
+            NGINX: 'true'
+        networks:
+            - internos
+        expose:
+            - '9000'
+        depends_on:
+            - hub
+            - world-1
+            - world-2
+        command: yarn workspace @acacia/client start --host 0.0.0.0 --port 9000
+
+    nginx:
+        image: nginx:alpine
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        ports:
+            - '81:80'
+        depends_on:
+            - client
+            - world-1
+            - hub
+        networks:
+            - internos
+
+    mongo:
+        image: mongo:6.0
+        restart: unless-stopped
+        env_file:
+            - ../.env
+        entrypoint:
+            - /bin/sh
+            - -c
+            - |
+                export MONGO_INITDB_ROOT_USERNAME="$$MONGODB_USER"
+                export MONGO_INITDB_ROOT_PASSWORD="$$MONGODB_PASSWORD"
+                exec /usr/local/bin/docker-entrypoint.sh mongod
+        ports:
+            - '27017:27017'
+        volumes:
+            - mongo_data:/data/db
+        networks:
+            - internos
+
+volumes:
+    mongo_data:
+
+networks:
+    internos:
+        external: true
