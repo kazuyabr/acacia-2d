@@ -173,8 +173,14 @@ export default class Crafting {
         // Award experience to the player.
         skill.addExperience(craftingItem.experience * actualCount);
 
+        let craftedCount = craftingItem.result.count * actualCount;
+
         // Add the crafted item to the player's inventory.
-        player.inventory.add(new Item(key, -1, -1, false, craftingItem.result.count * actualCount));
+        player.inventory.add(new Item(key, -1, -1, false, craftedCount));
+
+        player.quests
+            .get(Modules.Constants.TUTORIAL_QUEST_KEY)
+            ?.handleCraft(player.activeCraftingInterface, key, craftedCount);
     }
 
     /**

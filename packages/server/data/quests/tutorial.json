@@ -72,7 +72,12 @@
         "3": {
             "task": "tree",
             "tree": "tutorialoak",
-            "treeCount": 2
+            "treeCount": 2,
+            "pointer": {
+                "type": 0,
+                "x": 51,
+                "y": 602
+            }
         },
 
         "4": {
@@ -127,7 +132,12 @@
         "6": {
             "task": "fish",
             "fish": "tutorialshrimpspot",
-            "fishCount": 2
+            "fishCount": 2,
+            "pointer": {
+                "type": 0,
+                "x": 47,
+                "y": 611
+            }
         },
 
         "7": {
@@ -141,12 +151,27 @@
             "completedText": ["Vá em frente, cozinhe os camarões para mim."],
             "pointer": {
                 "type": 0,
+                "x": 60,
+                "y": 602
+            }
+        },
+
+        "8": {
+            "task": "cooking",
+            "itemRequirements": [
+                {
+                    "key": "shrimp",
+                    "count": 1
+                }
+            ],
+            "pointer": {
+                "type": 0,
                 "x": 56,
                 "y": 607
             }
         },
 
-        "8": {
+        "9": {
             "task": "talk",
             "npc": "guard",
             "hasItemText": [
@@ -163,12 +188,12 @@
             ],
             "pointer": {
                 "type": 0,
-                "x": 56,
-                "y": 607
+                "x": 60,
+                "y": 602
             }
         },
 
-        "9": {
+        "10": {
             "task": "door",
             "pointer": {
                 "type": 0,
@@ -177,7 +202,7 @@
             }
         },
 
-        "10": {
+        "11": {
             "task": "talk",
             "npc": "guard",
             "text": [
@@ -200,13 +225,13 @@
             }
         },
 
-        "11": {
+        "12": {
             "task": "kill",
             "mob": ["rat"],
             "mobCountRequirement": 3
         },
 
-        "12": {
+        "13": {
             "task": "talk",
             "npc": "guard",
             "text": [
@@ -232,13 +257,13 @@
             }
         },
 
-        "13": {
+        "14": {
             "task": "kill",
             "mob": ["crab"],
             "mobCountRequirement": 2
         },
 
-        "14": {
+        "15": {
             "task": "talk",
             "npc": "guard",
             "text": ["Isso é tudo. O resto cabe a você descobrir.", "Você pode sair do tutorial passando pelo portal."],
@@ -258,7 +283,7 @@
             }
         },
 
-        "15": {
+        "16": {
             "task": "door",
             "pointer": {
                 "type": 0,

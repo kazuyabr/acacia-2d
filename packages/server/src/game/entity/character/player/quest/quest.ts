@@ -554,6 +554,32 @@ export default abstract class Quest {
     }
 
     /**
+     * Handles progression for cooking stages that should advance immediately
+     * after the player crafts the expected output item.
+     * @param type The crafting skill interface used.
+     * @param itemKey The crafted item key.
+     * @param count The amount successfully crafted.
+     */
+    public handleCraft(type: Modules.Skills, itemKey: string, count: number): void {
+        if (this.isFinished()) return;
+        if (this.stageData.task !== 'cooking' || this.stageData.npc) return;
+        if (type !== Modules.Skills.Cooking || count < 1) return;
+
+        let currentRequirement = false,
+            nextRequirement = false;
+
+        for (let item of this.stageData.itemRequirements || [])
+            if (item.key === itemKey) currentRequirement = true;
+
+        for (let item of this.stages[this.stage + 1]?.itemRequirements || [])
+            if (item.key === itemKey) nextRequirement = true;
+
+        if (!currentRequirement && !nextRequirement) return;
+
+        this.progress();
+    }
+
+    /**
      * Attempts to grab a sub stage NPC if it exists. Sub stage NPCs are those
      * that a player must talk to multiple (in any order) in order to progress.
      * @param key The key of the NPC we are trying to grab.
