@@ -160,7 +160,12 @@
                     "key": "cookedshrimp",
                     "count": 1
                 }
-            ]
+            ],
+            "pointer": {
+                "type": 0,
+                "x": 56,
+                "y": 607
+            }
         },
 
         "9": {
