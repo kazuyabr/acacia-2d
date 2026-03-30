@@ -49,3 +49,18 @@ O objetivo declarado é eliminar qualquer referência ao projeto anterior na wor
 - O fluxo de implementação deve terminar com auditoria textual completa.
 - Exceções, se existirem, precisam ser registradas explicitamente no contexto.
 - Testes de build e runtime continuam obrigatórios para confirmar que a troca de namespace não rompeu a integração interna.
+
+---
+
+## Decision
+Adotar estratégia de volumes para separação de ambientes Docker, com cada docker-compose.yml usando seu arquivo .env específico e volumes para materializar como .env dentro dos containers.
+
+## Reason
+Manter isolamento claro de configurações por ambiente (development vs multiworld) sem modificar Dockerfiles compartilhados, respeitando convenções de nome e mantendo precedência clara de variáveis.
+
+## Consequences
+- docker/docker-compose.yml usa ../.env.defaults via volume
+- docker-multiworld/docker-compose.yml usa ../.env.multiworld via volume
+- environment no compose sobrescreve env_file (precedência mantida)
+- Dockerfiles permanecem genéricos e compartilhados
+- Não executar ambos os compose simultaneamente (mesma rede pode causar conflitos)

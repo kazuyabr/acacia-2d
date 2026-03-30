@@ -4,7 +4,7 @@ services:
             context: ../
             dockerfile: docker-multiworld/Dockerfile
         env_file:
-            - ../.env
+            - ../.env.multiworld
         environment:
             MONGODB_HOST: mongo
             API_ENABLED: 'true'
@@ -12,6 +12,8 @@ services:
             HUB_ACCESS_TOKEN: 'local-hub-token'
         networks:
             - internos
+        volumes:
+            - ../.env.multiworld:/app/.env:ro
         expose:
             - '9526'
             - '9527'
@@ -29,7 +31,7 @@ services:
             context: ../
             dockerfile: docker-multiworld/Dockerfile
         env_file:
-            - ../.env
+            - ../.env.multiworld
         environment:
             HOST: 0.0.0.0
             PORT: 9001
@@ -46,6 +48,8 @@ services:
             MONGODB_HOST: mongo
         networks:
             - internos
+        volumes:
+            - ../.env.multiworld:/app/.env:ro
         expose:
             - '9001'
             - '9002'
@@ -62,7 +66,7 @@ services:
             context: ../
             dockerfile: docker-multiworld/Dockerfile
         env_file:
-            - ../.env
+            - ../.env.multiworld
         environment:
             HOST: 0.0.0.0
             PORT: 9003
@@ -79,6 +83,8 @@ services:
             MONGODB_HOST: mongo
         networks:
             - internos
+        volumes:
+            - ../.env.multiworld:/app/.env:ro
         expose:
             - '9003'
             - '9004'
@@ -95,7 +101,7 @@ services:
             context: ../
             dockerfile: docker-multiworld/Dockerfile
         env_file:
-            - ../.env
+            - ../.env.multiworld
         environment:
             HOST: 0.0.0.0
             PORT: 9000
@@ -108,6 +114,8 @@ services:
             NGINX: 'true'
         networks:
             - internos
+        volumes:
+            - ../.env.multiworld:/app/.env:ro
         expose:
             - '9000'
         depends_on:
@@ -133,7 +141,7 @@ services:
         image: mongo:6.0
         restart: unless-stopped
         env_file:
-            - ../.env
+            - ../.env.multiworld
         entrypoint:
             - /bin/sh
             - -c
