@@ -832,11 +832,16 @@ export default class Connection {
         switch (opcode) {
             case Opcodes.Quest.Batch: {
                 this.game.player.loadQuests(info.quests!);
+                this.ensureTutorialMusic();
                 break;
             }
 
             case Opcodes.Quest.Progress: {
                 this.game.player.setQuest(info.key!, info.stage!, info.subStage!);
+
+                if (info.key === Modules.Constants.TUTORIAL_QUEST_KEY && info.stage! >= 1)
+                    this.ensureTutorialMusic();
+
                 break;
             }
 
@@ -1047,6 +1052,16 @@ export default class Connection {
 
     private handleMusic(newSong?: string): void {
         this.audio.playMusic(newSong);
+
+        if (!newSong) this.ensureTutorialMusic();
+    }
+
+    private ensureTutorialMusic(): void {
+        let tutorial = this.game.player.quests[Modules.Constants.TUTORIAL_QUEST_KEY];
+
+        if (!tutorial || tutorial.isFinished() || this.audio.getCurrentMusic()) return;
+
+        this.audio.playMusic('meadowofthepast');
     }
 
     /**

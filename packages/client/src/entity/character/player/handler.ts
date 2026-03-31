@@ -98,6 +98,8 @@ export default class Handler extends CharacterHandler {
         this.character.moving = true;
         this.game.input.selectedCellVisible = true;
 
+        this.updateWalkingAudio();
+
         this.game.socket.send(Packets.Movement, {
             opcode: Opcodes.Movement.Started,
             requestX: this.game.input.selectedX,
@@ -121,6 +123,8 @@ export default class Handler extends CharacterHandler {
 
         // Once stopped, remove the selected tile animation.
         this.game.input.selectedCellVisible = false;
+
+        this.game.audio.stopFootsteps();
 
         // Sends the stop pathing packet to the server
         this.game.socket.send(Packets.Movement, {
@@ -188,6 +192,8 @@ export default class Handler extends CharacterHandler {
         // Check zoning boundaries if we're using a non-centered camera.
         if (!this.game.camera.isCentered()) this.game.updateCameraBounds();
 
+        this.updateWalkingAudio();
+
         // Used to prevent sending double packets.
         if (this.lastStepX === this.character.gridX && this.lastStepY === this.character.gridY)
             return;
@@ -224,6 +230,10 @@ export default class Handler extends CharacterHandler {
         if (this.character.canAttackTarget()) this.character.stop();
     }
 
+    protected override handleSecondStep(): void {
+        this.updateWalkingAudio();
+    }
+
     /**
      * Updates the camera position to center on the player.
      */
@@ -232,6 +242,21 @@ export default class Handler extends CharacterHandler {
         if (!this.game.camera.isCentered()) return;
 
         this.game.camera.centreOn(this.character);
+    }
+
+    private updateWalkingAudio(): void {
+        if (!this.character.moving) {
+            this.game.audio.stopFootsteps();
+            return;
+        }
+
+        this.game.audio.startFootsteps(this.getStepSound());
+    }
+
+    private getStepSound(): string {
+        return this.map.isTallGrass(this.character.gridX, this.character.gridY)
+            ? 'step-in-grass'
+            : 'steps';
     }
 
     /**

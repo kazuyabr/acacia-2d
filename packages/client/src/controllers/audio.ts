@@ -13,6 +13,12 @@ export default class AudioController {
     private readonly musicMinGain = 0.01;
     /** Maximum gain for background music. */
     private readonly musicMaxGain = 0.5;
+    /** Additional gain multiplier for continuous footsteps. */
+    private readonly footstepVolumeBoost = 1.5;
+    /** Light music ducking applied while the footstep loop is active. */
+    private readonly footstepMusicDuckMultiplier = 0.82;
+    /** Fade duration for footstep-driven mix adjustments. */
+    private readonly footstepMusicDuckDuration = 0.2;
 
     /** Save audio buffers. */
     private buffers: { [url: string]: Promise<AudioBuffer> } = {};
@@ -23,8 +29,26 @@ export default class AudioController {
     /** Gain node used to fade in/out the background music */
     private musicGainNode!: GainNode;
 
+    /** Gain node used for the looping footstep channel. */
+    private footstepGainNode?: GainNode;
+
+    /** Current looping footstep source. */
+    private footstepSource?: AudioBufferSourceNode;
+
+    /** Used to discard outdated async footstep loads. */
+    private footstepPlaybackToken = 0;
+
     /** Make sure there's only one gain node for music. */
     private isMusicConnected = false;
+
+    /** Track the current music to avoid restarting the same song. */
+    private currentMusic?: string;
+
+    /** Track the currently looping footstep asset. */
+    private currentFootstepSound?: string;
+
+    /** Track a footstep asset currently being initialized asynchronously. */
+    private pendingFootstepSound?: string;
 
     public constructor(private game: Game) {}
 
@@ -44,7 +68,7 @@ export default class AudioController {
      */
 
     public async playSound(sound: string, target?: Entity) {
-        if (!this.isAudioEnabled()) return;
+        if (this.isAudioEnabled() === false) return;
 
         let source = await this.bufferSource(`/audio/sounds/${sound}.mp3`),
             soundVolume = this.getSoundVolume(),
@@ -76,10 +100,92 @@ export default class AudioController {
         this.rampGain(gain, gain.value - (soundVolume * this.musicMaxGain) / 2);
 
         source.addEventListener('ended', () => {
-            this.rampGain(gain, this.getMusicVolume(), 0.5);
+            this.rampGain(gain, this.getTargetMusicVolume(), 0.5);
         });
 
         source.start();
+    }
+
+    /**
+     * Starts or updates the looping footsteps channel for the local player.
+     * @param sound - The footstep sound asset to loop.
+     */
+
+    public async startFootsteps(sound: string): Promise<void> {
+        if (!this.context || this.isAudioEnabled() === false) return;
+
+        if (this.currentFootstepSound === sound && this.footstepSource) {
+            this.updateFootstepVolume();
+            return;
+        }
+
+        if (this.pendingFootstepSound === sound) return;
+
+        let token = ++this.footstepPlaybackToken;
+
+        this.pendingFootstepSound = sound;
+        this.stopFootsteps(false, false);
+
+        try {
+            let source = await this.bufferSource(`/audio/sounds/${sound}.mp3`);
+
+            if (
+                token !== this.footstepPlaybackToken ||
+                this.pendingFootstepSound !== sound ||
+                this.isAudioEnabled() === false
+            )
+                return;
+
+            source.loop = true;
+
+            let gainNode = new GainNode(this.context, { gain: this.getFootstepVolume() });
+
+            source.connect(gainNode);
+            gainNode.connect(this.context.destination);
+
+            source.start();
+
+            this.footstepSource = source;
+            this.footstepGainNode = gainNode;
+            this.currentFootstepSound = sound;
+            this.pendingFootstepSound = undefined;
+
+            this.updateMusicMix(this.footstepMusicDuckDuration);
+        } catch (error) {
+            if (token === this.footstepPlaybackToken && this.pendingFootstepSound === sound)
+                this.pendingFootstepSound = undefined;
+
+            throw error;
+        }
+    }
+
+    /**
+     * Stops the looping footsteps channel.
+     */
+
+    public stopFootsteps(invalidateToken = true, restoreMusic = true): void {
+        if (invalidateToken) {
+            this.footstepPlaybackToken++;
+            this.pendingFootstepSound = undefined;
+        }
+
+        this.currentFootstepSound = undefined;
+
+        if (this.footstepSource) {
+            try {
+                this.footstepSource.stop();
+            } catch {
+                // Source may already be stopped.
+            }
+
+            this.footstepSource.disconnect();
+            this.footstepSource = undefined;
+        }
+
+        this.footstepGainNode?.disconnect();
+        this.footstepGainNode = undefined;
+
+        if (restoreMusic) this.updateMusicMix(this.footstepMusicDuckDuration);
     }
 
     /**
@@ -89,16 +195,23 @@ export default class AudioController {
 
     public async playMusic(music?: string) {
         if (!music) return this.stopMusic();
+        if (music === this.currentMusic) return;
 
         let source = await this.bufferSource(`/audio/music/${music}.mp3`);
         source.loop = true;
 
         this.stopMusic();
+        this.currentMusic = music;
+
         source.connect(this.musicGainNode);
 
         if (this.isAudioEnabled()) this.musicGainNode.connect(this.context.destination);
 
-        this.rampGain(this.musicGainNode.gain, this.getMusicVolume(), this.musicCrossfadeDuration);
+        this.rampGain(
+            this.musicGainNode.gain,
+            this.getTargetMusicVolume(),
+            this.musicCrossfadeDuration
+        );
         source.start();
     }
 
@@ -113,9 +226,15 @@ export default class AudioController {
 
         this.buffers[url] ??= this.loadAudio(url);
 
-        return new AudioBufferSourceNode(this.context, {
-            buffer: await this.buffers[url]
-        });
+        try {
+            return new AudioBufferSourceNode(this.context, {
+                buffer: await this.buffers[url]
+            });
+        } catch (error) {
+            delete this.buffers[url];
+            console.error(`Failed to load audio asset: ${url}`, error);
+            throw error;
+        }
     }
 
     /**
@@ -125,8 +244,12 @@ export default class AudioController {
      */
 
     private async loadAudio(url: string) {
-        let audio = await fetch(url),
-            arrayBuffer = await audio.arrayBuffer(),
+        let response = await fetch(url);
+
+        if (!response.ok)
+            throw new Error(`Failed to fetch audio asset: ${url} (${response.status})`);
+
+        let arrayBuffer = await response.arrayBuffer(),
             audioBuffer = await this.context.decodeAudioData(arrayBuffer);
 
         return audioBuffer;
@@ -140,9 +263,10 @@ export default class AudioController {
     public updateVolume() {
         if (!this.musicGainNode) this.initMusicNode();
 
-        let musicVolume = this.getMusicVolume();
+        let musicVolume = this.getMusicVolume(),
+            targetMusicVolume = this.getTargetMusicVolume();
 
-        if (musicVolume <= 0 || !this.isAudioEnabled()) {
+        if (musicVolume <= 0 || this.isAudioEnabled() === false) {
             if (this.isMusicConnected) {
                 this.musicGainNode.disconnect(this.context.destination);
                 this.isMusicConnected = false;
@@ -152,15 +276,18 @@ export default class AudioController {
 
             gain.cancelScheduledValues(this.context.currentTime);
 
-            if (this.isMusicConnected) this.rampGain(gain, musicVolume);
+            if (this.isMusicConnected) this.rampGain(gain, targetMusicVolume);
             else {
                 this.musicGainNode.connect(this.context.destination);
                 this.isMusicConnected = true;
 
                 this.rampGain(gain, this.musicMinGain);
-                this.rampGain(gain, musicVolume, this.musicCrossfadeDuration);
+                this.rampGain(gain, targetMusicVolume, this.musicCrossfadeDuration);
             }
         }
+
+        if (this.isAudioEnabled()) this.updateFootstepVolume();
+        else this.stopFootsteps();
     }
 
     /**
@@ -168,7 +295,8 @@ export default class AudioController {
      */
 
     public updatePlayerListener() {
-        if (!this.context || !this.isAudioEnabled() || this.getSettings().lowPowerMode) return;
+        if (!this.context || this.isAudioEnabled() === false || this.getSettings().lowPowerMode)
+            return;
 
         let { player } = this.game,
             { positionX, positionY, forwardX, forwardY } = this.context.listener;
@@ -214,6 +342,8 @@ export default class AudioController {
      */
 
     public stopMusic() {
+        this.currentMusic = undefined;
+
         let gainNode = this.musicGainNode;
 
         // Replace the current music node.
@@ -259,6 +389,40 @@ export default class AudioController {
     }
 
     /**
+     * Gets the effective looping footstep volume from the settings.
+     * @returns The footstep volume.
+     */
+
+    private getFootstepVolume(): number {
+        return Math.min(1, this.getSoundVolume() * this.footstepVolumeBoost);
+    }
+
+    private updateFootstepVolume(): void {
+        if (this.footstepGainNode) this.footstepGainNode.gain.value = this.getFootstepVolume();
+    }
+
+    private getTargetMusicVolume(): number {
+        let musicVolume = this.getMusicVolume();
+
+        return this.hasActiveFootsteps()
+            ? musicVolume * this.footstepMusicDuckMultiplier
+            : musicVolume;
+    }
+
+    private hasActiveFootsteps(): boolean {
+        return Boolean(this.footstepSource || this.pendingFootstepSound);
+    }
+
+    private updateMusicMix(duration = 0): void {
+        if (!this.musicGainNode || !this.context || !this.isMusicConnected) return;
+
+        let { gain } = this.musicGainNode;
+
+        gain.cancelScheduledValues(this.context.currentTime);
+        this.rampGain(gain, this.getTargetMusicVolume(), duration);
+    }
+
+    /**
      * Gets the music volume from the settings.
      * @returns The music volume.
      */
@@ -272,7 +436,7 @@ export default class AudioController {
      * @returns `true` if the audio is enabled.
      */
 
-    private isAudioEnabled() {
+    private isAudioEnabled(): boolean {
         return this.getSettings().audioEnabled;
     }
 
@@ -281,8 +445,12 @@ export default class AudioController {
      * @returns The settings object.
      */
 
-    private getSettings() {
+    private getSettings(): Game['storage']['data']['settings'] {
         return this.game.storage.data.settings;
+    }
+
+    public getCurrentMusic(): string | undefined {
+        return this.currentMusic;
     }
 
     /**

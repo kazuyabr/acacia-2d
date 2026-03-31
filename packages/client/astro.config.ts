@@ -46,7 +46,7 @@ let plugins = [
         workbox: {
             cacheId: name,
             globDirectory: 'dist',
-            globPatterns: ['**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico}'],
+            globPatterns: ['**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico,mp3}'],
             navigateFallback: null
         }
     })

@@ -127,6 +127,7 @@ export default class Settings extends Menu {
 
     private handleSoundVolume(): void {
         this.game.storage.setSoundVolume(this.soundSlider.valueAsNumber);
+        this.game.audio.updateVolume();
     }
 
     /**

@@ -41,6 +41,10 @@ export default class Map {
 
     private high: number[] = mapData.high;
     private cachedHighTiles: { [index: number]: 0 } = {};
+    private readonly highGrassTiles = new Set([
+        131, 132, 133, 134, 135, 136, 137, 195, 201, 259, 323, 9294, 9303, 9304, 9305, 9306, 9321,
+        9322, 9323, 9324
+    ]);
     private objects: number[] = [];
     private lights: number[] = [];
 
@@ -441,6 +445,19 @@ export default class Map {
 
     public isLightTile(tileId: number): boolean {
         return this.lights.includes(tileId);
+    }
+
+    public isTallGrass(x: number, y: number): boolean {
+        if (this.isOutOfBounds(x, y)) return false;
+
+        let tile = this.data[this.coordToIndex(x, y)],
+            tiles = Array.isArray(tile) ? tile : [tile];
+
+        return tiles.some((entry) => {
+            let tileId = this.isFlipped(entry) ? entry.tileId : entry;
+
+            return this.isHighTile(tileId) && this.highGrassTiles.has(tileId);
+        });
     }
 
     /**
