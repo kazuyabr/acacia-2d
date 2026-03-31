@@ -11,6 +11,7 @@ export interface StatisticsData {
     averageTimePlayed: number;
     lastLogin: number;
     loginCount: number;
+    starterSetReceived?: boolean;
 
     cheater: boolean;
 }

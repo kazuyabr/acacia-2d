@@ -44,6 +44,7 @@ export interface PlayerInfo {
     lastGlobalChat: number;
     guild: string;
     pet: string;
+    starterSetReceived: boolean;
     resetToken?: ResetToken;
 }
 
@@ -302,6 +303,7 @@ export default class Creator {
             lastGlobalChat: player.lastGlobalChat,
             guild: player.guild,
             pet: player.pet ? player.pet.key : '',
+            starterSetReceived: player.starterSetReceived,
             resetToken: undefined // Save token as undefined to prevent it from being saved.
         };
     }

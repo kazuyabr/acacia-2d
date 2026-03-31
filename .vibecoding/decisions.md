@@ -103,3 +103,17 @@ O ganho dedicado dos passos melhorou a presença do canal, mas ainda não abriu 
 - `packages/client/src/controllers/audio.ts` reduz levemente o ganho efetivo da música ao iniciar passos e restaura ao parar.
 - O ducking não interfere no comportamento dos demais SFX one-shot, que continuam usando `playSound()`.
 - Alterações no volume de SFX passam a refletir imediatamente nos passos em loop via `audio.updateVolume()` no menu de settings.
+
+---
+
+## Decision
+Normalizar o marcador de starter set no login usando o inventário e os equipamentos já carregados antes de conceder o set para contas legadas sem `starterSetReceived`.
+
+## Reason
+Existem personagens antigos criados antes da regra atual. A correção mínima e segura é reaproveitar o fluxo real de carregamento e tratar como evidência de recebimento anterior apenas a posse simultânea das cinco peças do starter set entre inventário e equipamentos. Isso evita reentrega para quem ainda preserva o set, garante uma concessão única para quem nunca recebeu e não cria histórico paralelo novo.
+
+## Consequences
+- `packages/server/src/game/entity/character/player/player.ts` passa a normalizar o starter set somente depois que inventário e equipamentos tiverem sido carregados.
+- Contas sem marcador que já possuem o conjunto completo espalhado entre inventário e equipamentos passam a ser marcadas como recebidas sem ganhar itens adicionais.
+- Contas sem marcador e sem evidência completa recebem o starter set no fluxo real de login, uma única vez.
+- Quem já consumiu, vendeu ou descartou peças e não mantém evidência suficiente continuará elegível na ausência do marcador histórico; esta é a limitação segura da migração baseada apenas no estado atual.

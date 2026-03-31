@@ -42,6 +42,8 @@ export default class Statistics {
         this.averageTimePlayed = data.averageTimePlayed || this.averageTimePlayed;
         this.lastLogin = data.lastLogin || this.lastLogin;
         this.loginCount = data.loginCount + 1 || this.loginCount;
+        this.player.starterSetReceived = data.starterSetReceived ?? this.player.starterSetReceived;
+        this.player.handleStatisticsLoaded();
     }
 
     /**
@@ -164,6 +166,7 @@ export default class Statistics {
             averageTimePlayed: this.averageTimePlayed,
             lastLogin: this.lastLogin,
             loginCount: this.loginCount,
+            starterSetReceived: this.player.starterSetReceived,
             cheater: this.player.isCheater()
         };
     }

@@ -328,13 +328,17 @@ export default abstract class Quest {
         itemRewards: QuestItem[] = [],
         progress = false
     ): void {
-        // We play it extra safe by ensuring there are at least as many empty spaces as there are reward items.
-        if (!player.inventory.hasSpace(itemRewards.length))
-            return player.notify(`misc:PLEASE_MAKE_ROOM_REWARD`);
+        if (player.isStarterSetReward(itemRewards)) {
+            if (!player.grantStarterSet()) return player.notify(`misc:PLEASE_MAKE_ROOM_REWARD`);
+        } else {
+            // We play it extra safe by ensuring there are at least as many empty spaces as there are reward items.
+            if (!player.inventory.hasSpace(itemRewards.length))
+                return player.notify(`misc:PLEASE_MAKE_ROOM_REWARD`);
 
-        // Check if the player has enough inventory space for the item rewards.
-        for (let item of itemRewards)
-            player.inventory.add(new Item(item.key, -1, -1, false, item.count));
+            // Check if the player has enough inventory space for the item rewards.
+            for (let item of itemRewards)
+                player.inventory.add(new Item(item.key, -1, -1, false, item.count));
+        }
 
         // Progress to the next stage if the parameter is true.
         if (progress) this.progress();

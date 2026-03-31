@@ -80,6 +80,14 @@ export interface ObjectData {
     };
 }
 
+const STARTER_SET_KEYS = [
+    'coppersword',
+    'copperhelmet',
+    'copperchestplate',
+    'copperlegplates',
+    'coppershield'
+] as const;
+
 export default class Player extends Character {
     public map: Map;
     private regions: Regions;
@@ -105,6 +113,7 @@ export default class Player extends Character {
     public ready = false; // indicates if login processed finished
     public authenticated = false;
     public isGuest = false;
+    public starterSetReceived = false;
     public canTalk = true;
     public noclip = false;
     public questsLoaded = false;
@@ -151,6 +160,10 @@ export default class Player extends Character {
     private lastEdible = 0;
 
     private currentSong: string | undefined;
+    private inventoryLoaded = false;
+    private equipmentLoaded = false;
+    private statisticsLoaded = false;
+    private starterSetNormalized = false;
 
     // Minigame variables
     public minigameArea: Area | undefined = undefined;
@@ -251,6 +264,7 @@ export default class Player extends Character {
         this.userAgent = data.userAgent;
         this.regionsLoaded = data.regionsLoaded || [];
         this.lastGlobalChat = data.lastGlobalChat || 0;
+        this.starterSetReceived = data.starterSetReceived ?? this.starterSetReceived;
 
         this.setPoison(data.poison.type, Date.now() - data.poison.remaining);
         this.setLastWarp(data.lastWarp);
@@ -301,7 +315,18 @@ export default class Player extends Character {
      */
 
     public loadInventory(): void {
-        this.database.loader?.loadInventory(this, this.inventory.load.bind(this.inventory));
+        this.database.loader?.loadInventory(this, (inventoryData) => {
+            let { loadCallback } = this.inventory;
+
+            this.inventory.loadCallback = undefined;
+            this.inventory.load(inventoryData);
+            this.inventoryLoaded = true;
+
+            this.normalizeStarterSet();
+
+            this.inventory.loadCallback = loadCallback;
+            this.inventory.loadCallback?.();
+        });
     }
 
     /**
@@ -472,11 +497,7 @@ export default class Player extends Character {
      */
 
     public welcome(): void {
-        if (this.isNew()) {
-            this.save();
-
-            return this.notify(`misc:WELCOME;name=${config.name}`);
-        }
+        if (this.isNew()) return this.notify(`misc:WELCOME;name=${config.name}`);
 
         this.notify(`misc:WELCOME_BACK;name=${config.name}`);
 
@@ -2025,7 +2046,77 @@ export default class Player extends Character {
      */
 
     public isNew(): boolean {
-        return Date.now() - this.statistics.creationTime < 60_000;
+        return Date.now() - this.statistics.creationTime * 1000 < 60_000;
+    }
+
+    public hasReceivedStarterSet(): boolean {
+        return this.starterSetReceived;
+    }
+
+    public handleEquipmentLoaded(): void {
+        this.equipmentLoaded = true;
+        this.normalizeStarterSet();
+    }
+
+    public handleStatisticsLoaded(): void {
+        this.statisticsLoaded = true;
+        this.normalizeStarterSet();
+    }
+
+    public isStarterSetReward(itemRewards: { key: string; count: number }[]): boolean {
+        return (
+            itemRewards.length === STARTER_SET_KEYS.length &&
+            STARTER_SET_KEYS.every((key) =>
+                itemRewards.some((itemReward) => itemReward.key === key && itemReward.count === 1)
+            )
+        );
+    }
+
+    public grantStarterSet(): boolean {
+        if (this.starterSetReceived) return false;
+        if (!this.inventory.hasSpace(STARTER_SET_KEYS.length)) return false;
+
+        for (let key of STARTER_SET_KEYS) this.inventory.add(new Item(key, -1, -1, false, 1));
+
+        this.starterSetReceived = true;
+
+        if (this.ready) this.save();
+
+        return true;
+    }
+
+    private normalizeStarterSet(): void {
+        if (this.starterSetNormalized) return;
+        if (!this.inventoryLoaded || !this.equipmentLoaded || !this.statisticsLoaded) return;
+
+        this.starterSetNormalized = true;
+
+        if (this.hasReceivedStarterSet()) return;
+
+        if (this.hasLegacyStarterSetEvidence()) {
+            this.starterSetReceived = true;
+            return;
+        }
+
+        this.grantStarterSet();
+    }
+
+    private hasLegacyStarterSetEvidence(): boolean {
+        return STARTER_SET_KEYS.every((key) => this.hasStarterSetItem(key));
+    }
+
+    private hasStarterSetItem(key: string): boolean {
+        return this.inventory.hasItem(key) || this.hasStarterSetEquipped(key);
+    }
+
+    private hasStarterSetEquipped(key: string): boolean {
+        let equipped = false;
+
+        this.equipment.forEachEquipment((equipment) => {
+            if (equipment.key === key && equipment.count > 0) equipped = true;
+        });
+
+        return equipped;
     }
 
     /**

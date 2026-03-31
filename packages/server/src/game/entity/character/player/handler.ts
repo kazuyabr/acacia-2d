@@ -386,6 +386,8 @@ export default class Handler {
      */
 
     private handleEquipment(): void {
+        this.player.handleEquipmentLoaded();
+
         this.player.send(
             new EquipmentPacket(Opcodes.Equipment.Batch, {
                 data: this.player.equipment.serialize(true)
