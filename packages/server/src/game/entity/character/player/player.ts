@@ -2073,10 +2073,17 @@ export default class Player extends Character {
     }
 
     public grantStarterSet(): boolean {
-        if (this.starterSetReceived) return false;
-        if (!this.inventory.hasSpace(STARTER_SET_KEYS.length)) return false;
+        if (this.starterSetReceived) return true;
 
-        for (let key of STARTER_SET_KEYS) this.inventory.add(new Item(key, -1, -1, false, 1));
+        let missingStarterSetKeys = this.getMissingStarterSetKeys();
+
+        if (
+            missingStarterSetKeys.length > 0 &&
+            !this.inventory.hasSpace(missingStarterSetKeys.length)
+        )
+            return false;
+
+        for (let key of missingStarterSetKeys) this.inventory.add(new Item(key, -1, -1, false, 1));
 
         this.starterSetReceived = true;
 
@@ -2093,16 +2100,15 @@ export default class Player extends Character {
 
         if (this.hasReceivedStarterSet()) return;
 
-        if (this.hasLegacyStarterSetEvidence()) {
-            this.starterSetReceived = true;
-            return;
-        }
-
         this.grantStarterSet();
     }
 
     private hasLegacyStarterSetEvidence(): boolean {
-        return STARTER_SET_KEYS.every((key) => this.hasStarterSetItem(key));
+        return STARTER_SET_KEYS.some((key) => this.hasStarterSetItem(key));
+    }
+
+    private getMissingStarterSetKeys(): string[] {
+        return STARTER_SET_KEYS.filter((key) => !this.hasStarterSetItem(key));
     }
 
     private hasStarterSetItem(key: string): boolean {

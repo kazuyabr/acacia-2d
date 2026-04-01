@@ -2,7 +2,7 @@ import Menu from './menu';
 
 import log from '../lib/log';
 import Util from '../utils/util';
-import { onDragDrop } from '../utils/press';
+import { onDragDrop, onSecondaryPress } from '../utils/press';
 
 import { Modules, Opcodes } from '@acacia/common/network';
 
@@ -175,16 +175,7 @@ export default class Inventory extends Menu {
          * be expanded as more item properties are added.
          */
 
-        let actions: Modules.MenuActions[] = [];
-
-        if (element.edible) actions.push(Modules.MenuActions.Eat);
-        if (element.interactable) actions.push(Modules.MenuActions.Interact);
-        if (element.equippable) actions.push(Modules.MenuActions.Equip);
-
-        // Push drop option as the last one.
-        actions.push(Modules.MenuActions.DropOne);
-
-        if (element.count! > 1) actions.push(Modules.MenuActions.DropMany);
+        let actions = this.getActions(element);
 
         this.actions.show(
             actions,
@@ -298,10 +289,52 @@ export default class Inventory extends Menu {
         // Add the click event listeners to the slot.
         slot.addEventListener('click', () => this.select(index));
         slot.addEventListener('dblclick', () => this.select(index, true));
-
+        onSecondaryPress(item, () => this.handleSecondaryPress(index));
         onDragDrop(item, this.handleHold.bind(this), () => this.isEmpty(this.getElement(index)));
 
         return slot;
+    }
+
+    /**
+     * Builds the available action list for the specified slot using the same
+     * resolution flow as the details/actions menu.
+     * @param element Inventory slot element.
+     * @returns Ordered list of actions available for the slot.
+     */
+
+    private getActions(element: SlotElement): Modules.MenuActions[] {
+        let actions: Modules.MenuActions[] = [];
+
+        if (element.edible) actions.push(Modules.MenuActions.Eat);
+        if (element.interactable) actions.push(Modules.MenuActions.Interact);
+        if (element.equippable) actions.push(Modules.MenuActions.Equip);
+
+        actions.push(Modules.MenuActions.DropOne);
+
+        if (element.count! > 1) actions.push(Modules.MenuActions.DropMany);
+
+        return actions;
+    }
+
+    /**
+     * Handles a secondary press on an inventory slot by resolving the same action
+     * list used by the details menu and triggering the real equip action when present.
+     * @param index Inventory slot index.
+     */
+
+    private handleSecondaryPress(index: number): void {
+        let element = this.getElement(index);
+
+        if (this.isEmpty(element)) return;
+
+        let equipAction = this.getActions(element).find(
+            (action) => action === Modules.MenuActions.Equip
+        );
+
+        if (!equipAction) return;
+
+        this.selectedSlot = index;
+        this.handleAction(equipAction);
     }
 
     /**

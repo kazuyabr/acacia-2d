@@ -107,13 +107,14 @@ O ganho dedicado dos passos melhorou a presença do canal, mas ainda não abriu 
 ---
 
 ## Decision
-Normalizar o marcador de starter set no login usando o inventário e os equipamentos já carregados antes de conceder o set para contas legadas sem `starterSetReceived`.
+Normalizar o starter set no login com anti-duplicidade por item, usando inventário e equipamentos já carregados antes de marcar ou completar contas legadas sem `starterSetReceived`.
 
 ## Reason
-Existem personagens antigos criados antes da regra atual. A correção mínima e segura é reaproveitar o fluxo real de carregamento e tratar como evidência de recebimento anterior apenas a posse simultânea das cinco peças do starter set entre inventário e equipamentos. Isso evita reentrega para quem ainda preserva o set, garante uma concessão única para quem nunca recebeu e não cria histórico paralelo novo.
+A checagem anterior só reconhecia evidência quando as cinco peças estavam presentes ao mesmo tempo. Isso duplicava peças em contas legadas com evidência parcial e não distinguia corretamente entre personagem já marcado, legado com parte do set e legado sem nenhuma evidência. A correção mínima e segura é usar o marcador histórico como fonte de não reentrega e, para contas sem marcador, completar apenas os itens ausentes entre inventário e equipamentos.
 
 ## Consequences
-- `packages/server/src/game/entity/character/player/player.ts` passa a normalizar o starter set somente depois que inventário e equipamentos tiverem sido carregados.
-- Contas sem marcador que já possuem o conjunto completo espalhado entre inventário e equipamentos passam a ser marcadas como recebidas sem ganhar itens adicionais.
-- Contas sem marcador e sem evidência completa recebem o starter set no fluxo real de login, uma única vez.
-- Quem já consumiu, vendeu ou descartou peças e não mantém evidência suficiente continuará elegível na ausência do marcador histórico; esta é a limitação segura da migração baseada apenas no estado atual.
+- `packages/server/src/game/entity/character/player/player.ts` normaliza o starter set somente depois que inventário, equipamentos e estatísticas tiverem sido carregados.
+- Personagem com `starterSetReceived = true` nunca recebe reentrega automática, mesmo se tiver vendido, descartado ou removido peças depois.
+- Conta legada sem marcador e com evidência parcial ou total do starter set passa a receber somente as peças faltantes, sem duplicar as que já existem no inventário ou nos equipamentos.
+- Conta legada sem marcador e sem nenhuma evidência continua recebendo o set completo uma única vez no login.
+- A migração permanece baseada no estado atual e no marcador persistido, sem criar histórico paralelo novo.
