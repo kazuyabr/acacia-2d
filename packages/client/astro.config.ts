@@ -44,7 +44,7 @@ let plugins = [
     pwa({
         registerType: 'autoUpdate',
         workbox: {
-            cacheId: name,
+            cacheId: `${name}-${config.hubEnabled ? 'multiworld' : 'singleworld'}`,
             globDirectory: 'dist',
             globPatterns: ['**/*.{js,css,svg,png,jpg,jpeg,gif,webp,woff,woff2,ttf,eot,ico,mp3}'],
             navigateFallback: null
