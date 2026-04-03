@@ -19,5 +19,6 @@
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "githubPullRequests.ignoredPullRequestBranches": ["beta"]
+    "githubPullRequests.ignoredPullRequestBranches": ["beta"],
+    "python-envs.defaultEnvManager": "ms-python.python:pyenv"
 }

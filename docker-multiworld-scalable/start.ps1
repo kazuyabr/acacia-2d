@@ -1,0 +1,5 @@
+$ErrorActionPreference = 'Stop'
+
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+python (Join-Path $scriptDir 'stack.py')
+exit $LASTEXITCODE

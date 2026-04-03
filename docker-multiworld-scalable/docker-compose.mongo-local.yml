@@ -1,0 +1,29 @@
+name: acacia-multiworld-scalable-mongo
+
+services:
+    mongo-local:
+        image: mongo:6.0
+        restart: unless-stopped
+        env_file:
+            - ./mongo-local/.env
+        entrypoint:
+            - /bin/sh
+            - -c
+            - |
+                export MONGO_INITDB_ROOT_USERNAME="$$MONGODB_USER"
+                export MONGO_INITDB_ROOT_PASSWORD="$$MONGODB_PASSWORD"
+                export MONGO_INITDB_DATABASE="$$MONGODB_DATABASE"
+                exec /usr/local/bin/docker-entrypoint.sh mongod --port ${MONGODB_PORT:-27017}
+        ports:
+            - '${MONGODB_PORT:-27017}:${MONGODB_PORT:-27017}'
+        volumes:
+            - mongo_local_data:/data/db
+        networks:
+            - scalable
+
+volumes:
+    mongo_local_data:
+
+networks:
+    scalable:
+        name: acacia-scalable-runtime
