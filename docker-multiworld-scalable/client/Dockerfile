@@ -11,6 +11,7 @@ RUN apt-get update -y && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 COPY . .
+COPY docker-multiworld-scalable/client/.env /app/.env
 
 RUN corepack enable
 RUN rm -rf node_modules packages/*/node_modules

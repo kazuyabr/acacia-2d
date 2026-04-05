@@ -46,8 +46,31 @@ interface StorageData {
     settings: Settings;
 }
 
-let storage = window.localStorage,
-    name = 'data';
+let storage = window.localStorage;
+
+function sanitizeNamespacePart(value: string | number | boolean | undefined): string {
+    return (
+        String(value ?? 'none')
+            .trim()
+            .toLowerCase()
+            .replace(/[^\da-z]+/g, '-')
+            .replace(/^-+|-+$/g, '') || 'none'
+    );
+}
+
+function getStorageNamespace(): string {
+    return [globalConfig.hub, globalConfig.host, globalConfig.port, globalConfig.serverId]
+        .map((value) => sanitizeNamespacePart(value))
+        .join('__');
+}
+
+function getStorageKey(): string {
+    return `data:${getStorageNamespace()}`;
+}
+
+function getIndexedDBName(): string {
+    return `mapCache:${getStorageNamespace()}`;
+}
 
 export default class Storage {
     public data: StorageData;
@@ -55,8 +78,13 @@ export default class Storage {
 
     public newVersion = false;
 
+    private readonly storageKey = getStorageKey();
+    private readonly indexedDBName = getIndexedDBName();
+
     public constructor() {
-        this.data = storage.data ? JSON.parse(storage.getItem(name)!) : this.create();
+        let storedData = storage.getItem(this.storageKey);
+
+        this.data = storedData ? JSON.parse(storedData) : this.create();
 
         this.newVersion = this.isNewVersion();
 
@@ -110,7 +138,10 @@ export default class Storage {
      */
 
     private loadIndexedDB(): void {
-        let request: IDBOpenDBRequest = window.indexedDB?.open('mapCache', this.getDBVersion());
+        let request: IDBOpenDBRequest = window.indexedDB?.open(
+            this.indexedDBName,
+            this.getDBVersion()
+        );
 
         // If something goes wrong just re-create the database.
         request.addEventListener('error', () => {
@@ -124,18 +155,27 @@ export default class Storage {
             if (!database) console.error('Could not open IndexedDB database.');
 
             // Create the object stores for the map data.
-            database.createObjectStore('regions');
-            database.createObjectStore('objects');
-            database.createObjectStore('cursorTiles');
+            if (!database.objectStoreNames.contains('regions'))
+                database.createObjectStore('regions');
+            if (!database.objectStoreNames.contains('objects'))
+                database.createObjectStore('objects');
+            if (!database.objectStoreNames.contains('cursorTiles'))
+                database.createObjectStore('cursorTiles');
 
-            log.debug(`IndexedDB created with version ${this.getDBVersion()}.`);
+            log.debug(
+                `IndexedDB [${this.indexedDBName}] created with version ${this.getDBVersion()}.`
+            );
         });
 
         // Successfully managed to open the database.
         request.addEventListener('success', (event: Event) => {
             this.mapData = (event.target as IDBOpenDBRequest).result;
 
-            log.debug(`Successfully opened IndexedDB with version ${this.getDBVersion()}.`);
+            log.debug(
+                `Successfully opened IndexedDB [${
+                    this.indexedDBName
+                }] with version ${this.getDBVersion()}.`
+            );
         });
     }
 
@@ -146,7 +186,7 @@ export default class Storage {
 
     public save(): void {
         try {
-            if (this.data) storage.setItem(name, JSON.stringify(this.data));
+            if (this.data) storage.setItem(this.storageKey, JSON.stringify(this.data));
         } catch (error) {
             console.error(error);
         }
@@ -158,7 +198,7 @@ export default class Storage {
      */
 
     public clear(): void {
-        storage.removeItem(name);
+        storage.removeItem(this.storageKey);
 
         this.set(this.create());
 
@@ -172,7 +212,7 @@ export default class Storage {
     public clearIndexedDB(): void {
         this.mapData?.close();
 
-        window.indexedDB.deleteDatabase('mapCache');
+        window.indexedDB.deleteDatabase(this.indexedDBName);
 
         this.loadIndexedDB();
     }

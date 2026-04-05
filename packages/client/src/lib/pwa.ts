@@ -38,15 +38,53 @@ declare global {
 
 let deferredPrompt: BeforeInstallPromptEvent | null;
 
-export default async function install(): Promise<void> {
-    if (!deferredPrompt) return;
+function sanitizeNamespacePart(value: string | number | boolean | undefined): string {
+    return (
+        String(value ?? 'none')
+            .trim()
+            .toLowerCase()
+            .replace(/[^\da-z]+/g, '-')
+            .replace(/^-+|-+$/g, '') || 'none'
+    );
+}
 
-    if (localStorage.getItem('prompted') !== 'true')
+function getEnvironmentNamespace(): string {
+    return [globalConfig.hub, globalConfig.host, globalConfig.port, globalConfig.serverId]
+        .map((value) => sanitizeNamespacePart(value))
+        .join('__');
+}
+
+function getPromptedKey(): string {
+    return `prompted:${getEnvironmentNamespace()}`;
+}
+
+function isLocalEnvironment(): boolean {
+    return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+}
+
+async function clearLocalServiceWorkerState(): Promise<void> {
+    let registrations = await navigator.serviceWorker.getRegistrations();
+
+    await Promise.all(registrations.map((registration) => registration.unregister()));
+
+    if ('caches' in window) {
+        let cacheKeys = await window.caches.keys();
+
+        await Promise.all(cacheKeys.map((cacheKey) => window.caches.delete(cacheKey)));
+    }
+}
+
+export default async function install(): Promise<void> {
+    if (!deferredPrompt || isLocalEnvironment()) return;
+
+    let promptedKey = getPromptedKey();
+
+    if (localStorage.getItem(promptedKey) !== 'true')
         await deferredPrompt.prompt().catch((error: Error) => log.error('[SW ERROR]', error));
 
     let { outcome } = await deferredPrompt.userChoice;
 
-    localStorage.setItem('prompted', 'true');
+    localStorage.setItem(promptedKey, 'true');
     if (outcome === 'accepted') {
         // PWA has been installed
     }
@@ -56,7 +94,15 @@ export default async function install(): Promise<void> {
     deferredPrompt = null;
 }
 
-function init(): void {
+async function init(): Promise<void> {
+    if (isLocalEnvironment()) {
+        await clearLocalServiceWorkerState().catch((error: Error) =>
+            log.error('[SW ERROR]', error)
+        );
+
+        return;
+    }
+
     window.addEventListener('beforeinstallprompt', (event) => {
         // Prevent Chrome 67 and earlier from automatically showing the prompt.
         event.preventDefault();
@@ -68,4 +114,4 @@ function init(): void {
 }
 
 // Check compatibility for the browser and environment we're running this in.
-if (import.meta.env.PROD && 'serviceWorker' in navigator) init();
+if (import.meta.env.PROD && 'serviceWorker' in navigator) void init();

@@ -37,18 +37,6 @@ services:
         networks:
             - scalable
 
-    gateway:
-        build:
-            context: ./gateway
-            dockerfile: Dockerfile
-        depends_on:
-            - client
-            - hub
-        ports:
-            - '${GATEWAY_PUBLIC_PORT:-81}:80'
-        networks:
-            - scalable
-
 networks:
     scalable:
         name: acacia-scalable-runtime

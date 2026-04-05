@@ -1,0 +1,16 @@
+name: acacia-multiworld-scalable-gateway
+
+services:
+    gateway:
+        build:
+            context: ./gateway
+            dockerfile: Dockerfile
+        ports:
+            - '${GATEWAY_PUBLIC_PORT:-81}:80'
+        networks:
+            - scalable
+
+networks:
+    scalable:
+        name: acacia-scalable-runtime
+        external: true

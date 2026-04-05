@@ -43,19 +43,40 @@ export default class Socket {
         }
     }
 
+    private getGatewayWebSocketUrl(server: SerializedServer | undefined, port: number): string {
+        let protocol = window.location.protocol === 'https:' ? 'wss' : 'ws',
+            url = new URL(`${protocol}://${window.location.host}/ws`);
+
+        if (server?.id) {
+            url.searchParams.set('serverId', server.id.toString());
+
+            if (port) url.searchParams.set('port', port.toString());
+
+            return url.toString();
+        }
+
+        if (server?.host && port) {
+            url.searchParams.set('host', server.host);
+            url.searchParams.set('port', port.toString());
+        }
+
+        return url.toString();
+    }
+
     /**
      * Creates a websocket connection to the server.
      */
 
     public async connect(server?: SerializedServer): Promise<void> {
-        let { host, port, nginx } = server || (await this.getServer()) || this.config;
+        let targetServer = server || (await this.getServer()),
+            { host, port, nginx } = targetServer || this.config;
 
         host ||= this.config.host;
         port ||= this.config.port;
         nginx ||= this.config.nginx;
 
         let url = nginx
-            ? `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/ws`
+            ? this.getGatewayWebSocketUrl(targetServer, port)
             : `${this.config.ssl ? 'wss' : 'ws'}://${host}:${port}`;
 
         // Create a websocket connection with the url generated.

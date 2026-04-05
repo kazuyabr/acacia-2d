@@ -7,12 +7,14 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Sequence
 
 ROOT_DIR = Path(__file__).resolve().parent
 BASE_COMPOSE_FILE = ROOT_DIR / 'docker-compose.yml'
+GATEWAY_COMPOSE_FILE = ROOT_DIR / 'docker-compose.gateway.yml'
 MONGO_COMPOSE_FILE = ROOT_DIR / 'docker-compose.mongo-local.yml'
 WORLD_TEMPLATE_DIR = ROOT_DIR / 'world'
 WORLD_ENV_TEMPLATE = WORLD_TEMPLATE_DIR / '.env.example'
@@ -20,9 +22,12 @@ STACK_ENV_FILE = ROOT_DIR / '.env.stack'
 HUB_ENV_FILE = ROOT_DIR / 'hub' / '.env'
 CLIENT_ENV_FILE = ROOT_DIR / 'client' / '.env'
 MONGO_ENV_FILE = ROOT_DIR / 'mongo-local' / '.env'
+SCALABLE_ENV_SOURCE_FILE = ROOT_DIR.parent / '.env.scalable'
 WORLD_NAME_PATTERN = re.compile(r'^world-(\d+)$')
 BASE_START_WORLDS = ('world-1', 'world-2')
 BASE_WORLD_NAMES = frozenset(BASE_START_WORLDS)
+NETWORK_NAME = 'acacia-scalable-runtime'
+DEFAULT_GATEWAY_MODE = 'external'
 DEFAULT_GATEWAY_PORT = '80'
 DEFAULT_GATEWAY_HOST = 'localhost'
 DEFAULT_MONGO_PORT = '27017'
@@ -30,7 +35,9 @@ DEFAULT_MONGO_USER = 'sorameshi'
 DEFAULT_MONGO_PASSWORD = 'lotus10'
 DEFAULT_MONGO_DATABASE = 'acacia-game'
 DEFAULT_MONGO_AUTH_SOURCE = 'admin'
+DEFAULT_HUB_API_PORT = '9526'
 DEFAULT_STACK_SETTINGS = {
+    'GATEWAY_MODE': DEFAULT_GATEWAY_MODE,
     'GATEWAY_PUBLIC_PORT': DEFAULT_GATEWAY_PORT,
     'GATEWAY_PUBLIC_HOST': DEFAULT_GATEWAY_HOST,
     'USE_MONGO_LOCAL': 'true',
@@ -44,6 +51,7 @@ DEFAULT_STACK_SETTINGS = {
     'MONGODB_SRV': 'false',
 }
 STACK_PROPAGATED_KEYS = (
+    'GATEWAY_MODE',
     'GATEWAY_PUBLIC_PORT',
     'GATEWAY_PUBLIC_HOST',
     'MONGODB_HOST',
@@ -102,6 +110,7 @@ class LogTarget:
 
 @dataclass(frozen=True)
 class StackSettings:
+    gateway_mode: str
     gateway_public_port: str
     gateway_public_host: str
     use_mongo_local: bool
@@ -114,8 +123,12 @@ class StackSettings:
     mongodb_tls: str
     mongodb_srv: str
 
+    def gateway_managed(self) -> bool:
+        return self.gateway_mode == 'managed'
+
     def as_stack_env(self) -> dict[str, str]:
         return {
+            'GATEWAY_MODE': self.gateway_mode,
             'GATEWAY_PUBLIC_PORT': self.gateway_public_port,
             'GATEWAY_PUBLIC_HOST': self.gateway_public_host,
             'USE_MONGO_LOCAL': 'true' if self.use_mongo_local else 'false',
@@ -190,16 +203,17 @@ def ensure_prerequisites() -> None:
         raise StackError('Docker CLI não encontrado no PATH.')
     if not BASE_COMPOSE_FILE.is_file():
         raise StackError(f'Compose base não encontrado em {BASE_COMPOSE_FILE}')
+    if not GATEWAY_COMPOSE_FILE.is_file():
+        raise StackError(f'Compose do gateway local não encontrado em {GATEWAY_COMPOSE_FILE}')
     if not MONGO_COMPOSE_FILE.is_file():
         raise StackError(f'Compose de Mongo local não encontrado em {MONGO_COMPOSE_FILE}')
     if not WORLD_TEMPLATE_DIR.is_dir():
         raise StackError(f'Template de world não encontrado em {WORLD_TEMPLATE_DIR}')
     if not WORLD_ENV_TEMPLATE.is_file():
         raise StackError(f'Env template de world não encontrado em {WORLD_ENV_TEMPLATE}')
-    if not HUB_ENV_FILE.is_file():
-        raise StackError(f'Env do hub não encontrado em {HUB_ENV_FILE}')
-    if not CLIENT_ENV_FILE.is_file():
-        raise StackError(f'Env do client não encontrado em {CLIENT_ENV_FILE}')
+    if not SCALABLE_ENV_SOURCE_FILE.is_file():
+        raise StackError(f'Env base do stack escalável não encontrado em {SCALABLE_ENV_SOURCE_FILE}')
+    ensure_service_env_files()
     if not MONGO_ENV_FILE.is_file():
         raise StackError(f'Env do mongo local não encontrado em {MONGO_ENV_FILE}')
     ensure_stack_env_file()
@@ -224,6 +238,111 @@ def docker_compose(
         stream_output=stream_output,
         description=description,
     )
+
+
+def run_command_quiet(args: Sequence[str]) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        args,
+        cwd=ROOT_DIR,
+        text=True,
+        capture_output=True,
+    )
+
+
+def get_compose_service_container_id(
+    compose_file: Path,
+    service_name: str,
+    *,
+    env_file: Path | None = None,
+) -> str:
+    command = ['docker', 'compose', '--env-file', str(STACK_ENV_FILE)]
+    if env_file is not None:
+        command.extend(['--env-file', str(env_file)])
+    command.extend(['-f', str(compose_file), 'ps', '-q', service_name])
+    result = run_command_quiet(command)
+    if result.returncode != 0:
+        return ''
+    return result.stdout.strip()
+
+
+def wait_for_compose_service_running(
+    compose_file: Path,
+    service_name: str,
+    *,
+    env_file: Path | None = None,
+    timeout_seconds: int = 60,
+    poll_interval: float = 2.0,
+) -> str:
+    print(f'Aguardando container de {service_name} ficar em execução...', flush=True)
+    deadline = time.monotonic() + timeout_seconds
+    last_status = ''
+    while time.monotonic() < deadline:
+        container_id = get_compose_service_container_id(compose_file, service_name, env_file=env_file)
+        if container_id:
+            inspect_result = run_command_quiet(['docker', 'inspect', '--format', '{{.State.Status}}', container_id])
+            if inspect_result.returncode == 0:
+                status = inspect_result.stdout.strip()
+                last_status = status or last_status
+                if status == 'running':
+                    print(f'{service_name} em execução.', flush=True)
+                    return container_id
+        time.sleep(poll_interval)
+    status_suffix = f' Último status observado: {last_status}.' if last_status else ''
+    raise StackError(f'O serviço {service_name} não entrou em execução dentro do tempo esperado.{status_suffix}')
+
+
+def wait_for_mongo_local_ready(settings: StackSettings, timeout_seconds: int = 90, poll_interval: float = 3.0) -> None:
+    container_id = wait_for_compose_service_running(MONGO_COMPOSE_FILE, 'mongo-local', timeout_seconds=timeout_seconds)
+    print('Aguardando Mongo local responder a ping...', flush=True)
+    deadline = time.monotonic() + timeout_seconds
+    while time.monotonic() < deadline:
+        ping_result = run_command_quiet(
+            [
+                'docker',
+                'exec',
+                container_id,
+                'mongosh',
+                '--quiet',
+                '--port',
+                settings.mongodb_port,
+                '--eval',
+                "db.adminCommand('ping').ok",
+            ]
+        )
+        if ping_result.returncode == 0:
+            output = ping_result.stdout.strip()
+            if output == '1' or output.endswith('\n1') or output.endswith('1'):
+                print('Mongo local pronto para conexões.', flush=True)
+                return
+        time.sleep(poll_interval)
+    raise StackError('Mongo local não respondeu ao ping dentro do tempo esperado.')
+
+
+def wait_for_hub_api_ready(timeout_seconds: int = 90, poll_interval: float = 3.0) -> None:
+    container_id = wait_for_compose_service_running(BASE_COMPOSE_FILE, 'hub', timeout_seconds=timeout_seconds)
+    print('Aguardando hub responder pela API HTTP...', flush=True)
+    deadline = time.monotonic() + timeout_seconds
+    while time.monotonic() < deadline:
+        probe_result = run_command_quiet(
+            [
+                'docker',
+                'exec',
+                container_id,
+                'node',
+                '-e',
+                (
+                    "const http=require('http');"
+                    f"const req=http.get({{'host':'127.0.0.1','port':{DEFAULT_HUB_API_PORT},'path':'/'}},res=>{{process.exit(res.statusCode===200?0:1);}});"
+                    "req.on('error',()=>process.exit(1));"
+                    "req.setTimeout(2000,()=>{req.destroy();process.exit(1);});"
+                ),
+            ]
+        )
+        if probe_result.returncode == 0:
+            print('Hub pronto para atender dependências.', flush=True)
+            return
+        time.sleep(poll_interval)
+    raise StackError('Hub não respondeu pela API HTTP dentro do tempo esperado.')
 
 
 def parse_world_number(name: str) -> int | None:
@@ -325,6 +444,25 @@ def upsert_env_values(path: Path, updates: dict[str, str]) -> None:
     write_env_lines(path, updated_lines)
 
 
+def ensure_service_env_files() -> None:
+    for target in (HUB_ENV_FILE, CLIENT_ENV_FILE):
+        if target.is_file():
+            continue
+        shutil.copyfile(SCALABLE_ENV_SOURCE_FILE, target)
+        print(f'Env criado a partir de {SCALABLE_ENV_SOURCE_FILE.name}: {target}')
+
+
+def env_has_drift(path: Path, expected: dict[str, str]) -> bool:
+    current = read_env_map(path)
+    for key, expected_value in expected.items():
+        current_value = current.get(key)
+        if current_value is None:
+            return True
+        if normalize_env_value(current_value) != normalize_env_value(expected_value):
+            return True
+    return False
+
+
 def quote_env(value: str) -> str:
     escaped = value.replace("'", "\\'")
     return f"'{escaped}'"
@@ -342,6 +480,15 @@ def env_to_bool(value: str | None, default: bool = False) -> bool:
     if value is None:
         return default
     return normalize_env_value(value).lower() in {'1', 'true', 'yes', 'y', 'sim', 's'}
+
+
+def normalize_gateway_mode(value: str | None, default: str = DEFAULT_GATEWAY_MODE) -> str:
+    normalized = normalize_env_value(value or '').lower()
+    if normalized in {'managed', 'local'}:
+        return 'managed'
+    if normalized in {'external', 'shared'}:
+        return 'external'
+    return default
 
 
 def prompt_non_empty(prompt: str, default: str) -> str:
@@ -363,8 +510,16 @@ def prompt_numeric(prompt: str, default: str) -> str:
 
 def collect_stack_settings(current: StackSettings | None = None) -> StackSettings:
     baseline = current or load_stack_settings()
-    gateway_public_port = prompt_numeric('Porta pública do gateway/nginx', baseline.gateway_public_port)
-    gateway_public_host = prompt_non_empty('Host público do gateway/nginx', baseline.gateway_public_host)
+    manage_gateway_locally = confirm(
+        (
+            'A opção 1 deve subir também o gateway/nginx local dedicado deste projeto? '
+            f'atual={bool_to_pt(baseline.gateway_managed())}'
+        ),
+        default=baseline.gateway_managed(),
+    )
+    gateway_mode = 'managed' if manage_gateway_locally else 'external'
+    gateway_public_port = prompt_numeric('Porta pública do gateway/proxy do projeto', baseline.gateway_public_port)
+    gateway_public_host = prompt_non_empty('Host público do gateway/proxy do projeto', baseline.gateway_public_host)
     use_mongo_local = confirm(
         f'Usar Mongo local? atual={bool_to_pt(baseline.use_mongo_local)}',
         default=baseline.use_mongo_local,
@@ -391,6 +546,7 @@ def collect_stack_settings(current: StackSettings | None = None) -> StackSetting
         )
     )
     return StackSettings(
+        gateway_mode=gateway_mode,
         gateway_public_port=gateway_public_port,
         gateway_public_host=gateway_public_host,
         use_mongo_local=use_mongo_local,
@@ -425,6 +581,7 @@ def load_stack_settings() -> StackSettings:
         return value or DEFAULT_STACK_SETTINGS[key]
 
     return StackSettings(
+        gateway_mode=normalize_gateway_mode(env.get('GATEWAY_MODE'), default=DEFAULT_GATEWAY_MODE),
         gateway_public_port=resolve('GATEWAY_PUBLIC_PORT'),
         gateway_public_host=resolve('GATEWAY_PUBLIC_HOST'),
         use_mongo_local=env_to_bool(env.get('USE_MONGO_LOCAL'), default=True),
@@ -439,10 +596,14 @@ def load_stack_settings() -> StackSettings:
     )
 
 
-def apply_stack_settings(settings: StackSettings) -> None:
+def apply_stack_settings(settings: StackSettings) -> bool:
+    ensure_service_env_files()
     upsert_env_values(STACK_ENV_FILE, settings.as_stack_env())
 
     shared_updates = {
+        'GATEWAY_MODE': settings.gateway_mode,
+        'GATEWAY_PUBLIC_HOST': quote_env(settings.gateway_public_host),
+        'GATEWAY_PUBLIC_PORT': settings.gateway_public_port,
         'REMOTE_SERVER_HOST': quote_env(settings.gateway_public_host),
         'REMOTE_API_HOST': quote_env(settings.gateway_public_host),
         'CLIENT_REMOTE_HOST': quote_env(settings.gateway_public_host),
@@ -462,11 +623,12 @@ def apply_stack_settings(settings: StackSettings) -> None:
     hub_updates['HUB_WS_HOST'] = quote_env('hub')
     hub_updates['HUB_PORT'] = '9526'
     hub_updates['HUB_WS_PORT'] = '9527'
-    hub_updates['NGINX'] = 'false'
+    hub_updates['NGINX'] = 'true'
 
     client_updates = dict(shared_updates)
-    client_updates['HUB_HOST'] = quote_env('gateway')
-    client_updates['HUB_WS_HOST'] = quote_env('gateway')
+    client_updates['HUB_ENABLED'] = 'true'
+    client_updates['HUB_HOST'] = quote_env(settings.gateway_public_host)
+    client_updates['HUB_WS_HOST'] = quote_env(settings.gateway_public_host)
     client_updates['HUB_PORT'] = settings.gateway_public_port
     client_updates['HUB_WS_PORT'] = settings.gateway_public_port
     client_updates['NGINX'] = 'true'
@@ -478,7 +640,7 @@ def apply_stack_settings(settings: StackSettings) -> None:
     world_updates['HUB_WS_PORT'] = '9527'
     world_updates['ADMIN_HOST'] = quote_env('hub')
     world_updates['ADMIN_PORT'] = '9528'
-    world_updates['NGINX'] = 'false'
+    world_updates['NGINX'] = 'true'
 
     mongo_updates = {
         'MONGODB_USER': quote_env(settings.mongodb_user),
@@ -486,6 +648,8 @@ def apply_stack_settings(settings: StackSettings) -> None:
         'MONGODB_DATABASE': quote_env(settings.mongodb_database),
         'MONGODB_PORT': settings.mongodb_port,
     }
+
+    client_rebuild_required = env_has_drift(CLIENT_ENV_FILE, client_updates)
 
     upsert_env_values(HUB_ENV_FILE, hub_updates)
     upsert_env_values(CLIENT_ENV_FILE, client_updates)
@@ -495,10 +659,22 @@ def apply_stack_settings(settings: StackSettings) -> None:
     for world in list_existing_worlds():
         upsert_env_values(world.env_file, world_updates)
 
+    return client_rebuild_required
+
+
+def describe_gateway_mode(settings: StackSettings) -> str:
+    return 'local dedicado' if settings.gateway_managed() else 'externo/compartilhado'
+
+
 
 def print_stack_settings(settings: StackSettings) -> None:
+    gateway_mode_label = describe_gateway_mode(settings)
     print('\nConfiguração operacional atual:')
-    print(f'- Gateway público: http://{settings.gateway_public_host}:{settings.gateway_public_port}')
+    print(f'- Gateway público: http://{settings.gateway_public_host}:{settings.gateway_public_port} | modo={gateway_mode_label}')
+    if settings.gateway_managed():
+        print('- Opção 1 inicia o gateway/nginx local dedicado junto com hub, client e worlds.')
+    else:
+        print('- Opção 1 não inicia nginx local. O acesso público depende de gateway externo/compartilhado.')
     print(f'- Mongo local: {"sim" if settings.use_mongo_local else "não"}')
     print(f'- Mongo host/porta: {settings.mongodb_host}:{settings.mongodb_port}')
     print(f'- Mongo database: {settings.mongodb_database}')
@@ -527,10 +703,14 @@ def create_world(start_after_create: bool = False) -> WorldInfo:
         'API_PORT': str(world.api_port),
         'SERVER_ID': str(world.server_id),
         'DISCORD_CHANNEL_ID': str(world.channel_id),
+        'GATEWAY_MODE': settings.gateway_mode,
+        'GATEWAY_PUBLIC_HOST': quote_env(settings.gateway_public_host),
+        'GATEWAY_PUBLIC_PORT': settings.gateway_public_port,
         'REMOTE_SERVER_HOST': quote_env(settings.gateway_public_host),
         'REMOTE_API_HOST': quote_env(settings.gateway_public_host),
         'CLIENT_REMOTE_HOST': quote_env(settings.gateway_public_host),
         'CLIENT_REMOTE_PORT': settings.gateway_public_port,
+        'NGINX': 'true',
         'MONGODB_HOST': quote_env(settings.mongodb_host),
         'MONGODB_PORT': settings.mongodb_port,
         'MONGODB_USER': quote_env(settings.mongodb_user),
@@ -590,21 +770,66 @@ def stop_world(world: WorldInfo) -> None:
     print(f'{world.name} parado.', flush=True)
 
 
-def start_base_stack(include_mongo: bool) -> None:
-    docker_compose(
-        BASE_COMPOSE_FILE,
-        'up',
-        '--build',
-        '-d',
-        description='Subindo stack base com gateway/nginx',
-    )
-    if include_mongo:
+def start_base_stack(settings: StackSettings) -> None:
+    print('\nFase 1/3: subindo dependências fundamentais...', flush=True)
+    if settings.use_mongo_local:
         docker_compose(
             MONGO_COMPOSE_FILE,
             'up',
             '-d',
             description='Subindo Mongo local opcional',
         )
+        wait_for_mongo_local_ready(settings)
+
+    print('\nFase 2/3: subindo serviços de aplicação dependentes...', flush=True)
+    docker_compose(
+        BASE_COMPOSE_FILE,
+        'up',
+        '--build',
+        '-d',
+        'hub',
+        description='Subindo hub após Mongo pronto',
+    )
+    wait_for_hub_api_ready()
+
+    docker_compose(
+        BASE_COMPOSE_FILE,
+        'up',
+        '--build',
+        '-d',
+        'client',
+        description='Subindo client após hub pronto',
+    )
+    wait_for_compose_service_running(BASE_COMPOSE_FILE, 'client')
+
+
+def ensure_gateway_runtime_network() -> None:
+    result = run_command_quiet(['docker', 'network', 'inspect', NETWORK_NAME])
+    if result.returncode != 0:
+        raise StackError(
+            f'A rede Docker {NETWORK_NAME} não existe. Inicie primeiro a base do projeto antes do gateway local dedicado.'
+        )
+
+
+def start_managed_gateway(settings: StackSettings | None = None, *, source_label: str = 'opção dedicada') -> None:
+    effective_settings = settings or load_stack_settings()
+    if not effective_settings.gateway_managed():
+        print(
+            'Gateway configurado como externo/compartilhado. '
+            f'Nenhum gateway local será iniciado pela {source_label}.'
+        )
+        return
+    ensure_gateway_runtime_network()
+    print(f'\nSubindo gateway local dedicado em compose separado via {source_label}...', flush=True)
+    docker_compose(
+        GATEWAY_COMPOSE_FILE,
+        'up',
+        '--build',
+        '-d',
+        'gateway',
+        description='Subindo gateway local dedicado',
+    )
+    wait_for_compose_service_running(GATEWAY_COMPOSE_FILE, 'gateway')
 
 
 def start_initial_worlds() -> None:
@@ -618,12 +843,23 @@ def start_initial_worlds() -> None:
 def start_full_stack() -> None:
     current_settings = load_stack_settings()
     print_stack_settings(current_settings)
-    settings = collect_stack_settings(current=current_settings)
-    apply_stack_settings(settings)
+    selected_settings = collect_stack_settings(current=current_settings)
+    client_rebuild_required = apply_stack_settings(selected_settings)
+    effective_settings = load_stack_settings()
     print('\nConfiguração persistida nos envs do stack.')
-    print_stack_settings(settings)
-    start_base_stack(include_mongo=settings.use_mongo_local)
+    if client_rebuild_required:
+        print('Env do client atualizado. A base será rebuildada para recompilar o bundle com a configuração escalável.')
+    else:
+        print('Env do client já estava coerente. A base ainda será validada com up --build.')
+    print_stack_settings(effective_settings)
+    start_base_stack(effective_settings)
     start_initial_worlds()
+    if effective_settings.gateway_managed():
+        print('Modo de gateway local dedicado ativo. A opção 1 concluirá o stack subindo também o nginx local.')
+        start_managed_gateway(effective_settings, source_label='opção 1 (stack completo/local)')
+        wait_for_compose_service_running(GATEWAY_COMPOSE_FILE, 'gateway')
+    else:
+        print('Modo externo/compartilhado ativo. A opção 1 conclui sem iniciar nginx local.')
     print('Stack escalável iniciado.')
 
 
@@ -826,12 +1062,13 @@ def show_bulk_world_env_menu() -> None:
 
 def show_main_menu() -> int:
     menu_items = [
-        'Iniciar o projeto inteiro',
+        'Iniciar stack completo/local',
         'Novo canal',
         'Remover canal',
         'Listar mundos ativos',
         'Logs',
         'Editar chave de env em lote nos worlds',
+        'Iniciar apenas gateway local dedicado',
         'Exit',
     ]
     while True:
@@ -853,6 +1090,8 @@ def show_main_menu() -> int:
             show_logs_menu()
         elif choice == 5:
             show_bulk_world_env_menu()
+        elif choice == 6:
+            start_managed_gateway()
 
 
 def print_header() -> None:
@@ -862,7 +1101,12 @@ def print_header() -> None:
     print(f'Root: {ROOT_DIR}')
     print(f'SO detectado: {platform.system()} ({OS_FAMILY})')
     settings = load_stack_settings()
-    print(f'Gateway atual: http://{settings.gateway_public_host}:{settings.gateway_public_port}')
+    gateway_mode_label = describe_gateway_mode(settings)
+    print(f'Gateway atual: http://{settings.gateway_public_host}:{settings.gateway_public_port} | modo={gateway_mode_label}')
+    if settings.gateway_managed():
+        print('Opção 1 irá subir também o gateway/nginx local dedicado.')
+    else:
+        print('Opção 1 não sobe nginx local; o acesso público depende de gateway externo/compartilhado.')
     print(f'Mongo atual: {settings.mongodb_host}:{settings.mongodb_port} | local={"sim" if settings.use_mongo_local else "não"}')
 
 
