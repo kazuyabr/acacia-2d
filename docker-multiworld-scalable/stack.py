@@ -26,6 +26,9 @@ SCALABLE_ENV_SOURCE_FILE = ROOT_DIR.parent / '.env.scalable'
 WORLD_NAME_PATTERN = re.compile(r'^world-(\d+)$')
 BASE_START_WORLDS = ('world-1', 'world-2')
 BASE_WORLD_NAMES = frozenset(BASE_START_WORLDS)
+BASE_COMPOSE_PROJECT_NAME = 'acacia-multiworld-scalable-base'
+GATEWAY_COMPOSE_PROJECT_NAME = 'acacia-multiworld-scalable-gateway'
+MONGO_COMPOSE_PROJECT_NAME = 'acacia-multiworld-scalable-mongo'
 NETWORK_NAME = 'acacia-scalable-runtime'
 DEFAULT_GATEWAY_MODE = 'external'
 DEFAULT_GATEWAY_PORT = '80'
@@ -249,6 +252,26 @@ def run_command_quiet(args: Sequence[str]) -> subprocess.CompletedProcess[str]:
     )
 
 
+
+def unique_values(values: Iterable[str]) -> list[str]:
+    unique: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        if not value or value in seen:
+            continue
+        seen.add(value)
+        unique.append(value)
+    return unique
+
+
+
+def list_docker_output_lines(args: Sequence[str]) -> list[str]:
+    result = run_command_quiet(args)
+    if result.returncode != 0:
+        return []
+    return unique_values(line.strip() for line in result.stdout.splitlines())
+
+
 def get_compose_service_container_id(
     compose_file: Path,
     service_name: str,
@@ -392,6 +415,110 @@ def list_existing_worlds() -> list[WorldInfo]:
     return worlds
 
 
+
+def list_scalable_compose_projects() -> list[str]:
+    return unique_values(
+        [
+            BASE_COMPOSE_PROJECT_NAME,
+            GATEWAY_COMPOSE_PROJECT_NAME,
+            MONGO_COMPOSE_PROJECT_NAME,
+            *(world.compose_project_name for world in list_existing_worlds()),
+        ]
+    )
+
+
+
+def remove_compose_project_artifacts(project_name: str) -> None:
+    container_ids = list_docker_output_lines(
+        ['docker', 'ps', '-aq', '--filter', f'label=com.docker.compose.project={project_name}']
+    )
+    if container_ids:
+        run_command(
+            ['docker', 'rm', '-f', *container_ids],
+            check=False,
+            description=f'Removendo containers residuais do projeto {project_name}',
+        )
+
+    volume_names = list_docker_output_lines(
+        ['docker', 'volume', 'ls', '-q', '--filter', f'label=com.docker.compose.project={project_name}']
+    )
+    if volume_names:
+        run_command(
+            ['docker', 'volume', 'rm', '-f', *volume_names],
+            check=False,
+            description=f'Removendo volumes residuais do projeto {project_name}',
+        )
+
+    image_ids = list_docker_output_lines(
+        ['docker', 'image', 'ls', '-q', '--filter', f'label=com.docker.compose.project={project_name}']
+    )
+    if image_ids:
+        run_command(
+            ['docker', 'image', 'rm', '-f', *image_ids],
+            check=False,
+            description=f'Removendo imagens residuais do projeto {project_name}',
+        )
+
+
+
+def remove_scalable_runtime_network() -> None:
+    if run_command_quiet(['docker', 'network', 'inspect', NETWORK_NAME]).returncode != 0:
+        return
+    run_command(
+        ['docker', 'network', 'rm', NETWORK_NAME],
+        check=False,
+        description=f'Removendo rede dedicada {NETWORK_NAME}',
+    )
+
+
+
+def reset_scalable_stack_runtime() -> None:
+    print(
+        '\nResetando o stack escalável: removendo containers, volumes, imagens locais e rede dedicados...',
+        flush=True,
+    )
+    docker_compose(
+        GATEWAY_COMPOSE_FILE,
+        'down',
+        '--remove-orphans',
+        '--volumes',
+        '--rmi',
+        'all',
+        description='Limpando gateway local dedicado',
+    )
+    for world in list_existing_worlds():
+        docker_compose(
+            world.compose_file,
+            'down',
+            '--remove-orphans',
+            '--volumes',
+            '--rmi',
+            'all',
+            env_file=world.env_file,
+            description=f'Limpando {world.name}',
+        )
+    docker_compose(
+        BASE_COMPOSE_FILE,
+        'down',
+        '--remove-orphans',
+        '--volumes',
+        '--rmi',
+        'all',
+        description='Limpando base do stack escalável',
+    )
+    docker_compose(
+        MONGO_COMPOSE_FILE,
+        'down',
+        '--remove-orphans',
+        '--volumes',
+        description='Limpando Mongo local e volume de dados',
+    )
+    for project_name in list_scalable_compose_projects():
+        remove_compose_project_artifacts(project_name)
+    remove_scalable_runtime_network()
+    print('Reset completo do stack escalável concluído.', flush=True)
+
+
 def get_next_world_info() -> WorldInfo:
     worlds = list_world_directories()
     next_number = worlds[-1].number + 1 if worlds else 1
@@ -512,7 +639,8 @@ def collect_stack_settings(current: StackSettings | None = None) -> StackSetting
     baseline = current or load_stack_settings()
     manage_gateway_locally = confirm(
         (
-            'A opção 1 deve subir também o gateway/nginx local dedicado deste projeto? '
+            'A opção 1 agora faz reset completo sem cache. '
+            'Deve subir também o gateway/nginx local dedicado deste projeto? '
             f'atual={bool_to_pt(baseline.gateway_managed())}'
         ),
         default=baseline.gateway_managed(),
@@ -672,9 +800,9 @@ def print_stack_settings(settings: StackSettings) -> None:
     print('\nConfiguração operacional atual:')
     print(f'- Gateway público: http://{settings.gateway_public_host}:{settings.gateway_public_port} | modo={gateway_mode_label}')
     if settings.gateway_managed():
-        print('- Opção 1 inicia o gateway/nginx local dedicado junto com hub, client e worlds.')
+        print('- Opção 1 agora faz reset completo sem cache e sobe o gateway/nginx local dedicado junto com hub, client e worlds.')
     else:
-        print('- Opção 1 não inicia nginx local. O acesso público depende de gateway externo/compartilhado.')
+        print('- Opção 1 agora faz reset completo sem cache. O acesso público continua dependendo de gateway externo/compartilhado.')
     print(f'- Mongo local: {"sim" if settings.use_mongo_local else "não"}')
     print(f'- Mongo host/porta: {settings.mongodb_host}:{settings.mongodb_port}')
     print(f'- Mongo database: {settings.mongodb_database}')
@@ -744,17 +872,35 @@ def create_world(start_after_create: bool = False) -> WorldInfo:
     return world
 
 
-def start_world(world: WorldInfo) -> None:
+def start_world(world: WorldInfo, rebuild_no_cache: bool = False) -> None:
     if not world.compose_file.is_file() or not world.env_file.is_file():
         raise StackError(f'World inválido: {world.name}')
-    docker_compose(
-        world.compose_file,
-        'up',
-        '--build',
-        '-d',
-        env_file=world.env_file,
-        description=f'Iniciando {world.name}',
-    )
+    if rebuild_no_cache:
+        docker_compose(
+            world.compose_file,
+            'build',
+            '--no-cache',
+            'world',
+            env_file=world.env_file,
+            description=f'Rebuild sem cache de {world.name}',
+        )
+        docker_compose(
+            world.compose_file,
+            'up',
+            '-d',
+            'world',
+            env_file=world.env_file,
+            description=f'Subindo {world.name} após rebuild limpo',
+        )
+    else:
+        docker_compose(
+            world.compose_file,
+            'up',
+            '--build',
+            '-d',
+            env_file=world.env_file,
+            description=f'Iniciando {world.name}',
+        )
     print(f'{world.name} ativo.', flush=True)
 
 
@@ -770,7 +916,7 @@ def stop_world(world: WorldInfo) -> None:
     print(f'{world.name} parado.', flush=True)
 
 
-def start_base_stack(settings: StackSettings) -> None:
+def start_base_stack(settings: StackSettings, rebuild_no_cache: bool = False) -> None:
     print('\nFase 1/3: subindo dependências fundamentais...', flush=True)
     if settings.use_mongo_local:
         docker_compose(
@@ -782,24 +928,56 @@ def start_base_stack(settings: StackSettings) -> None:
         wait_for_mongo_local_ready(settings)
 
     print('\nFase 2/3: subindo serviços de aplicação dependentes...', flush=True)
-    docker_compose(
-        BASE_COMPOSE_FILE,
-        'up',
-        '--build',
-        '-d',
-        'hub',
-        description='Subindo hub após Mongo pronto',
-    )
+    if rebuild_no_cache:
+        docker_compose(
+            BASE_COMPOSE_FILE,
+            'build',
+            '--no-cache',
+            'hub',
+            description='Rebuild sem cache do hub',
+        )
+        docker_compose(
+            BASE_COMPOSE_FILE,
+            'up',
+            '-d',
+            'hub',
+            description='Subindo hub após rebuild limpo',
+        )
+    else:
+        docker_compose(
+            BASE_COMPOSE_FILE,
+            'up',
+            '--build',
+            '-d',
+            'hub',
+            description='Subindo hub após Mongo pronto',
+        )
     wait_for_hub_api_ready()
 
-    docker_compose(
-        BASE_COMPOSE_FILE,
-        'up',
-        '--build',
-        '-d',
-        'client',
-        description='Subindo client após hub pronto',
-    )
+    if rebuild_no_cache:
+        docker_compose(
+            BASE_COMPOSE_FILE,
+            'build',
+            '--no-cache',
+            'client',
+            description='Rebuild sem cache do client',
+        )
+        docker_compose(
+            BASE_COMPOSE_FILE,
+            'up',
+            '-d',
+            'client',
+            description='Subindo client após rebuild limpo',
+        )
+    else:
+        docker_compose(
+            BASE_COMPOSE_FILE,
+            'up',
+            '--build',
+            '-d',
+            'client',
+            description='Subindo client após hub pronto',
+        )
     wait_for_compose_service_running(BASE_COMPOSE_FILE, 'client')
 
 
@@ -811,7 +989,12 @@ def ensure_gateway_runtime_network() -> None:
         )
 
 
-def start_managed_gateway(settings: StackSettings | None = None, *, source_label: str = 'opção dedicada') -> None:
+def start_managed_gateway(
+    settings: StackSettings | None = None,
+    *,
+    source_label: str = 'opção dedicada',
+    rebuild_no_cache: bool = False,
+) -> None:
     effective_settings = settings or load_stack_settings()
     if not effective_settings.gateway_managed():
         print(
@@ -821,23 +1004,39 @@ def start_managed_gateway(settings: StackSettings | None = None, *, source_label
         return
     ensure_gateway_runtime_network()
     print(f'\nSubindo gateway local dedicado em compose separado via {source_label}...', flush=True)
-    docker_compose(
-        GATEWAY_COMPOSE_FILE,
-        'up',
-        '--build',
-        '-d',
-        'gateway',
-        description='Subindo gateway local dedicado',
-    )
+    if rebuild_no_cache:
+        docker_compose(
+            GATEWAY_COMPOSE_FILE,
+            'build',
+            '--no-cache',
+            'gateway',
+            description='Rebuild sem cache do gateway local dedicado',
+        )
+        docker_compose(
+            GATEWAY_COMPOSE_FILE,
+            'up',
+            '-d',
+            'gateway',
+            description='Subindo gateway local dedicado após rebuild limpo',
+        )
+    else:
+        docker_compose(
+            GATEWAY_COMPOSE_FILE,
+            'up',
+            '--build',
+            '-d',
+            'gateway',
+            description='Subindo gateway local dedicado',
+        )
     wait_for_compose_service_running(GATEWAY_COMPOSE_FILE, 'gateway')
 
 
-def start_initial_worlds() -> None:
+def start_initial_worlds(rebuild_no_cache: bool = False) -> None:
     for world_name in BASE_START_WORLDS:
         world = next((item for item in list_existing_worlds() if item.name == world_name), None)
         if world is None:
             raise StackError(f'World inicial ausente: {world_name}')
-        start_world(world)
+        start_world(world, rebuild_no_cache=rebuild_no_cache)
 
 
 def start_full_stack() -> None:
@@ -847,20 +1046,25 @@ def start_full_stack() -> None:
     client_rebuild_required = apply_stack_settings(selected_settings)
     effective_settings = load_stack_settings()
     print('\nConfiguração persistida nos envs do stack.')
+    print('A opção 1 agora executa reset completo do stack escalável antes de subir novamente.')
     if client_rebuild_required:
-        print('Env do client atualizado. A base será rebuildada para recompilar o bundle com a configuração escalável.')
+        print('Env do client atualizado. O stack será rebuildado do zero, sem cache, com limpeza restrita ao stack escalável.')
     else:
-        print('Env do client já estava coerente. A base ainda será validada com up --build.')
+        print('Env do client já estava coerente. Ainda assim a opção 1 fará reset completo e rebuild sem cache do stack escalável.')
     print_stack_settings(effective_settings)
-    start_base_stack(effective_settings)
-    start_initial_worlds()
+    reset_scalable_stack_runtime()
+    start_base_stack(effective_settings, rebuild_no_cache=True)
+    start_initial_worlds(rebuild_no_cache=True)
     if effective_settings.gateway_managed():
-        print('Modo de gateway local dedicado ativo. A opção 1 concluirá o stack subindo também o nginx local.')
-        start_managed_gateway(effective_settings, source_label='opção 1 (stack completo/local)')
-        wait_for_compose_service_running(GATEWAY_COMPOSE_FILE, 'gateway')
+        print('Modo de gateway local dedicado ativo. A opção 1 concluirá o reset completo subindo também o nginx local com rebuild sem cache.')
+        start_managed_gateway(
+            effective_settings,
+            source_label='opção 1 (reset completo/local)',
+            rebuild_no_cache=True,
+        )
     else:
-        print('Modo externo/compartilhado ativo. A opção 1 conclui sem iniciar nginx local.')
-    print('Stack escalável iniciado.')
+        print('Modo externo/compartilhado ativo. A opção 1 conclui o reset completo sem iniciar nginx local.')
+    print('Stack escalável reiniciado do zero.', flush=True)
 
 
 def remove_world(world: WorldInfo) -> None:
@@ -1062,7 +1266,7 @@ def show_bulk_world_env_menu() -> None:
 
 def show_main_menu() -> int:
     menu_items = [
-        'Iniciar stack completo/local',
+        'Reset completo + rebuild sem cache do stack/local',
         'Novo canal',
         'Remover canal',
         'Listar mundos ativos',
@@ -1104,9 +1308,9 @@ def print_header() -> None:
     gateway_mode_label = describe_gateway_mode(settings)
     print(f'Gateway atual: http://{settings.gateway_public_host}:{settings.gateway_public_port} | modo={gateway_mode_label}')
     if settings.gateway_managed():
-        print('Opção 1 irá subir também o gateway/nginx local dedicado.')
+        print('Opção 1 agora faz reset completo sem cache e sobe também o gateway/nginx local dedicado.')
     else:
-        print('Opção 1 não sobe nginx local; o acesso público depende de gateway externo/compartilhado.')
+        print('Opção 1 agora faz reset completo sem cache; o acesso público depende de gateway externo/compartilhado.')
     print(f'Mongo atual: {settings.mongodb_host}:{settings.mongodb_port} | local={"sim" if settings.use_mongo_local else "não"}')
 
 
