@@ -1,0 +1,491 @@
+<div class="shell marketplace-shell">
+  <header class="store-header panel">
+    <div class="store-header__topline">
+      <div class="store-header__content">
+        <span class="hero__eyebrow">Loja Acacia</span>
+        <h1>Explore o catálogo antes de abrir o checkout.</h1>
+        <p>
+          Busque itens, compare categorias e veja compatibilidade por realm em uma vitrine clara,
+          com pagamento PIX aparecendo só depois da sua escolha.
+        </p>
+      </div>
+
+      <article class="selection-status panel panel--soft" *ngIf="selectedProduct() as product; else idleSelection">
+        <span class="label">Checkout pronto</span>
+        <strong>{{ product.name }}</strong>
+        <p>{{ getCategoryLabel(product.category) }} • {{ formatCurrency(product.priceInBrl) }}</p>
+        <button class="button button--secondary" type="button" (click)="selectProduct(product)">
+          Abrir painel de compra
+        </button>
+      </article>
+
+      <ng-template #idleSelection>
+        <article class="selection-status panel panel--soft selection-status--idle">
+          <span class="label">Descoberta primeiro</span>
+          <strong>Nenhum checkout aberto</strong>
+          <p>Escolha um produto na vitrine para ver detalhes, preencher dados e gerar o PIX.</p>
+        </article>
+      </ng-template>
+    </div>
+
+    <div class="store-toolbar panel panel--soft">
+      <label class="field field--search">
+        <span>Buscar produto</span>
+        <input
+          class="input"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="updateSearchTerm($event)"
+          placeholder="Buscar por nome, benefício, entrega ou tag"
+          name="catalogSearch"
+        />
+      </label>
+
+      <label class="field">
+        <span>Realm</span>
+        <select
+          class="select"
+          [ngModel]="selectedRealmFilter()"
+          (ngModelChange)="updateRealmFilter($event)"
+          name="catalogRealm"
+        >
+          <option value="all">Todos</option>
+          <option *ngFor="let realm of realmOptions()" [value]="realm">
+            {{ realm }}
+          </option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Tipo</span>
+        <select
+          class="select"
+          [ngModel]="selectedTypeFilter()"
+          (ngModelChange)="updateTypeFilter($event)"
+          name="catalogType"
+        >
+          <option value="all">Todos</option>
+          <option *ngFor="let type of typeOptions()" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </label>
+
+      <div class="toolbar-actions">
+        <button class="button button--ghost button--wide" type="button" (click)="clearFilters()">
+          Limpar filtros
+        </button>
+      </div>
+    </div>
+
+    <div class="panel panel--soft" *ngIf="isCatalogLoading() || catalogLoadError()">
+      <p class="muted" *ngIf="isCatalogLoading()">Carregando catálogo real da API do marketplace...</p>
+      <div *ngIf="catalogLoadError() as error">
+        <p class="muted">{{ error }}</p>
+        <button class="button button--secondary" type="button" (click)="reloadCatalog()">
+          Tentar carregar API real novamente
+        </button>
+      </div>
+    </div>
+
+    <div class="category-chip-row" aria-label="Categorias do catálogo">
+      <button
+        class="category-chip"
+        type="button"
+        *ngFor="let chip of categoryChips(); trackBy: trackCategoryChip"
+        [ngClass]="{ 'category-chip--active': chip.active, 'category-chip--disabled': !chip.count }"
+        [disabled]="!chip.count"
+        (click)="updateCategoryFilter(chip.value)"
+      >
+        <span>{{ chip.label }}</span>
+        <strong>{{ chip.count }}</strong>
+      </button>
+    </div>
+
+    <div class="store-header__summary">
+      <article class="metric-card" *ngFor="let highlight of catalogHighlights()">
+        <span class="label">{{ highlight.title }}</span>
+        <strong>{{ highlight.value }}</strong>
+        <span class="muted">{{ highlight.helper }}</span>
+      </article>
+    </div>
+  </header>
+
+  <main class="store-layout">
+    <section class="catalog-panel panel">
+      <div class="catalog-panel__header">
+        <div>
+          <span class="section-title__eyebrow">Catálogo principal</span>
+          <h2>Itens fáceis de escanear, comparar e selecionar</h2>
+        </div>
+        <p class="muted">
+          {{ catalogSummaryLabel() }} Use busca, chips de categoria e filtros para chegar no item
+          ideal antes de entrar na compra.
+        </p>
+      </div>
+
+      <div class="catalog-grid" *ngIf="filteredProducts().length; else emptyCatalogState">
+        <article
+          class="product-card"
+          *ngFor="let product of filteredProducts(); trackBy: trackProduct"
+          [ngClass]="{ 'product-card--selected': selectedSku() === product.sku }"
+        >
+          <div class="product-card__top">
+            <div class="product-card__identity">
+              <span class="icon-badge">{{ product.icon }}</span>
+              <div class="product-card__heading">
+                <div>
+                  <p class="product-card__category">
+                    {{ getCategoryLabel(product.category) }} • {{ product.typeLabel }}
+                  </p>
+                  <h3>{{ product.name }}</h3>
+                </div>
+                <strong class="product-card__price">
+                  {{ product.priceInBrl | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+                </strong>
+              </div>
+            </div>
+
+            <div class="tag-row product-card__meta">
+              <span class="pill">{{ product.deliveryLabel }}</span>
+              <span class="pill">Compatível com {{ formatRealmList(product.supportedRealms) }}</span>
+            </div>
+          </div>
+
+          <p class="product-card__description">{{ product.shortDescription }}</p>
+
+          <dl class="product-card__info">
+            <div>
+              <dt>Benefício principal</dt>
+              <dd>{{ product.description }}</dd>
+            </div>
+            <div>
+              <dt>Realm / compatibilidade</dt>
+              <dd>{{ product.realmLabel }}</dd>
+            </div>
+            <div>
+              <dt>Faixa de compra</dt>
+              <dd>
+                {{
+                  product.supportsQuantity
+                    ? product.minQuantity + ' a ' + product.maxQuantity + ' unidades'
+                    : 'Item único por pedido'
+                }}
+              </dd>
+            </div>
+            <div>
+              <dt>Preço</dt>
+              <dd>{{ formatCurrency(product.priceInBrl) }}</dd>
+            </div>
+          </dl>
+
+          <div class="tag-row" *ngIf="product.tags.length">
+            <span class="pill" *ngFor="let tag of product.tags">{{ tag }}</span>
+          </div>
+
+          <div class="button-row product-card__actions">
+            <button class="button button--secondary" type="button" (click)="selectProduct(product)">
+              {{ selectedSku() === product.sku ? 'Ver detalhes' : 'Abrir detalhes' }}
+            </button>
+            <button class="button button--primary" type="button" (click)="selectProduct(product)">
+              {{ selectedSku() === product.sku ? 'Continuar compra' : 'Comprar' }}
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <ng-template #emptyCatalogState>
+        <section class="empty-state empty-state--catalog panel panel--soft">
+          <span class="section-title__eyebrow">Nenhum produto encontrado</span>
+          <h2>Os filtros atuais não retornaram itens.</h2>
+          <p>
+            Tente remover um filtro, buscar por outro termo ou voltar ao catálogo completo para
+            continuar explorando.
+          </p>
+          <div class="button-row row--start">
+            <button class="button button--primary" type="button" (click)="clearFilters()">
+              Mostrar todo o catálogo
+            </button>
+          </div>
+        </section>
+      </ng-template>
+    </section>
+
+    <aside class="checkout-column">
+      <article class="checkout-shell panel" *ngIf="selectedProduct() as product; else checkoutPlaceholder">
+        <div class="checkout-shell__top">
+          <div class="section-title">
+            <span class="section-title__eyebrow">Painel de compra</span>
+            <h2>
+              {{
+                hasActiveOrder()
+                  ? 'Pague via PIX e acompanhe a entrega'
+                  : 'Detalhes do item e checkout secundário'
+              }}
+            </h2>
+            <p>
+              {{
+                hasActiveOrder()
+                  ? 'A seleção já foi feita. Agora basta concluir o PIX e acompanhar o status da entrega.'
+                  : 'Você escolheu um item. Revise os detalhes, informe os dados e só então siga para o pagamento.'
+              }}
+            </p>
+          </div>
+
+          <div class="selected-product-card">
+            <div>
+              <span class="label">Produto selecionado</span>
+              <strong>{{ product.name }}</strong>
+              <p>{{ getCategoryLabel(product.category) }} • {{ product.deliveryLabel }}</p>
+              <p>Compatível com {{ selectedProductRealms() }}</p>
+            </div>
+            <div class="selected-product-card__price">
+              {{ formatCurrency(checkoutSummary()?.totalInBrl ?? product.priceInBrl) }}
+            </div>
+          </div>
+
+          <div class="checkout-progress">
+            <div
+              *ngFor="let stage of purchaseStages(); trackBy: trackStage"
+              class="checkout-progress__step"
+              [ngClass]="'checkout-progress__step--' + stage.state"
+            >
+              <span>{{ stage.order }}</span>
+              <strong>{{ stage.label }}</strong>
+              <small>{{ stage.helper }}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-shell__body">
+          <section class="checkout-section" *ngIf="!hasActiveOrder(); else paymentStage">
+            <div class="checkout-summary-box" *ngIf="checkoutSummary() as summary">
+              <div class="checkout-summary-box__row">
+                <span>Benefício</span>
+                <strong>{{ product.shortDescription }}</strong>
+              </div>
+              <div class="checkout-summary-box__row">
+                <span>Preço total</span>
+                <strong>{{ formatCurrency(summary.totalInBrl) }}</strong>
+              </div>
+              <div class="checkout-summary-box__row">
+                <span>Entrega</span>
+                <strong>{{ product.deliveryLabel }}</strong>
+              </div>
+            </div>
+
+            <form class="form-grid" (ngSubmit)="createOrder()">
+              <div class="field" *ngIf="quantityEnabled(); else fixedQuantity">
+                <span>Quantidade</span>
+                <div class="quantity-control quantity-control--inline">
+                  <button class="button button--secondary" type="button" (click)="changeQuantity(-1)">
+                    -
+                  </button>
+                  <input
+                    class="input"
+                    [value]="checkoutSummary()?.quantity ?? 1"
+                    aria-label="Quantidade do item"
+                    title="Quantidade do item"
+                    readonly
+                  />
+                  <button class="button button--secondary" type="button" (click)="changeQuantity(1)">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <ng-template #fixedQuantity>
+                <label class="field">
+                  <span>Quantidade</span>
+                  <input class="input" [value]="checkoutSummary()?.quantity ?? 1" readonly />
+                </label>
+              </ng-template>
+
+              <label class="field">
+                <span>Realm</span>
+                <select
+                  class="select"
+                  [ngModel]="checkoutForm().realm"
+                  (ngModelChange)="updateField('realm', $event)"
+                  name="realm"
+                  [disabled]="isRealmLocked()"
+                  required
+                >
+                  <option *ngFor="let realm of availableRealms()" [value]="realm">
+                    {{ realm }}
+                  </option>
+                </select>
+              </label>
+
+              <label class="field field--full">
+                <span>Personagem</span>
+                <input
+                  class="input"
+                  name="characterName"
+                  [ngModel]="checkoutForm().characterName"
+                  (ngModelChange)="updateField('characterName', $event)"
+                  placeholder="Ex.: AcaciaHero"
+                  required
+                />
+              </label>
+
+              <label class="field field--full">
+                <span>E-mail</span>
+                <input
+                  class="input"
+                  type="email"
+                  name="email"
+                  [ngModel]="checkoutForm().email"
+                  (ngModelChange)="updateField('email', $event)"
+                  placeholder="voce@email.com"
+                  required
+                />
+              </label>
+
+              <p class="form-error field--full" *ngIf="checkoutError() as error">{{ error }}</p>
+
+              <div class="button-row field--full checkout-actions">
+                <button class="button button--primary button--wide" type="submit">
+                  Gerar PIX agora
+                </button>
+                <button class="button button--ghost" type="button" (click)="closeProductPanel()">
+                  Voltar ao catálogo
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <ng-template #paymentStage>
+            <section
+              class="checkout-section checkout-section--payment"
+              *ngIf="activeOrder() && activeCharge()"
+            >
+              <div class="payment-card">
+                <div class="payment-card__content">
+                  <span class="label">Pagamento PIX</span>
+                  <strong class="payment-card__amount">
+                    {{ activeCharge()!.amountInBrl | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+                  </strong>
+                  <p class="muted">{{ paymentStatus().description }}</p>
+                  <div class="status-line">
+                    <span>Status</span>
+                    <span
+                      class="status-badge"
+                      [ngClass]="{
+                        'status-badge--warning': paymentStatus().tone === 'warning',
+                        'status-badge--success': paymentStatus().tone === 'success'
+                      }"
+                    >
+                      {{ paymentStatus().badge }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="qr-preview" aria-label="QR Code PIX">
+                  <div class="qr-grid" *ngIf="qrCodeMatrix().length">
+                    <div class="qr-row" *ngFor="let row of qrCodeMatrix()">
+                      <span
+                        class="qr-cell"
+                        *ngFor="let cell of row"
+                        [ngClass]="{ 'qr-cell--filled': cell }"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="notice payment-copy-box">
+                <span class="label">PIX copia e cola</span>
+                <div class="code-box">{{ activeCharge()!.qrCodePayload }}</div>
+              </div>
+
+              <div class="checkout-summary-box">
+                <div class="checkout-summary-box__row">
+                  <span>Personagem</span>
+                  <strong>{{ activeOrder()!.buyer.characterName }}</strong>
+                </div>
+                <div class="checkout-summary-box__row">
+                  <span>Realm</span>
+                  <strong>{{ activeOrder()!.buyer.realm }}</strong>
+                </div>
+                <div class="checkout-summary-box__row">
+                  <span>Entrega</span>
+                  <strong>{{ activeOrder()!.item.name }}</strong>
+                </div>
+                <div class="checkout-summary-box__row">
+                  <span>Expira em</span>
+                  <strong>{{ activeCharge()!.expiresAt | date: 'short' : undefined : 'pt-BR' }}</strong>
+                </div>
+              </div>
+
+              <div class="button-row payment-actions">
+                <button
+                  class="button button--primary button--wide"
+                  type="button"
+                  *ngIf="paymentStatus().canSimulateInMock"
+                  (click)="simulatePaymentConfirmation()"
+                >
+                  Confirmar pagamento mockado
+                </button>
+                <button class="button button--ghost" type="button" (click)="chooseAnotherProduct()">
+                  Escolher outro item
+                </button>
+                <button class="button button--secondary" type="button" (click)="resetPurchase()">
+                  Novo PIX para este item
+                </button>
+              </div>
+
+              <div class="delivery-result" *ngIf="activeDelivery()">
+                <span class="label">Entrega</span>
+                <h3>Pagamento confirmado e entrega registrada</h3>
+                <p>{{ activeDelivery()!.resultMessage }}</p>
+                <ul class="summary-list summary-list--boxed">
+                  <li class="order-line">
+                    <span>Última atualização</span>
+                    <strong>{{ activeDelivery()!.lastUpdatedAt | date: 'short' : undefined : 'pt-BR' }}</strong>
+                  </li>
+                  <li class="order-line">
+                    <span>Modo</span>
+                    <strong>{{ activeDelivery()!.mode }}</strong>
+                  </li>
+                </ul>
+              </div>
+            </section>
+          </ng-template>
+        </div>
+      </article>
+
+      <ng-template #checkoutPlaceholder>
+        <article class="checkout-placeholder panel panel--soft">
+          <span class="section-title__eyebrow">Checkout secundário</span>
+          <h2>Escolha um item para abrir os detalhes de compra.</h2>
+          <p>
+            O catálogo permanece como foco principal. Depois da seleção, este painel mostra detalhes,
+            formulário e pagamento PIX sem ocupar a vitrine inicial.
+          </p>
+          <ul class="summary-list summary-list--boxed">
+            <li class="order-line">
+              <span>1</span>
+              <strong>Explore o catálogo</strong>
+            </li>
+            <li class="order-line">
+              <span>2</span>
+              <strong>Compare preço, categoria e compatibilidade</strong>
+            </li>
+            <li class="order-line">
+              <span>3</span>
+              <strong>Abra o checkout só depois da escolha</strong>
+            </li>
+          </ul>
+          <article class="checkout-suggestion panel" *ngIf="suggestionProduct() as suggestion">
+            <span class="label">Sugestão para explorar</span>
+            <strong>{{ suggestion.name }}</strong>
+            <p>{{ suggestion.shortDescription }}</p>
+            <button class="button button--secondary" type="button" (click)="selectProduct(suggestion)">
+              Ver este item
+            </button>
+          </article>
+        </article>
+      </ng-template>
+    </aside>
+  </main>
+</div>

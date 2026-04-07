@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+
+services:
+    - type: web
+      name: client-server
+      runtime: docker
+      dockerfilePath: docker/Dockerfile
+      dockerContext: .
+      healthCheckPath: /
+      dockerCommand: >
+          /bin/sh -lc "(
+            yarn workspace @acacia/server start --host 0.0.0.0 --port 9001 &
+            yarn workspace @acacia/hub start &
+            HOST=0.0.0.0 PORT=$PORT yarn workspace @acacia/client start &
+            wait
+          )"
+      envVars:
+          - key: NODE_ENV
+            value: production
+          - key: NGINX
+            value: 'false'
+          - key: SSL
+            value: 'true'
+          - key: MONGODB_HOST
+            fromService:
+                type: pserv
+                name: mongo
+                property: host
+          - key: MONGODB_PORT
+            fromService:
+                type: pserv
+                name: mongo
+                property: port
+          - key: MONGODB_USER
+            fromService:
+                type: pserv
+                name: mongo
+                envVarKey: MONGO_INITDB_ROOT_USERNAME
+          - key: MONGODB_PASSWORD
+            fromService:
+                type: pserv
+                name: mongo
+                envVarKey: MONGO_INITDB_ROOT_PASSWORD
+          - key: MONGODB_DATABASE
+            value: acacia-game
+          - key: MONGODB_AUTH_SOURCE
+            value: admin
+          - key: MONGODB_TLS
+            value: 'false'
+          - key: MONGODB_SRV
+            value: 'false'
+          # Ajustar manualmente para o domínio público final deste serviço.
+          - key: HOST
+            sync: false
+          - key: HUB_HOST
+            sync: false
+          - key: HUB_WS_HOST
+            sync: false
+          - key: REMOTE_SERVER_HOST
+            sync: false
+          - key: REMOTE_API_HOST
+            sync: false
+          - key: CLIENT_REMOTE_HOST
+            sync: false
+          # Mantido manual porque a stack atual depende de proxy/reverse routing fora do processo Node.
+          - key: CLIENT_REMOTE_PORT
+            sync: false
+          - key: ACCESS_TOKEN
+            sync: false
+          - key: HUB_ACCESS_TOKEN
+            sync: false
+
+    - type: pserv
+      name: mongo
+      runtime: image
+      image:
+          url: docker.io/mongo:6.0
+      disk:
+          name: mongo-data
+          mountPath: /data/db
+          sizeGB: 10
+      envVars:
+          - key: PORT
+            value: '27017'
+          - key: MONGO_INITDB_ROOT_USERNAME
+            sync: false
+          - key: MONGO_INITDB_ROOT_PASSWORD
+            sync: false

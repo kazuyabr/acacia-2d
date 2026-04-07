@@ -16,6 +16,9 @@ ROOT_DIR = Path(__file__).resolve().parent
 BASE_COMPOSE_FILE = ROOT_DIR / 'docker-compose.yml'
 GATEWAY_COMPOSE_FILE = ROOT_DIR / 'docker-compose.gateway.yml'
 MONGO_COMPOSE_FILE = ROOT_DIR / 'docker-compose.mongo-local.yml'
+MARKETPLACE_DIR = ROOT_DIR.parent / 'Marketplace'
+MARKETPLACE_DOCKER_DIR = MARKETPLACE_DIR / 'docker'
+MARKETPLACE_COMPOSE_FILE = MARKETPLACE_DOCKER_DIR / 'docker-compose.yml'
 WORLD_TEMPLATE_DIR = ROOT_DIR / 'world'
 WORLD_ENV_TEMPLATE = WORLD_TEMPLATE_DIR / '.env.example'
 STACK_ENV_FILE = ROOT_DIR / '.env.stack'
@@ -29,6 +32,7 @@ BASE_WORLD_NAMES = frozenset(BASE_START_WORLDS)
 BASE_COMPOSE_PROJECT_NAME = 'acacia-multiworld-scalable-base'
 GATEWAY_COMPOSE_PROJECT_NAME = 'acacia-multiworld-scalable-gateway'
 MONGO_COMPOSE_PROJECT_NAME = 'acacia-multiworld-scalable-mongo'
+MARKETPLACE_COMPOSE_PROJECT_NAME = 'acacia-marketplace-isolated'
 NETWORK_NAME = 'acacia-scalable-runtime'
 DEFAULT_GATEWAY_MODE = 'external'
 DEFAULT_GATEWAY_PORT = '80'
@@ -70,6 +74,7 @@ LOG_LABELS = {
     'gateway': ('gateway', 'nginx'),
     'hub': ('hub',),
     'client': ('client',),
+    'marketplace': ('marketplace',),
     'mongo': ('mongo', 'mongodb'),
     'world': ('world',),
 }
@@ -210,6 +215,8 @@ def ensure_prerequisites() -> None:
         raise StackError(f'Compose do gateway local não encontrado em {GATEWAY_COMPOSE_FILE}')
     if not MONGO_COMPOSE_FILE.is_file():
         raise StackError(f'Compose de Mongo local não encontrado em {MONGO_COMPOSE_FILE}')
+    if not MARKETPLACE_COMPOSE_FILE.is_file():
+        raise StackError(f'Compose do marketplace não encontrado em {MARKETPLACE_COMPOSE_FILE}')
     if not WORLD_TEMPLATE_DIR.is_dir():
         raise StackError(f'Template de world não encontrado em {WORLD_TEMPLATE_DIR}')
     if not WORLD_ENV_TEMPLATE.is_file():
@@ -222,6 +229,29 @@ def ensure_prerequisites() -> None:
     ensure_stack_env_file()
 
 
+def build_docker_compose_command(
+    compose_file: Path,
+    *extra_args: str,
+    env_file: Path | None = None,
+    project_name: str | None = None,
+    include_stack_env: bool = True,
+    project_directory: Path | None = None,
+) -> list[str]:
+    command = ['docker', 'compose']
+    if project_name is not None:
+        command.extend(['-p', project_name])
+    if include_stack_env:
+        command.extend(['--env-file', str(STACK_ENV_FILE)])
+    if env_file is not None:
+        command.extend(['--env-file', str(env_file)])
+    if project_directory is not None:
+        command.extend(['--project-directory', str(project_directory)])
+    command.extend(['-f', str(compose_file)])
+    command.extend(extra_args)
+    return command
+
+
+
 def docker_compose(
     compose_file: Path,
     *extra_args: str,
@@ -229,12 +259,18 @@ def docker_compose(
     interactive: bool = False,
     stream_output: bool = True,
     description: str | None = None,
+    project_name: str | None = None,
+    include_stack_env: bool = True,
+    project_directory: Path | None = None,
 ) -> subprocess.CompletedProcess[str]:
-    command = ['docker', 'compose', '--env-file', str(STACK_ENV_FILE)]
-    if env_file is not None:
-        command.extend(['--env-file', str(env_file)])
-    command.extend(['-f', str(compose_file)])
-    command.extend(extra_args)
+    command = build_docker_compose_command(
+        compose_file,
+        *extra_args,
+        env_file=env_file,
+        project_name=project_name,
+        include_stack_env=include_stack_env,
+        project_directory=project_directory,
+    )
     return run_command(
         command,
         interactive=interactive,
@@ -277,11 +313,20 @@ def get_compose_service_container_id(
     service_name: str,
     *,
     env_file: Path | None = None,
+    project_name: str | None = None,
+    include_stack_env: bool = True,
+    project_directory: Path | None = None,
 ) -> str:
-    command = ['docker', 'compose', '--env-file', str(STACK_ENV_FILE)]
-    if env_file is not None:
-        command.extend(['--env-file', str(env_file)])
-    command.extend(['-f', str(compose_file), 'ps', '-q', service_name])
+    command = build_docker_compose_command(
+        compose_file,
+        'ps',
+        '-q',
+        service_name,
+        env_file=env_file,
+        project_name=project_name,
+        include_stack_env=include_stack_env,
+        project_directory=project_directory,
+    )
     result = run_command_quiet(command)
     if result.returncode != 0:
         return ''
@@ -1139,6 +1184,8 @@ def simplify_container_label(container_name: str) -> str:
         return 'hub'
     if any(token in lowered for token in LOG_LABELS['client']):
         return 'client'
+    if any(token in lowered for token in LOG_LABELS['marketplace']):
+        return 'marketplace'
     if any(token in lowered for token in LOG_LABELS['mongo']):
         return 'mongo'
     if 'world-' in lowered or re.search(r'world[-_]\d+', lowered):
@@ -1215,7 +1262,6 @@ def show_logs_menu() -> None:
         description=f'Acompanhando logs de {target.label}',
     )
 
-
 def show_remove_world_menu() -> None:
     worlds = list_existing_worlds()
     if not worlds:
@@ -1238,6 +1284,91 @@ def show_remove_world_menu() -> None:
             print('Operação cancelada.')
             return
     remove_world(world)
+
+
+
+def is_project_running(project_name: str) -> bool:
+    result = run_command(
+        [
+            'docker',
+            'ps',
+            '--filter',
+            f'label=com.docker.compose.project={project_name}',
+            '--format',
+            '{{.Names}}',
+        ],
+        check=False,
+    )
+    return any(line.strip() for line in result.stdout.splitlines())
+
+
+
+def is_marketplace_running() -> bool:
+    return is_project_running(MARKETPLACE_COMPOSE_PROJECT_NAME)
+
+
+
+def start_marketplace_site() -> None:
+    print('\nSubindo site do marketplace em compose isolado...', flush=True)
+    docker_compose(
+        MARKETPLACE_COMPOSE_FILE,
+        'up',
+        '--build',
+        '-d',
+        project_name=MARKETPLACE_COMPOSE_PROJECT_NAME,
+        include_stack_env=False,
+        project_directory=MARKETPLACE_DOCKER_DIR,
+        description='Subindo marketplace isolado',
+    )
+    print('Marketplace isolado ativo.', flush=True)
+
+
+
+def stop_marketplace_site(*, remove_volumes: bool = False, remove_images: bool = False) -> None:
+    extra_args: list[str] = ['down', '--remove-orphans']
+    if remove_volumes:
+        extra_args.append('--volumes')
+    if remove_images:
+        extra_args.extend(['--rmi', 'local'])
+    docker_compose(
+        MARKETPLACE_COMPOSE_FILE,
+        *extra_args,
+        project_name=MARKETPLACE_COMPOSE_PROJECT_NAME,
+        include_stack_env=False,
+        project_directory=MARKETPLACE_DOCKER_DIR,
+        description='Parando marketplace isolado' if not remove_volumes and not remove_images else 'Parando e limpando marketplace isolado',
+    )
+    if remove_volumes or remove_images:
+        remove_compose_project_artifacts(MARKETPLACE_COMPOSE_PROJECT_NAME)
+        print('Marketplace isolado parado e limpo.', flush=True)
+    else:
+        print('Marketplace isolado parado.', flush=True)
+
+
+
+def show_marketplace_menu() -> None:
+    running = is_marketplace_running()
+    status = 'ativo' if running else 'parado'
+    selection = choose_from_menu(
+        f'Marketplace isolado | status={status}',
+        [
+            'Iniciar site do marketplace isolado',
+            'Parar site do marketplace isolado',
+            'Parar e limpar site do marketplace isolado',
+        ],
+    )
+    if selection is None:
+        return
+    if selection == 0:
+        start_marketplace_site()
+    elif selection == 1:
+        stop_marketplace_site()
+    elif selection == 2:
+        if not confirm('Confirmar parada e limpeza do marketplace isolado?'):
+            print('Operação cancelada.')
+            return
+        stop_marketplace_site(remove_volumes=True, remove_images=True)
+
 
 
 def restart_worlds(worlds: Sequence[WorldInfo]) -> None:
@@ -1273,6 +1404,7 @@ def show_main_menu() -> int:
         'Logs',
         'Editar chave de env em lote nos worlds',
         'Iniciar apenas gateway local dedicado',
+        'Gerenciar site do marketplace isolado',
         'Exit',
     ]
     while True:
@@ -1296,6 +1428,8 @@ def show_main_menu() -> int:
             show_bulk_world_env_menu()
         elif choice == 6:
             start_managed_gateway()
+        elif choice == 7:
+            show_marketplace_menu()
 
 
 def print_header() -> None:

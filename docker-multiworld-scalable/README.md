@@ -15,6 +15,7 @@ Esta pasta expõe um starter principal único em [`stack.py`](docker-multiworld-
 - [`gateway/nginx.conf`](docker-multiworld-scalable/gateway/nginx.conf): configuração do gateway local dedicado
 - [`world/`](docker-multiworld-scalable/world/): pasta-modelo para novos canais
 - [`world-1/`](docker-multiworld-scalable/world-1/) e [`world-2/`](docker-multiworld-scalable/world-2/): canais iniciais
+- [`Marketplace/docker/docker-compose.yml`](Marketplace/docker/docker-compose.yml): compose reutilizado para subir o site do marketplace como projeto isolado
 
 ## Requisitos
 
@@ -80,7 +81,12 @@ O menu em [`stack.py`](docker-multiworld-scalable/stack.py) oferece estas opçõ
    - valida se `GATEWAY_MODE=managed`
    - valida se a rede [`acacia-scalable-runtime`](docker-multiworld-scalable/docker-compose.yml) já existe
    - sobe o gateway com [`docker-compose.gateway.yml`](docker-multiworld-scalable/docker-compose.gateway.yml)
-8. **Exit**
+8. **Gerenciar site do marketplace isolado**
+   - abre um submenu dedicado para o compose do marketplace
+   - permite iniciar o site usando [`Marketplace/docker/docker-compose.yml`](Marketplace/docker/docker-compose.yml) com projeto Docker Compose isolado
+   - permite parar apenas esse compose isolado sem afetar o stack escalável
+   - permite parada com limpeza coerente de volumes/imagens locais do projeto isolado
+9. **Exit**
    - permanece como último item visível do menu principal
    - encerra o menu com código `0`
 
@@ -208,6 +214,35 @@ Esse compose:
 - não volta a fazer parte do runtime principal
 - pode ser iniciado automaticamente pela opção 1 quando `GATEWAY_MODE=managed`
 - também pode ser iniciado isoladamente pela opção **Iniciar apenas gateway local dedicado**
+
+## Marketplace isolado
+
+A opção **Gerenciar site do marketplace isolado** reutiliza diretamente [`Marketplace/docker/docker-compose.yml`](Marketplace/docker/docker-compose.yml), mas o chama como um projeto Docker Compose próprio e separado do stack escalável.
+
+Fluxo aplicado:
+
+```bash
+docker compose -p acacia-marketplace-isolated --project-directory Marketplace/docker -f Marketplace/docker/docker-compose.yml up --build -d
+```
+
+Para parar sem limpeza:
+
+```bash
+docker compose -p acacia-marketplace-isolated --project-directory Marketplace/docker -f Marketplace/docker/docker-compose.yml down --remove-orphans
+```
+
+Para parar com limpeza coerente do compose isolado:
+
+```bash
+docker compose -p acacia-marketplace-isolated --project-directory Marketplace/docker -f Marketplace/docker/docker-compose.yml down --remove-orphans --volumes --rmi local
+```
+
+Regras dessa opção:
+
+- não reutiliza o compose base de [`docker-multiworld-scalable/`](docker-multiworld-scalable/)
+- não depende do gateway/nginx do stack escalável
+- não injeta [`.env.stack`](docker-multiworld-scalable/.env.stack) no compose do marketplace
+- mantém nome de projeto próprio para que subida, parada e limpeza ocorram de forma isolada
 
 ## Convenção automática de novos canais
 
